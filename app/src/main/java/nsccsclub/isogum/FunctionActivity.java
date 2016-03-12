@@ -11,6 +11,8 @@ import android.view.MenuItem;
 
 public class FunctionActivity extends AppCompatActivity {
 
+    //welcome nsc comp sci club
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
