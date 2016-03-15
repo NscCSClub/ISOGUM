@@ -3,7 +3,6 @@ package nsccsclub.isogum;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -68,7 +67,7 @@ public class FunctionActivity extends AppCompatActivity implements PopupMenu.OnM
      *     <h4>Items currently supported<h4/>
      *     <ul>
      *         <li>Create new function<li/>
-     *         <li>Create new variable</li>
+     *         <li>Create new variable<li/>
      *         <ul/>
      *     <div/>
      * @param v The view containing the create button.
