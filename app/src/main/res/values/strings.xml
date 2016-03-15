@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">ISOGUM</string>
+    <string name="function_name">Functions</string>
+    <string name="create_name">Create</string>
     <string name="action_settings">Settings</string>
+    <string name="new_function">Create new function</string>
+    <string name="new_variable">Create new variable</string>
 </resources>
