@@ -3,4 +3,88 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--TODO check how to avoid changing height, currently set on wrap-->
+    <!--TODO see if we need three extract edit text or just one for each line-->
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:layout_gravity="center_horizontal" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:columnCount="5"
+        android:rowCount="7">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="insert fragment"
+            android:id="@+id/replace_fragment"
+            android:layout_row="0"
+            android:layout_rowSpan="3"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_gravity="fill_horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="insert spinner"
+            android:id="@+id/replace_spinner"
+            android:layout_row="0"
+            android:layout_rowSpan="3"
+            android:layout_column="3"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal" />
+
+
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_row="3"
+            android:layout_rowSpan="4"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:columnCount="3"
+            android:rowCount="4">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button1"
+                android:id="@+id/button"
+                android:layout_row="0"
+                android:layout_column="0" />
+        </GridLayout>
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_row="3"
+            android:layout_rowSpan="4"
+            android:layout_column="3"
+            android:layout_columnSpan="2"
+            android:columnCount="2"
+            android:rowCount="4">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button2"
+                android:id="@+id/button3"
+                android:layout_row="0"
+                android:layout_column="0" />
+        </GridLayout>
+    </GridLayout>
 </LinearLayout>
