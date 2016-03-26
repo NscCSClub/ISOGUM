@@ -10,6 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="nsccsclub.isogum.CreateActivity">
 
-<include layout="@layout/content_create" />
+    <!--includes all content on activityh screen, see content_create-->
+    <include layout="@layout/content_create" />
+    <!--hooks up custom keyboard-->
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboardview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>
