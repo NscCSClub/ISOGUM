@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import static nsccsclub.isogum.R.integer.keyboard_number;
+import static nsccsclub.isogum.R.layout.keyboard_layout;
+
 /**
  * The input keyboard for the ISO GUM uncertainty calculator
  * Created by csconway on 3/25/2016.
@@ -20,7 +23,6 @@ import android.widget.EditText;
  * stackoverflow.com/questions/16174179/set-keyboard-mode-in-android-custom-keyboard
  */
 public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
-    //TODO allow for multiple screens
 
     /**
      * The view containing the keyboard
@@ -37,11 +39,27 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
      */
     private OnKeyboardActionListener onKeyboardActionListener;
 
-    //SUPPORTED KEYS AND KEYCODES
-    //TODO WRITE A PROCEDURE FOR ADDING A KEY
-    //TODO CREATE KEY CODE CHART
+    /**
+     * The current screen of the keyboard
+     */
+    private int keyboardState;
 
-    //TODO add implementation for mulitiple kinds of keyboards
+    /**
+     * The ABC keyboard configuration.
+     */
+    private Keyboard key_abc;
+
+    /**
+     * The 123 keyboard congfiguration
+     */
+    private Keyboard key_123;
+
+    //SUPPORTED KEYS AND KEYCODES
+    //TODO WRITE A PROCEDURE FOR ADDING A KEy
+    public static final int CODE_123_Key=500001;
+    public static final int CODE_ABC_Key=500002;
+
+
 
     /**
      * Constructor for the custom ISO GUM math keyboard.
@@ -51,10 +69,14 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
      */
     public InputKeyboard(Activity host, int viewid, int layoutid){
         //initializes intstance varaibles of the class
-        this.host= host;
-        keyboardView=(KeyboardView)host.findViewById(viewid);
+        this.host= host;                                            //host activity
+        keyboardView=(KeyboardView)host.findViewById(viewid);       //host view
+        keyboardState=CODE_ABC_Key;                                 //default keyboard screen
+        //creates all keyboard screens for the app seperate one needed for each implementation
+        key_abc = new Keyboard(host,layoutid,R.integer.keyboard_text);
+        key_123 = new Keyboard(host,layoutid, keyboard_number);
         //hooks up the keyboard
-        keyboardView.setKeyboard(new Keyboard(host, layoutid));
+        keyboardView.setKeyboard(key_abc);
         keyboardView.setOnKeyboardActionListener(this);
         //keyboard settings
         keyboardView.setPreviewEnabled(false);
@@ -90,6 +112,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         keyboardView.setEnabled(false);
     }
 
+    //TODO implement default screen for each textfield
     /**
      * Registers an edit text field with this keyboard.
      * @param resID The EditText to register with this keyboard.
@@ -190,6 +213,20 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         //performs the action associated with the code
 
         switch (primaryCode){
+            case(CODE_123_Key):
+                if(focus!=null){                                    //change to 123 keyboard
+                    keyboardView.setKeyboard(key_123);
+                    keyboardView.setShifted(false);
+                    keyboardState=CODE_123_Key;
+                }
+                break;
+            case(CODE_ABC_Key):                                     //change to abc keyboard
+                if(focus!=null){
+                    keyboardView.setKeyboard(key_abc);
+                    keyboardView.setShifted(false);
+                    keyboardState=CODE_ABC_Key;
+                }
+                break;
             default:                                                //basic unicode, insert char
                 editable.insert(start,Character.toString((char)primaryCode));
                 break;

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--contains values for different keyboards-->
+<resources>
+    <integer name="keyboard_text">0</integer>
+    <integer name="keyboard_number">1</integer>
+</resources>

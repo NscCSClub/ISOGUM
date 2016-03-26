@@ -3,10 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keyWidth="12.5%p"
-    android:keyHeight="10%p">
-
+    android:keyHeight="10%p"
+    android:id="@+id/keyboard_layout">
+    <!--default keys show up in all keyboards-->
     <Row>
+        <Key android:codes="500001" android:keyLabel="num"/>
+        <Key android:codes="500002" android:keyLabel="abc"/>
+    </Row>
+
+    <!--keys for inputting numbers-->
+    <Row android:keyboardMode="@integer/keyboard_number">
         <Key android:codes="49"     android:keyLabel="1"    android:keyEdgeFlags="left"/>
+    </Row>
+    <!--keys for inputting text-->
+    <Row android:keyboardMode="@integer/keyboard_text">
+        <Key android:codes="113"    android:keyLabel="q"/>
     </Row>
 
 </Keyboard>

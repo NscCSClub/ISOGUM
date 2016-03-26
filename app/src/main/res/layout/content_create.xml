@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <!--TODO check how to avoid changing height, currently set on wrap-->
-    <!--TODO see if we need three extract edit text or just one for each line-->
+    <!--TODO get this to change layout based on intent for new variable or function-->
 
     <EditText
         android:layout_width="match_parent"
@@ -18,7 +18,9 @@
         android:id="@+id/create_value_bar"
         android:layout_gravity="center_horizontal" />
 
-    <GridLayout
+ <!--   this was a test of various layout elements this was greatly simplified by the addition
+        of a custom keyboard and much more lightweight delete for final release
+ <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
@@ -58,7 +60,7 @@
             android:columnCount="3"
             android:rowCount="4">
 
-            <!--TODO make sure this links propely to new listener method-->
+
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
@@ -88,5 +90,5 @@
                 android:layout_row="0"
                 android:layout_column="0" />
         </GridLayout>
-    </GridLayout>
+    </GridLayout> -->
 </LinearLayout>
