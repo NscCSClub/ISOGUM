@@ -7,8 +7,12 @@ import junit.framework.TestCase;
  */
 public class CreateActivityTest extends TestCase {
 
-    public void testOnCreate() throws Exception {
 
+    public void testOnCreate() throws Exception {
         //TODO implement test
+    }
+
+    public void testOnBackPressed() throws Exception {
+
     }
 }

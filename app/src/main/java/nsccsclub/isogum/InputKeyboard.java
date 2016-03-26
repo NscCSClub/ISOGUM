@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import static nsccsclub.isogum.R.integer.keyboard_number;
-import static nsccsclub.isogum.R.layout.keyboard_layout;
 
 /**
  * The input keyboard for the ISO GUM uncertainty calculator
@@ -49,6 +48,12 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
      */
     private Keyboard key_abc;
 
+
+    /**
+     * The shifted ABC keyboard configuration.
+     */
+    private Keyboard key_abc_shift;
+
     /**
      * The 123 keyboard congfiguration
      */
@@ -56,8 +61,9 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
 
     //SUPPORTED KEYS AND KEYCODES
     //TODO WRITE A PROCEDURE FOR ADDING A KEy
-    public static final int CODE_123_Key=500001;
-    public static final int CODE_ABC_Key=500002;
+    public static final int CODE_123_KEY =500001;
+    public static final int CODE_ABC_KEY =500002;
+    public static final int CODE_ABC_KEY_SHIFT =500003;
 
 
 
@@ -71,9 +77,10 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         //initializes intstance varaibles of the class
         this.host= host;                                            //host activity
         keyboardView=(KeyboardView)host.findViewById(viewid);       //host view
-        keyboardState=CODE_ABC_Key;                                 //default keyboard screen
+        keyboardState= CODE_ABC_KEY;                                 //default keyboard screen
         //creates all keyboard screens for the app seperate one needed for each implementation
         key_abc = new Keyboard(host,layoutid,R.integer.keyboard_text);
+        key_abc_shift = new Keyboard(host,layoutid,R.integer.keyboard_text_shift);
         key_123 = new Keyboard(host,layoutid, keyboard_number);
         //hooks up the keyboard
         keyboardView.setKeyboard(key_abc);
@@ -213,18 +220,25 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         //performs the action associated with the code
 
         switch (primaryCode){
-            case(CODE_123_Key):
+            case(CODE_123_KEY):
                 if(focus!=null){                                    //change to 123 keyboard
                     keyboardView.setKeyboard(key_123);
                     keyboardView.setShifted(false);
-                    keyboardState=CODE_123_Key;
+                    keyboardState= CODE_123_KEY;
                 }
                 break;
-            case(CODE_ABC_Key):                                     //change to abc keyboard
+            case(CODE_ABC_KEY):                                     //change to abc keyboard
                 if(focus!=null){
                     keyboardView.setKeyboard(key_abc);
                     keyboardView.setShifted(false);
-                    keyboardState=CODE_ABC_Key;
+                    keyboardState= CODE_ABC_KEY;
+                }
+                break;
+            case(CODE_ABC_KEY_SHIFT):                                     //change to abc keyboard
+                if(focus!=null){
+                    keyboardView.setKeyboard(key_abc_shift);
+                    keyboardView.setShifted(false);
+                    keyboardState= CODE_ABC_KEY_SHIFT;
                 }
                 break;
             default:                                                //basic unicode, insert char

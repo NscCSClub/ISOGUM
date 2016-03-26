@@ -12,12 +12,91 @@
     </Row>
 
     <!--keys for inputting numbers-->
-    <Row android:keyboardMode="@integer/keyboard_number">
+    <Row     android:keyboardMode="@integer/keyboard_number">
         <Key android:codes="49"     android:keyLabel="1"    android:keyEdgeFlags="left"/>
     </Row>
     <!--keys for inputting text-->
-    <Row android:keyboardMode="@integer/keyboard_text">
-        <Key android:codes="113"    android:keyLabel="q"/>
+    <Row     android:keyboardMode="@integer/keyboard_text"
+             android:keyWidth="10%p">
+        <Key android:codes="0113"    android:keyLabel="q"    android:keyEdgeFlags="left"/>
+        <Key android:codes="0119"    android:keyLabel="w"/>
+        <Key android:codes="0101"    android:keyLabel="e"/>
+        <Key android:codes="0114"    android:keyLabel="r"/>
+        <Key android:codes="0116"    android:keyLabel="t"/>
+        <Key android:codes="0121"    android:keyLabel="y"/>
+        <Key android:codes="0117"    android:keyLabel="u"/>
+        <Key android:codes="0105"    android:keyLabel="i"/>
+        <Key android:codes="0111"    android:keyLabel="o"/>
+        <Key android:codes="0112"    android:keyLabel="p"   android:keyEdgeFlags="right"/>
+    </Row>
+    <Row     android:keyboardMode="@integer/keyboard_text"
+             android:keyWidth="10%p">
+        <Key android:horizontalGap="5%p"
+             android:codes="0097"    android:keyLabel="a"   android:keyEdgeFlags="left"/>
+        <Key android:codes="0115"    android:keyLabel="s"/>
+        <Key android:codes="0100"    android:keyLabel="d"/>
+        <Key android:codes="0102"    android:keyLabel="f"/>
+        <Key android:codes="0103"    android:keyLabel="g"/>
+        <Key android:codes="0104"    android:keyLabel="h"/>
+        <Key android:codes="0106"    android:keyLabel="j"/>
+        <Key android:codes="0107"    android:keyLabel="k"/>
+        <Key android:codes="0108"    android:keyLabel="l"   android:keyEdgeFlags="right"/>
+    </Row>
+    <Row     android:keyboardMode="@integer/keyboard_text"
+             android:keyWidth="10%p">
+        <Key android:keyWidth="15%p"
+             android:codes="500003"  android:keyLabel="SHIFT" android:keyEdgeFlags="left"/>
+        <Key android:codes="0122"    android:keyLabel="z"   />
+        <Key android:codes="0120"    android:keyLabel="x"/>
+        <Key android:codes="0099"    android:keyLabel="c"/>
+        <Key android:codes="0118"    android:keyLabel="v"/>
+        <Key android:codes="0098"    android:keyLabel="b"/>
+        <Key android:codes="0110"    android:keyLabel="n"/>
+        <Key android:codes="0109"    android:keyLabel="m"/>
+        <Key android:keyWidth="15%p"
+             android:codes="0095"    android:keyLabel="_"     android:keyEdgeFlags="right"/>
+    </Row>
+
+    <!--keys for inputting SHIFTED text-->
+    <Row android:keyboardMode="@integer/keyboard_text_shift"
+        android:keyWidth="10%p">
+        <Key android:codes="0081"    android:keyLabel="Q"    android:keyEdgeFlags="left"/>
+        <Key android:codes="0087"    android:keyLabel="W"/>
+        <Key android:codes="0069"    android:keyLabel="E"/>
+        <Key android:codes="0082"    android:keyLabel="R"/>
+        <Key android:codes="0084"    android:keyLabel="T"/>
+        <Key android:codes="0089"    android:keyLabel="Y"/>
+        <Key android:codes="0085"    android:keyLabel="U"/>
+        <Key android:codes="0073"    android:keyLabel="I"/>
+        <Key android:codes="0079"    android:keyLabel="O"/>
+        <Key android:codes="0080"    android:keyLabel="P"   android:keyEdgeFlags="right"/>
+    </Row>
+    <Row android:keyboardMode="@integer/keyboard_text_shift"
+        android:keyWidth="10%p">
+        <Key android:horizontalGap="5%p"
+             android:codes="0065"    android:keyLabel="A"   android:keyEdgeFlags="left"/>
+        <Key android:codes="0083"    android:keyLabel="S"/>
+        <Key android:codes="0068"    android:keyLabel="D"/>
+        <Key android:codes="0070"    android:keyLabel="F"/>
+        <Key android:codes="0071"    android:keyLabel="G"/>
+        <Key android:codes="0072"    android:keyLabel="H"/>
+        <Key android:codes="0074"    android:keyLabel="J"/>
+        <Key android:codes="0075"    android:keyLabel="K"/>
+        <Key android:codes="0076"    android:keyLabel="L"   android:keyEdgeFlags="right"/>
+    </Row>
+    <Row android:keyboardMode="@integer/keyboard_text_shift"
+        android:keyWidth="10%p">
+        <Key android:keyWidth="15%p"
+            android:codes="500003"  android:keyLabel="shift" android:keyEdgeFlags="left"/>
+        <Key android:codes="0090"    android:keyLabel="Z"   />
+        <Key android:codes="0088"    android:keyLabel="X"/>
+        <Key android:codes="0067"    android:keyLabel="C"/>
+        <Key android:codes="0086"    android:keyLabel="V"/>
+        <Key android:codes="0066"    android:keyLabel="B"/>
+        <Key android:codes="0078"    android:keyLabel="N"/>
+        <Key android:codes="0077"    android:keyLabel="M"/>
+        <Key android:keyWidth="15%p"
+            android:codes="0095"    android:keyLabel="_"     android:keyEdgeFlags="right"/>
     </Row>
 
 </Keyboard>
