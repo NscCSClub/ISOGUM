@@ -5,11 +5,16 @@
     android:keyWidth="12.5%p"
     android:keyHeight="10%p"
     android:id="@+id/keyboard_layout">
+    <!--todo find way to expand height of keys with horizontal view, they are not tall enough-->
+
     <!--default keys show up in all keyboards-->
     <Row>
         <Key android:codes="500001" android:keyLabel="num"/>
         <Key android:codes="500002" android:keyLabel="abc"/>
     </Row>
+
+
+
 
     <!--keys for inputting numbers-->
     <Row     android:keyboardMode="@integer/keyboard_number">
@@ -54,7 +59,8 @@
         <Key android:codes="0110"    android:keyLabel="n"/>
         <Key android:codes="0109"    android:keyLabel="m"/>
         <Key android:keyWidth="15%p"
-             android:codes="0095"    android:keyLabel="_"     android:keyEdgeFlags="right"/>
+             android:codes="-5"    android:keyLabel="Bksp"     android:keyEdgeFlags="right"
+             android:isRepeatable="true"/>
     </Row>
 
     <!--keys for inputting SHIFTED text-->
@@ -87,7 +93,7 @@
     <Row android:keyboardMode="@integer/keyboard_text_shift"
         android:keyWidth="10%p">
         <Key android:keyWidth="15%p"
-            android:codes="500003"  android:keyLabel="shift" android:keyEdgeFlags="left"/>
+             android:codes="500003"  android:keyLabel="shift" android:keyEdgeFlags="left"/>
         <Key android:codes="0090"    android:keyLabel="Z"   />
         <Key android:codes="0088"    android:keyLabel="X"/>
         <Key android:codes="0067"    android:keyLabel="C"/>
@@ -96,7 +102,23 @@
         <Key android:codes="0078"    android:keyLabel="N"/>
         <Key android:codes="0077"    android:keyLabel="M"/>
         <Key android:keyWidth="15%p"
-            android:codes="0095"    android:keyLabel="_"     android:keyEdgeFlags="right"/>
+             android:codes="-5"    android:keyLabel="Bksp"     android:keyEdgeFlags="right"
+             android:isRepeatable="true"/>
     </Row>
 
+
+    <!--operations for movement backspace and space-->
+    <Row>
+
+        <Key android:keyWidth="15%p"
+             android:codes="500004"  android:keyLabel="//-"   android:keyEdgeFlags="left"/>
+        <Key android:keyWidth="20%p"
+             android:codes="500005"  android:keyLabel="/-"    android:isRepeatable="true"/>
+        <Key android:keyWidth="30%p"
+             android:codes="0020"    android:keyLabel="Space" android:isRepeatable="true"/>
+        <Key android:keyWidth="20%p"
+             android:codes="500006"  android:keyLabel="-\"    android:isRepeatable="true"/>
+        <Key android:keyWidth="15%p"
+             android:codes="500007"  android:keyLabel="-\\"   android:keyEdgeFlags="right"/>
+    </Row>
 </Keyboard>

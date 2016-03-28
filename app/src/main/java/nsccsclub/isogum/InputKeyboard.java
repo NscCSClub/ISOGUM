@@ -61,9 +61,14 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
 
     //SUPPORTED KEYS AND KEYCODES
     //TODO WRITE A PROCEDURE FOR ADDING A KEy
-    public static final int CODE_123_KEY =500001;
-    public static final int CODE_ABC_KEY =500002;
-    public static final int CODE_ABC_KEY_SHIFT =500003;
+    public static final int CODE_123_KEY  =             500001;
+    public static final int CODE_ABC_KEY  =             500002;
+    public static final int CODE_ABC_KEY_SHIFT  =       500003;
+    public static final int CODE_ALL_LEFT =             500004;
+    public static final int CODE_LEFT =                 500005;
+    public static final int CODE_RIGHT =                500006;
+    public static final int CODE_ALL_RIGHT =            500007;
+//    NOTE android provides the code of -5 for delete or KECODE_DELETE;
 
 
 
@@ -236,9 +241,37 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
                 break;
             case(CODE_ABC_KEY_SHIFT):                                     //change to abc keyboard
                 if(focus!=null){
-                    keyboardView.setKeyboard(key_abc_shift);
+                    if(keyboardState==CODE_ABC_KEY){
+                        keyboardView.setKeyboard(key_abc_shift);
+                        keyboardState= CODE_ABC_KEY_SHIFT;
+                    }
+                    else{
+                        keyboardView.setKeyboard(key_abc);
+                        keyboardState= CODE_ABC_KEY;
+                    }
+
                     keyboardView.setShifted(false);
-                    keyboardState= CODE_ABC_KEY_SHIFT;
+                }
+                break;
+            case (CODE_ALL_LEFT):
+                editText.setSelection(0);
+                break;
+            case (CODE_ALL_RIGHT):
+                editText.setSelection(editText.length());
+                break;
+            case (CODE_LEFT):
+                if(start>0){
+                    editText.setSelection(start-1);
+                }
+                break;
+            case (CODE_RIGHT):
+                if(start<editText.length()){
+                    editText.setSelection(start+1);
+                }
+                break;
+            case (Keyboard.KEYCODE_DELETE):
+                if(editable!=null && start>0){
+                    editable.delete(start-1,start);
                 }
                 break;
             default:                                                //basic unicode, insert char
