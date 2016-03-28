@@ -7,6 +7,9 @@
     android:id="@+id/keyboard_layout">
     <!--todo find way to expand height of keys with horizontal view, they are not tall enough-->
 
+    <!-- todo refactor string input for easy parsing-->
+    <!-- todo allow for touch cursor in edit text-->
+
     <!--default keys show up in all keyboards-->
     <Row>
         <Key android:keyWidth="10%p"
@@ -25,37 +28,55 @@
              android:codes="500007"  android:keyLabel="-\\\\"   android:keyEdgeFlags="right"/>
     </Row>
 
-
-
-
     <!--keys for inputting numbers-->
     <Row     android:keyboardMode="@integer/keyboard_number"
-        android:keyWidth="19%p">
+        android:keyWidth="15%p">
         <Key android:codes="0055"    android:keyLabel="7"    android:keyEdgeFlags="left"/>
         <Key android:codes="0056"    android:keyLabel="8"/>
         <Key android:codes="0057"    android:keyLabel="9"/>
+        <Key android:horizontalGap="5%p"
+             android:codes="0047"    android:keyLabel="/"    android:keyWidth="15%p"/>
+        <Key android:horizontalGap="5%p"
+             android:codes="0040"    android:keyLabel="("    android:keyWidth="15%p"/>
+        <Key android:codes="0041"    android:keyLabel=")"    android:keyWidth="15%p"
+             android:keyEdgeFlags="right"/>
 
     </Row>
     <Row     android:keyboardMode="@integer/keyboard_number"
-        android:keyWidth="19%p">
+        android:keyWidth="15%p">
         <Key android:codes="0052"    android:keyLabel="4"    android:keyEdgeFlags="left"/>
         <Key android:codes="0053"    android:keyLabel="5"/>
         <Key android:codes="0054"    android:keyLabel="6"/>
-
+        <Key android:horizontalGap="5%p"
+             android:codes="0042"    android:keyLabel="*"    android:keyWidth="15%p"/>
+        <Key android:horizontalGap="5%p"
+             android:codes="0094"    android:keyLabel="^"    android:keyWidth="15%p"/>
+        <Key android:codes="500008"  android:keyLabel="e"    android:keyWidth="15%p"
+             android:keyEdgeFlags="right"/>
     </Row>
     <Row     android:keyboardMode="@integer/keyboard_number"
-             android:keyWidth="19%p">
+             android:keyWidth="15%p">
         <Key android:codes="0049"    android:keyLabel="1"    android:keyEdgeFlags="left"/>
         <Key android:codes="0050"    android:keyLabel="2"/>
         <Key android:codes="0051"    android:keyLabel="3"/>
-
+        <Key android:horizontalGap="5%p"
+             android:codes="0045"    android:keyLabel="-"    android:keyWidth="15%p"/>
+        <Key android:horizontalGap="5%p"
+             android:codes="0177"    android:keyLabel="+-"    android:keyWidth="15%p"/>
+        <Key android:codes="500009"  android:keyLabel="pi"    android:keyWidth="15%p"
+             android:keyEdgeFlags="right"/>
     </Row>
     <Row     android:keyboardMode="@integer/keyboard_number"
-             android:keyWidth="19%p">
-        <Key android:keyWidth="38%p"
+             android:keyWidth="15%p">
+        <Key android:keyWidth="30%p"
              android:codes="0048"    android:keyLabel="0"    android:keyEdgeFlags="left"/>
         <Key android:codes="0046"    android:keyLabel="."/>
-
+        <Key android:horizontalGap="5%p"
+             android:codes="0043"    android:keyLabel="+"    android:keyWidth="15%p"/>
+        <Key android:horizontalGap="5%p"
+             android:keyWidth="30%p"
+             android:codes="-5"      android:keyLabel="Bksp" android:keyEdgeFlags="right"
+             android:isRepeatable="true" />
     </Row>
 
 

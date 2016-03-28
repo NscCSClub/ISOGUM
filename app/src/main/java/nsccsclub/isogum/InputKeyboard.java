@@ -68,7 +68,9 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
     public static final int CODE_LEFT =                 500005;
     public static final int CODE_RIGHT =                500006;
     public static final int CODE_ALL_RIGHT =            500007;
-//    NOTE android provides the code of -5 for delete or KECODE_DELETE;
+    public static final int CODE_EXP =                  500008;
+    public static final int CODE_PI =                   500009;
+//    NOTE android provides the code of -5 for delete or KEYCODE_DELETE;
 
 
 
@@ -273,6 +275,12 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
                 if(editable!=null && start>0){
                     editable.delete(start-1,start);
                 }
+                break;
+            case (CODE_EXP):
+                editable.insert(start,"[e]");
+                break;
+            case (CODE_PI):
+                editable.insert(start,"[pi]");
                 break;
             default:                                                //basic unicode, insert char
                 editable.insert(start,Character.toString((char)primaryCode));
