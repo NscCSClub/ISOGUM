@@ -9,7 +9,7 @@
 
     <!-- todo refactor string input for easy parsing-->
     <!-- todo allow for touch cursor in edit text-->
-
+    <!-- todo refactor to have mathematical operators show up in bold for easy parsing-->
     <!--default keys show up in all keyboards-->
     <Row>
         <Key android:keyWidth="10%p"

@@ -1,4 +1,6 @@
 package nsccsclub.isogum;
+//todo create parser for easy debugging
+//todo have mathematical operators & constants such as sin, *, and e show up in bold or have some easy identifier for parser
 
 import android.app.Activity;
 import android.inputmethodservice.Keyboard;
