@@ -1,6 +1,5 @@
 package nsccsclub.isogum;
 //todo create parser for easy debugging
-//todo have mathematical operators & constants such as sin, *, and e show up in bold or have some easy identifier for parser
 
 import android.app.Activity;
 import android.inputmethodservice.Keyboard;
@@ -57,12 +56,18 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
     private Keyboard key_abc_shift;
 
     /**
-     * The 123 keyboard congfiguration
+     * The 123 keyboard congfiguration.
      */
     private Keyboard key_123;
 
+    /**
+     * The math keyboard configuration.
+     */
+    private Keyboard key_math;
+
     //SUPPORTED KEYS AND KEYCODES
     //TODO WRITE A PROCEDURE FOR ADDING A KEy
+    public static final int CODE_MATH_KEY =             500000;
     public static final int CODE_123_KEY  =             500001;
     public static final int CODE_ABC_KEY  =             500002;
     public static final int CODE_ABC_KEY_SHIFT  =       500003;
@@ -72,6 +77,18 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
     public static final int CODE_ALL_RIGHT =            500007;
     public static final int CODE_EXP =                  500008;
     public static final int CODE_PI =                   500009;
+    public static final int CODE_SIN =                  500010;
+    public static final int CODE_ASIN =                 500011;
+    public static final int CODE_LN =                   500012;
+    public static final int CODE_SQRT =                 500013;
+    public static final int CODE_COS =                  500014;
+    public static final int CODE_ACOS =                 500015;
+    public static final int CODE_LOG10 =                500016;
+    public static final int CODE_FACTORIAL =            500017;
+    public static final int CODE_TAN =                  500018;
+    public static final int CODE_ATAN =                 500019;
+    public static final int CODE_LOGN =                 500020;
+    public static final int CODE_ABS =                  500021;
 //    NOTE android provides the code of -5 for delete or KEYCODE_DELETE;
 
 
@@ -88,9 +105,10 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         keyboardView=(KeyboardView)host.findViewById(viewid);       //host view
         keyboardState= CODE_ABC_KEY;                                 //default keyboard screen
         //creates all keyboard screens for the app seperate one needed for each implementation
-        key_abc = new Keyboard(host,layoutid,R.integer.keyboard_text);
-        key_abc_shift = new Keyboard(host,layoutid,R.integer.keyboard_text_shift);
-        key_123 = new Keyboard(host,layoutid, keyboard_number);
+        key_abc = new Keyboard(host, layoutid, R.integer.keyboard_text);
+        key_abc_shift = new Keyboard(host, layoutid, R.integer.keyboard_text_shift);
+        key_123 = new Keyboard(host, layoutid, R.integer.keyboard_number);
+        key_math = new Keyboard(host, layoutid, R.integer.keyboard_math);
         //hooks up the keyboard
         keyboardView.setKeyboard(key_abc);
         keyboardView.setOnKeyboardActionListener(this);
@@ -243,7 +261,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
                     keyboardState= CODE_ABC_KEY;
                 }
                 break;
-            case(CODE_ABC_KEY_SHIFT):                                     //change to abc keyboard
+            case(CODE_ABC_KEY_SHIFT):                               //change to shifted abc keyboard
                 if(focus!=null){
                     if(keyboardState==CODE_ABC_KEY){
                         keyboardView.setKeyboard(key_abc_shift);
@@ -255,6 +273,13 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
                     }
 
                     keyboardView.setShifted(false);
+                }
+                break;
+            case(CODE_MATH_KEY):                                     //change to math keyboard
+                if(focus!=null){
+                    keyboardView.setKeyboard(key_math);
+                    keyboardView.setShifted(false);
+                    keyboardState= CODE_MATH_KEY;
                 }
                 break;
             case (CODE_ALL_LEFT):
@@ -275,8 +300,44 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
                 break;
             case (Keyboard.KEYCODE_DELETE):
                 if(editable!=null && start>0){
-                    editable.delete(start-1,start);
+                    editable.delete(start - 1, start);
                 }
+                break;
+            case (CODE_SIN):
+                editable.insert(start,"[sin]()");
+                break;
+            case (CODE_COS):
+                editable.insert(start,"[cos]()");
+                break;
+            case (CODE_TAN):
+                editable.insert(start,"[tan]()");
+                break;
+            case (CODE_ASIN):
+                editable.insert(start,"[asin]()");
+                break;
+            case (CODE_ACOS):
+                editable.insert(start,"[acos]()");
+                break;
+            case (CODE_ATAN):
+                editable.insert(start,"[atan]()");
+                break;
+            case (CODE_LN):
+                editable.insert(start,"[ln]()");
+                break;
+            case (CODE_LOG10):
+                editable.insert(start,"[log10]()");
+                break;
+            case (CODE_LOGN):
+                editable.insert(start,"[logn](num,base)");
+                break;
+            case (CODE_SQRT):
+                editable.insert(start,"[sqrt]()");
+                break;
+            case (CODE_FACTORIAL):
+                editable.insert(start,"[!]()");
+                break;
+            case (CODE_ABS):
+                editable.insert(start,"[abs]()");
                 break;
             case (CODE_EXP):
                 editable.insert(start,"[e]");
@@ -289,6 +350,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
                 break;
         }
     }
+
 
     /**
      * Sends a sequence of characters to the listener.
