@@ -230,7 +230,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
      */
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-
+//todo refactor this method for better design
         //adapted from Maarten Pennings under Apache License
         //see url in class description
 
