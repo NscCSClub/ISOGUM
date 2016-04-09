@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nsccsclub.isogum" >
+    package="nsccsclub.isogum">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".FunctionActivity"
             android:label="@string/function_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateActivity"
+        <activity
+            android:name=".CreateFunctionActivity"
             android:label="@string/create_name"
             android:parentActivityName=".FunctionActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FunctionActivity"/>
+                android:value=".FunctionActivity" />
+        </activity>
+        <activity android:name=".CreateVariableActivity">
+            android:name=".CreateVariableActivity"
+            android:label="@string/create_name"
+            android:parentActivityName=".FunctionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FunctionActivity" />
         </activity>
     </application>
 

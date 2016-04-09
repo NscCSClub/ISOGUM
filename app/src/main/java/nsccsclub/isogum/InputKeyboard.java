@@ -7,6 +7,8 @@ import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,7 +24,7 @@ import static nsccsclub.isogum.R.integer.keyboard_number;
  * Used code from stack exchange
  * stackoverflow.com/questions/16174179/set-keyboard-mode-in-android-custom-keyboard
  */
-public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
+public class InputKeyboard{
 
     /**
      * The view containing the keyboard
@@ -99,7 +101,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
      * @param viewid The view registered with the keyboard.
      * @param layoutid The layout of the keyboard.
      */
-    public InputKeyboard(Activity host, int viewid, int layoutid){
+    public InputKeyboard(final Activity host, int viewid, int layoutid){
         //initializes intstance varaibles of the class
         this.host= host;                                            //host activity
         keyboardView=(KeyboardView)host.findViewById(viewid);       //host view
@@ -111,7 +113,212 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         key_math = new Keyboard(host, layoutid, R.integer.keyboard_math);
         //hooks up the keyboard
         keyboardView.setKeyboard(key_abc);
-        keyboardView.setOnKeyboardActionListener(this);
+//        keyboardView.setOnKeyboardActionListener(this);
+        keyboardView.setOnKeyboardActionListener(
+                new OnKeyboardActionListener() {
+                    //IMPLEMENTATION OF THE LISTENER
+
+                    /**
+                     * Called when the user presses a key. This is sent before the {@link #onKey} is called.
+                     * For keys that repeat, this is only called once.
+                     *
+                     * @param primaryCode the unicode of the key being pressed. If the touch is not on a valid
+                     *                    key, the value will be zero.
+                     */
+                    @Override
+                    public void onPress(int primaryCode) {
+
+                    }
+
+                    /**
+                     * Called when the user releases a key. This is sent after the {@link #onKey} is called.
+                     * For keys that repeat, this is only called once.
+                     *
+                     * @param primaryCode the code of the key that was released
+                     */
+                    @Override
+                    public void onRelease(int primaryCode) {
+
+                    }
+
+                    /**
+                     * Send a key press to the listener.
+                     *
+                     * @param primaryCode this is the key that was pressed
+                     * @param keyCodes    the codes for all the possible alternative keys
+                     *                    with the primary code being the first. If the primary key code is
+                     *                    a single character such as an alphabet or number or symbol, the alternatives
+                     *                    will include other characters that may be on the same key or adjacent keys.
+                     *                    These codes are useful to correct for accidental presses of a key adjacent to
+                     */
+                    @Override
+                    public void onKey(int primaryCode, int[] keyCodes) {
+                        //todo refactor this method for better design
+                        //adapted from Maarten Pennings under Apache License
+                        //see url in class description
+
+                        //get our edit text window that we are working with checks for incompatable type
+                        View focus = host.getWindow().getCurrentFocus();
+                        //todo check this very throroughly in debugger, this should be working
+//                        if(focus==null||focus.getClass()!=EditText.class){
+//                            return;
+//                        }
+
+                        EditText editText = (EditText) focus;
+                        Editable editable = editText.getText();
+                        int start = editText.getSelectionStart();
+                        //performs the action associated with the code
+
+                        switch (primaryCode) {
+                            case (CODE_123_KEY):
+                                if (focus != null) {                                    //change to 123 keyboard
+                                    keyboardView.setKeyboard(key_123);
+                                    keyboardView.setShifted(false);
+                                    keyboardState = CODE_123_KEY;
+                                }
+                                break;
+                            case (CODE_ABC_KEY):                                     //change to abc keyboard
+                                if (focus != null) {
+                                    keyboardView.setKeyboard(key_abc);
+                                    keyboardView.setShifted(false);
+                                    keyboardState = CODE_ABC_KEY;
+                                }
+                                break;
+                            case (CODE_ABC_KEY_SHIFT):                               //change to shifted abc keyboard
+                                if (focus != null) {
+                                    if (keyboardState == CODE_ABC_KEY) {
+                                        keyboardView.setKeyboard(key_abc_shift);
+                                        keyboardState = CODE_ABC_KEY_SHIFT;
+                                    } else {
+                                        keyboardView.setKeyboard(key_abc);
+                                        keyboardState = CODE_ABC_KEY;
+                                    }
+
+                                    keyboardView.setShifted(false);
+                                }
+                                break;
+                            case (CODE_MATH_KEY):                                     //change to math keyboard
+                                if (focus != null) {
+                                    keyboardView.setKeyboard(key_math);
+                                    keyboardView.setShifted(false);
+                                    keyboardState = CODE_MATH_KEY;
+                                }
+                                break;
+                            case (CODE_ALL_LEFT):
+                                editText.setSelection(0);
+                                break;
+                            case (CODE_ALL_RIGHT):
+                                editText.setSelection(editText.length());
+                                break;
+                            case (CODE_LEFT):
+                                if (start > 0) {
+                                    editText.setSelection(start - 1);
+                                }
+                                break;
+                            case (CODE_RIGHT):
+                                if (start < editText.length()) {
+                                    editText.setSelection(start + 1);
+                                }
+                                break;
+                            case (Keyboard.KEYCODE_DELETE):
+                                if (editable != null && start > 0) {
+                                    editable.delete(start - 1, start);
+                                }
+                                break;
+                            case (CODE_SIN):
+                                editable.insert(start, "[sin]()");
+                                break;
+                            case (CODE_COS):
+                                editable.insert(start, "[cos]()");
+                                break;
+                            case (CODE_TAN):
+                                editable.insert(start, "[tan]()");
+                                break;
+                            case (CODE_ASIN):
+                                editable.insert(start, "[asin]()");
+                                break;
+                            case (CODE_ACOS):
+                                editable.insert(start, "[acos]()");
+                                break;
+                            case (CODE_ATAN):
+                                editable.insert(start, "[atan]()");
+                                break;
+                            case (CODE_LN):
+                                editable.insert(start, "[ln]()");
+                                break;
+                            case (CODE_LOG10):
+                                editable.insert(start, "[log10]()");
+                                break;
+                            case (CODE_LOGN):
+                                editable.insert(start, "[logn](num,base)");
+                                break;
+                            case (CODE_SQRT):
+                                editable.insert(start, "[sqrt]()");
+                                break;
+                            case (CODE_FACTORIAL):
+                                editable.insert(start, "[!]()");
+                                break;
+                            case (CODE_ABS):
+                                editable.insert(start, "[abs]()");
+                                break;
+                            case (CODE_EXP):
+                                editable.insert(start, "[e]");
+                                break;
+                            case (CODE_PI):
+                                editable.insert(start, "[pi]");
+                                break;
+                            default:                                                //basic unicode, insert char
+                                editable.insert(start, Character.toString((char) primaryCode));
+                                break;
+                        }
+                    }
+
+
+                    /**
+                     * Sends a sequence of characters to the listener.
+                     *
+                     * @param text the sequence of characters to be displayed.
+                     */
+                    @Override
+                    public void onText(CharSequence text) {
+
+                    }
+
+                    /**
+                     * Called when the user quickly moves the finger from right to left.
+                     */
+                    @Override
+                    public void swipeLeft() {
+
+                    }
+
+                    /**
+                     * Called when the user quickly moves the finger from left to right.
+                     */
+                    @Override
+                    public void swipeRight() {
+
+                    }
+
+                    /**
+                     * Called when the user quickly moves the finger from up to down.
+                     */
+                    @Override
+                    public void swipeDown() {
+
+                    }
+
+                    /**
+                     * Called when the user quickly moves the finger from down to up.
+                     */
+                    @Override
+                    public void swipeUp() {
+
+                    }
+                }
+
+
+                    );
         //keyboard settings
         keyboardView.setPreviewEnabled(false);
     }
@@ -159,6 +366,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
+                    editText.setSelection(editText.getText().length());
                     showInputKeyboard(v);
                 }
                 else {
@@ -171,6 +379,7 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
             @Override
             public void onClick(View v) {
                 showInputKeyboard(v);
+
             }
         });
         //HARD DISABLES USER KEYBOARD FOR ENTIRE ACTIVITY, NO SWITCHING BACK AND FORTH!
@@ -191,207 +400,6 @@ public class InputKeyboard implements KeyboardView.OnKeyboardActionListener{
         //GENERAL EDIT TEXT SETTINGS
         //disable spellcheck we have strange input
         editText.setInputType(editText.getInputType()| InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-    }
-
-    //IMPLEMENTATION OF THE LISTENER
-
-    /**
-     * Called when the user presses a key. This is sent before the {@link #onKey} is called.
-     * For keys that repeat, this is only called once.
-     *
-     * @param primaryCode the unicode of the key being pressed. If the touch is not on a valid
-     *                    key, the value will be zero.
-     */
-    @Override
-    public void onPress(int primaryCode) {
-
-    }
-
-    /**
-     * Called when the user releases a key. This is sent after the {@link #onKey} is called.
-     * For keys that repeat, this is only called once.
-     *
-     * @param primaryCode the code of the key that was released
-     */
-    @Override
-    public void onRelease(int primaryCode) {
-
-    }
-
-    /**
-     * Send a key press to the listener.
-     *
-     * @param primaryCode this is the key that was pressed
-     * @param keyCodes    the codes for all the possible alternative keys
-     *                    with the primary code being the first. If the primary key code is
-     *                    a single character such as an alphabet or number or symbol, the alternatives
-     *                    will include other characters that may be on the same key or adjacent keys.
-     *                    These codes are useful to correct for accidental presses of a key adjacent to
-     */
-    @Override
-    public void onKey(int primaryCode, int[] keyCodes) {
-//todo refactor this method for better design
-        //adapted from Maarten Pennings under Apache License
-        //see url in class description
-
-        //get our edit text window that we are working with checks for incompatable type
-        View focus = host.getWindow().getCurrentFocus();
-        //todo check this very throroughly in debugger, this should be working
-//        if(focus==null||focus.getClass()!=EditText.class){
-//            return;
-//        }
-
-        EditText editText = (EditText)focus;
-        Editable editable = editText.getText();
-        int start = editText.getSelectionStart();
-        //performs the action associated with the code
-
-        switch (primaryCode){
-            case(CODE_123_KEY):
-                if(focus!=null){                                    //change to 123 keyboard
-                    keyboardView.setKeyboard(key_123);
-                    keyboardView.setShifted(false);
-                    keyboardState= CODE_123_KEY;
-                }
-                break;
-            case(CODE_ABC_KEY):                                     //change to abc keyboard
-                if(focus!=null){
-                    keyboardView.setKeyboard(key_abc);
-                    keyboardView.setShifted(false);
-                    keyboardState= CODE_ABC_KEY;
-                }
-                break;
-            case(CODE_ABC_KEY_SHIFT):                               //change to shifted abc keyboard
-                if(focus!=null){
-                    if(keyboardState==CODE_ABC_KEY){
-                        keyboardView.setKeyboard(key_abc_shift);
-                        keyboardState= CODE_ABC_KEY_SHIFT;
-                    }
-                    else{
-                        keyboardView.setKeyboard(key_abc);
-                        keyboardState= CODE_ABC_KEY;
-                    }
-
-                    keyboardView.setShifted(false);
-                }
-                break;
-            case(CODE_MATH_KEY):                                     //change to math keyboard
-                if(focus!=null){
-                    keyboardView.setKeyboard(key_math);
-                    keyboardView.setShifted(false);
-                    keyboardState= CODE_MATH_KEY;
-                }
-                break;
-            case (CODE_ALL_LEFT):
-                editText.setSelection(0);
-                break;
-            case (CODE_ALL_RIGHT):
-                editText.setSelection(editText.length());
-                break;
-            case (CODE_LEFT):
-                if(start>0){
-                    editText.setSelection(start-1);
-                }
-                break;
-            case (CODE_RIGHT):
-                if(start<editText.length()){
-                    editText.setSelection(start+1);
-                }
-                break;
-            case (Keyboard.KEYCODE_DELETE):
-                if(editable!=null && start>0){
-                    editable.delete(start - 1, start);
-                }
-                break;
-            case (CODE_SIN):
-                editable.insert(start,"[sin]()");
-                break;
-            case (CODE_COS):
-                editable.insert(start,"[cos]()");
-                break;
-            case (CODE_TAN):
-                editable.insert(start,"[tan]()");
-                break;
-            case (CODE_ASIN):
-                editable.insert(start,"[asin]()");
-                break;
-            case (CODE_ACOS):
-                editable.insert(start,"[acos]()");
-                break;
-            case (CODE_ATAN):
-                editable.insert(start,"[atan]()");
-                break;
-            case (CODE_LN):
-                editable.insert(start,"[ln]()");
-                break;
-            case (CODE_LOG10):
-                editable.insert(start,"[log10]()");
-                break;
-            case (CODE_LOGN):
-                editable.insert(start,"[logn](num,base)");
-                break;
-            case (CODE_SQRT):
-                editable.insert(start,"[sqrt]()");
-                break;
-            case (CODE_FACTORIAL):
-                editable.insert(start,"[!]()");
-                break;
-            case (CODE_ABS):
-                editable.insert(start,"[abs]()");
-                break;
-            case (CODE_EXP):
-                editable.insert(start,"[e]");
-                break;
-            case (CODE_PI):
-                editable.insert(start,"[pi]");
-                break;
-            default:                                                //basic unicode, insert char
-                editable.insert(start,Character.toString((char)primaryCode));
-                break;
-        }
-    }
-
-
-    /**
-     * Sends a sequence of characters to the listener.
-     *
-     * @param text the sequence of characters to be displayed.
-     */
-    @Override
-    public void onText(CharSequence text) {
-
-    }
-
-    /**
-     * Called when the user quickly moves the finger from right to left.
-     */
-    @Override
-    public void swipeLeft() {
-
-    }
-
-    /**
-     * Called when the user quickly moves the finger from left to right.
-     */
-    @Override
-    public void swipeRight() {
-
-    }
-
-    /**
-     * Called when the user quickly moves the finger from up to down.
-     */
-    @Override
-    public void swipeDown() {
-
-    }
-
-    /**
-     * Called when the user quickly moves the finger from down to up.
-     */
-    @Override
-    public void swipeUp() {
-
     }
 
 }

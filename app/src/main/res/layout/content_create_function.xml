@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--TODO check how to avoid changing height, currently set on wrap-->
+    <!--TODO get this to change layout based on intent for new variable or function-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/create_new_function_name"
+        android:layout_marginTop="@dimen/field_margin"
+        android:layout_marginLeft="@dimen/field_margin" />
+
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_function_name_bar"
+            android:layout_gravity="center_horizontal"
+            android:nextFocusUp="@id/create_function_name_bar"
+            android:nextFocusDown="@id/create_function_name_bar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/create_new_function"
+        android:layout_marginTop="@dimen/field_margin"
+        android:layout_marginLeft="@dimen/field_margin" />
+
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_function_value_bar"
+            android:layout_gravity="center_horizontal"
+            android:nextFocusUp="@id/create_function_value_bar"
+            android:nextFocusDown="@id/create_function_value_bar"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_new_save"
+            android:id="@+id/create_function"
+            android:layout_column="0"
+            android:layout_weight=".5" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_new_cancel"
+            android:id="@+id/cancel_function"
+            android:singleLine="false"
+            android:layout_column="3"
+            android:layout_weight=".5" />
+    </LinearLayout>
+
+
+</LinearLayout>

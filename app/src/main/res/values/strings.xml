@@ -5,4 +5,11 @@
     <string name="action_settings">Settings</string>
     <string name="new_function">Create new function</string>
     <string name="new_variable">Create new variable</string>
+    <string name="create_new_function_name">Name:</string>
+    <string name="create_new_function">Function:</string>
+    <string name="create_new_variable_name">Name:</string>
+    <string name="create_new_variable_value">Value:</string>
+    <string name="create_new_variable_uncertainty">Uncertainty:</string>
+    <string name="create_new_save">Save</string>
+    <string name="create_new_cancel">Cancel</string>
 </resources>

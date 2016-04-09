@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nsccsclub.isogum.CreateActivity">
+    tools:context=".CreateFunctionActivity">
 
     <!--includes all content on activityh screen, see content_create-->
-    <include layout="@layout/content_create" />
+    <include layout="@layout/content_create_function" />
     <!--hooks up custom keyboard-->
     <android.inputmethodservice.KeyboardView
-        android:id="@+id/keyboardview"
+        android:id="@+id/keyboardview_function"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -21,7 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_function" />
 
     <!-- launches a click and opens a popup, links to the create screen.-->
     <!-- TODO change icon instead of mail icon-->

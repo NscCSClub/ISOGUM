@@ -96,16 +96,16 @@ public class FunctionActivity extends AppCompatActivity implements PopupMenu.OnM
          */
 
         //creates an intent to start create activity
-        Intent intent = new Intent(this,CreateActivity.class);
+        Intent intent;
 
         //starts create activity with proper message
         switch(item.getItemId()) {
             case R.id.new_function:
-                intent.putExtra(EXTRA_TYPE,"FUNCTION");
+                intent = new Intent(this,CreateFunctionActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.new_variable:
-                intent.putExtra(EXTRA_TYPE,"VARIABLE");
+                intent = new Intent(this,CreateVariableActivity.class);
                 startActivity(intent);
                 return true;
             default:
