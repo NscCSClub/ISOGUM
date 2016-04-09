@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateFunctionActivity">
-
+<!--todo hookup buttons and set up SQLLITE-->
     <!--includes all content on activityh screen, see content_create-->
     <include layout="@layout/content_create_function" />
     <!--hooks up custom keyboard-->
