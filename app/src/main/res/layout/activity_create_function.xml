@@ -2,21 +2,9 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CreateFunctionActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CreateFunctionActivity">
+    android:layout_height="match_parent">
 <!--todo hookup buttons and set up SQLLITE-->
-    <!--includes all content on activityh screen, see content_create-->
-    <include layout="@layout/content_create_function" />
-    <!--hooks up custom keyboard-->
-    <android.inputmethodservice.KeyboardView
-        android:id="@+id/keyboardview_function"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:visibility="gone"/>
-
+        <include layout="@layout/content_create_function" />
 </RelativeLayout>

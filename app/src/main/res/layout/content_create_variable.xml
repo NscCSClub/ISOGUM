@@ -1,83 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/create_new_variable_name"
-        android:layout_marginTop="@dimen/field_margin"
-        android:layout_marginLeft="@dimen/field_margin" />
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"/>
-    <EditText
+    android:layout_height="match_parent"
+    android:id="@+id/variable_content">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_variable_name_bar"
-        android:nextFocusUp="@id/create_variable_name_bar"
-        android:nextFocusDown="@id/create_variable_name_bar"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/create_new_variable_value"
-        android:layout_marginLeft="@dimen/field_margin"
-        android:layout_marginTop="@dimen/field_margin" />
-
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_variable_value_bar"
-        android:nextFocusUp="@id/create_variable_value_bar"
-        android:nextFocusDown="@id/create_variable_value_bar"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/create_new_variable_uncertainty" />
-
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_variable_uncertainty_bar"
-        android:nextFocusUp="@id/create_variable_uncertainty_bar"
-        android:nextFocusDown="@id/create_variable_uncertainty_bar"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/variable_field">
+        <ScrollView
+            android:id="@+id/scroll_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_new_save"
-            android:id="@+id/button3"
-            android:layout_weight=".5" />
-
-        <Button
-            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/keyboardview_variable"
+            android:scrollbars="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/create_new_variable_name"
+                    android:layout_marginTop="@dimen/field_margin"
+                    android:layout_marginLeft="@dimen/field_margin" />
+                <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_width="0px"
+                    android:layout_height="0px"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_variable_name_bar"
+                        android:nextFocusUp="@id/create_variable_name_bar"
+                        android:nextFocusDown="@id/create_variable_name_bar"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/create_new_variable_value"
+                    android:layout_marginLeft="@dimen/field_margin"
+                    android:layout_marginTop="@dimen/field_margin" />
+                <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_width="0px"
+                    android:layout_height="0px"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_variable_value_bar"
+                        android:nextFocusUp="@id/create_variable_value_bar"
+                        android:nextFocusDown="@id/create_variable_value_bar"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/create_new_variable_uncertainty"
+                    android:layout_marginTop="@dimen/field_margin"
+                    android:layout_marginLeft="@dimen/field_margin" />
+                <LinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_width="0px"
+                    android:layout_height="0px"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_variable_uncertainty_bar"
+                        android:nextFocusUp="@id/create_variable_uncertainty_bar"
+                        android:nextFocusDown="@id/create_variable_uncertainty_bar"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/create_new_save"
+                        android:id="@+id/button3"
+                        android:layout_weight=".5" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/create_new_cancel"
+                        android:id="@+id/button4"
+                        android:layout_weight=".5" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboardview_variable"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_new_cancel"
-            android:id="@+id/button4"
-            android:layout_weight=".5" />
-    </LinearLayout>
-
+            android:layout_alignParentBottom="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone"/>
+        <LinearLayout
+            android:id="@+id/relativeAd"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/keyboardview_variable"
+            android:gravity="center"
+            android:orientation="vertical">
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

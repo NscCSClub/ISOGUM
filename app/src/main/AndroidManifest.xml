@@ -11,7 +11,8 @@
         <activity
             android:name=".FunctionActivity"
             android:label="@string/function_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,15 +22,17 @@
         <activity
             android:name=".CreateFunctionActivity"
             android:label="@string/create_name"
-            android:parentActivityName=".FunctionActivity">
+            android:parentActivityName=".FunctionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
         </activity>
-        <activity android:name=".CreateVariableActivity">
-            android:name=".CreateVariableActivity"
+        <activity android:name=".CreateVariableActivity"
             android:label="@string/create_name"
-            android:parentActivityName=".FunctionActivity">
+            android:parentActivityName=".FunctionActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
