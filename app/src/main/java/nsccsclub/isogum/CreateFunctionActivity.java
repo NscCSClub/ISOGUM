@@ -32,6 +32,7 @@ public class CreateFunctionActivity extends AppCompatActivity {
         inputKeyboard = new InputKeyboard(this,R.id.keyboardview_function,R.layout.keyboard_layout);
         inputKeyboard.registerEditText(R.id.create_function_name_bar);
         inputKeyboard.registerEditText(R.id.create_function_value_bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

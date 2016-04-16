@@ -15,6 +15,7 @@ public class CreateVariableActivity extends AppCompatActivity {
         inputKeyboard.registerEditText(R.id.create_variable_name_bar);
         inputKeyboard.registerEditText(R.id.create_variable_value_bar);
         inputKeyboard.registerEditText(R.id.create_variable_uncertainty_bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

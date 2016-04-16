@@ -38,9 +38,21 @@
                 android:value=".FunctionActivity" />
         </activity>
         <activity
-            android:name=".AppNav"
-            android:label="@string/title_activity_app_nav"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".VariableActivity"
+            android:label="@string/title_activity_variable"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FunctionActivity" />
+        </activity>
+        <activity
+            android:name=".HelpActivity"
+            android:label="@string/title_activity_help"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FunctionActivity" />
+        </activity>
     </application>
 
 </manifest>
