@@ -11,6 +11,7 @@ import android.text.method.KeyListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -360,13 +361,15 @@ public class InputKeyboard{
      */
     public void registerEditText(int resID){
         //object we are working with
-        final EditText editText = (EditText)host.findViewById(resID);
+        //TODO bug here
+        EditText editText = (EditText)host.findViewById(resID);
         //makes keyboard appear on user focus and dissapear when focus lost
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                EditText editText = (EditText) v;
                 if(hasFocus){
-                    editText.setSelection(editText.getText().length());
+                    editText.setSelection(0,editText.getText().length());
                     showInputKeyboard(v);
                 }
                 else {
@@ -378,7 +381,12 @@ public class InputKeyboard{
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText editText = (EditText) v;
+//                int start = editText.getSelectionStart();
+//                //this works check on touch for youch event
+//                editText.setSelection(editText.getText().length());
                 showInputKeyboard(v);
+
 
             }
         });
@@ -387,6 +395,23 @@ public class InputKeyboard{
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                //todo possible solution from online for cursor bug
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        Layout layout = ((EditText) v).getLayout();
+//                        float x = event.getX() + mText.getScrollX();
+//                        int offset = layout.getOffsetForHorizontal(0, x);
+//                        if(offset>0)
+//                            if(x>layout.getLineMax(0))
+//                                mText.setSelection(offset);     // touch was at end of text
+//                            else
+//                                mText.setSelection(offset - 1);
+//                        break;
+//                }
+//                return true;
+                EditText editText = (EditText) v;
+                int start = editText.getSelectionStart();
+                editText.setSelection(start);
                 //backup input and flash on and off
                 //should get keyboard working
                 int inType = editText.getInputType();

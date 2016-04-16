@@ -11,10 +11,11 @@
         <activity
             android:name=".FunctionActivity"
             android:label="@string/function_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,7 +28,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
         </activity>
-        <activity android:name=".CreateVariableActivity"
+        <activity
+            android:name=".CreateVariableActivity"
             android:label="@string/create_name"
             android:parentActivityName=".FunctionActivity"
             android:screenOrientation="portrait">
@@ -35,6 +37,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
         </activity>
+        <activity
+            android:name=".AppNav"
+            android:label="@string/title_activity_app_nav"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

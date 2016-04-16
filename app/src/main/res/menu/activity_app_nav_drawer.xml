@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_function"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/title_function" />
+        <item
+            android:id="@+id/nav_variable"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/title_variable" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/title_help" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/title_settings" />
+    </group>
+
+</menu>
