@@ -8,13 +8,20 @@ package nsccsclub.isogum;
 public class Function {
     private String name;
     private String function;
-    private int id;
+    private long id;
 
-    public Function(String name, String function, int id){
+    public Function(String name, String function){
+        this.setName(name);
+        this.setFunction(function);
+        // id has not been set by database yet
+        this.setId(-1);
+    }
+    public Function(String name, String function, long id){
         this.setName(name);
         this.setFunction(function);
         this.setId(id);
     }
+
 
 
     public String getName() {
@@ -33,11 +40,16 @@ public class Function {
         this.function = function;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean equals(Function function){
+        return this.name.compareTo(function.getName())==0 &&
+                this.function.compareTo(function.getFunction())==0;
     }
 }

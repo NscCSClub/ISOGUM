@@ -46,6 +46,10 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    public DBHandler(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
     /**
      * Called when the database is created for the first time. This is where the
      * creation of tables and the initial population of the tables should happen.
@@ -54,6 +58,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //both string sql commands are used for creating the database
         String CREATE_FUNCTIONS_TABLE = "CREATE TABLE " + TABLE_FUNCTIONS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_FUNCTION + " TEXT" + ")";
@@ -105,7 +110,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Function getFunction(int id){
+    public Function getFunction(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_FUNCTIONS, new String[]{ KEY_ID,
         KEY_NAME, KEY_FUNCTION}, KEY_ID + " = ?",
@@ -115,7 +120,7 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
         Function function = new Function(cursor.getString(1),
-                cursor.getString(2), Integer.parseInt(cursor.getString(0)));
+                cursor.getString(2), Long.parseLong(cursor.getString(0)));
 
         db.close();
         cursor.close();
@@ -126,7 +131,7 @@ public class DBHandler extends SQLiteOpenHelper {
         List<Function> list = new ArrayList<Function>();
 
         //select all from database
-        String selectQuery = "SELECT * FROM" + TABLE_FUNCTIONS;
+        String selectQuery = "SELECT * FROM " + TABLE_FUNCTIONS;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -136,7 +141,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             do{
                 function = new Function(cursor.getString(1),
-                        cursor.getString(2), Integer.parseInt(cursor.getString(0)));
+                        cursor.getString(2), Long.parseLong(cursor.getString(0)));
                 list.add(function);
             } while(cursor.moveToNext());
         }
@@ -145,14 +150,14 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    public int updateFunction(Function function){
+    public long updateFunction(Function function){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(KEY_NAME, function.getName());
         contentValues.put(KEY_FUNCTION, function.getFunction());
 
-        int id = db.update(TABLE_FUNCTIONS, contentValues, KEY_ID + " = ?",
+        long id = db.update(TABLE_FUNCTIONS, contentValues, KEY_ID + " = ?",
                 new String[] {String.valueOf(function.getId())});
         db.close();
         return id;
@@ -167,7 +172,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public boolean isDuplicateFunction(Function function){
         //select all from database
-        String selectQuery = "SELECT * FROM" + TABLE_FUNCTIONS;
+        String selectQuery = "SELECT * FROM " + TABLE_FUNCTIONS;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -186,6 +191,25 @@ public class DBHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    public long findFunctionByName(String name){
+        String selectQuery = "SELECT * FROM " + TABLE_FUNCTIONS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if (cursor.moveToFirst()){
+            do{
+                if (cursor.getString(1).compareTo(name)==0){
+                    long id = Long.parseLong(cursor.getString(0));
+                    cursor.close();
+                    db.close();
+                    return id;
+                }
+            }while (cursor.moveToNext());
+        }
+        //we didn't find it
+        return -1;
+    }
+
 
     //CRUD METHODS VARIABLES
     public void createVariable(Variable variable){
@@ -200,7 +224,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Variable getVariable(int id){
+    public Variable getVariable(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_VARIABLES, new String[]{ KEY_ID,
                         KEY_NAME, KEY_VALUE, KEY_UNCERTAINTY}, KEY_ID + " = ?",
@@ -210,12 +234,96 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
         Variable variable = new Variable(cursor.getString(1),
-                Double.parseDouble(cursor.getString(2)),Double.parseDouble(cursor.getString(3)), Integer.parseInt(cursor.getString(0)));
+                Double.parseDouble(cursor.getString(2)),Double.parseDouble(cursor.getString(3)), Long.parseLong(cursor.getString(0)));
 
         db.close();
         cursor.close();
         return variable;
     }
 
+    public List<Variable> getAllVariables(){
+        List<Variable> list = new ArrayList<Variable>();
 
+        //get all varaibles from database
+        String selectQuery = "SELECT * FROM" + TABLE_VARIABLES;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        Variable variable;
+
+        // loop through cursor and add entries to list
+        if (cursor.moveToFirst()){
+            do{
+                variable = new Variable(cursor.getString(1),
+                        Double.parseDouble(cursor.getString(2)),
+                                Double.parseDouble(cursor.getString(3)),
+                                        Long.parseLong(cursor.getString(0)));
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        cursor.close();
+        return list;
+    }
+
+    public long updateVariable(Variable variable){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(KEY_NAME, variable.getName());
+        contentValues.put(KEY_VALUE, variable.getValue());
+        contentValues.put(KEY_UNCERTAINTY, variable.getUncertainty());
+
+        long id = db.update(TABLE_VARIABLES, contentValues, KEY_ID + " = ?",
+                new String[] {String.valueOf(variable.getId())});
+        db.close();
+        return id;
+    }
+
+    public void deleteVariable(Variable variable){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_VARIABLES, KEY_ID + " = ?",
+                new String[] {String.valueOf(variable.getId())});
+        db.close();
+    }
+
+    public boolean isDuplicateVariable(Variable variable){
+        //select all from the  database
+        String selectQuery = "SELECT * FROM " + TABLE_VARIABLES;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        //iteragte through names and check for duplicates
+        if (cursor.moveToFirst()){
+            do{
+                if (variable.getName().compareTo(cursor.getString(1))==0){
+                    db.close();
+                    cursor.close();
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        cursor.close();
+        return false;
+    }
+
+    public long findVariableByName(String name){
+        String selectQuery = "SELECT * FROM " + TABLE_VARIABLES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if (cursor.moveToFirst()){
+            do{
+                if (cursor.getString(1).compareTo(name)==0){
+                    long id = Long.parseLong(cursor.getString(0));
+                    cursor.close();
+                    db.close();
+                    return id;
+                }
+            }while (cursor.moveToNext());
+        }
+        //we didn't find it
+        return -1;
+    }
 }

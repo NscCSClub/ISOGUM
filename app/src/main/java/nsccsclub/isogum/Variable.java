@@ -9,9 +9,17 @@ public class Variable {
     private String name;
     private double value;
     private double uncertainty;
-    private int id;
+    private long id;
 
-    public Variable(String name, double value, double uncertainty, int id){
+    public Variable(String name, double value, double uncertainty){
+        this.setName(name);
+        this.setValue(value);
+        this.setUncertainty(uncertainty);
+        //id has not been set by database yet
+        this.setId(-1);
+    }
+
+    public Variable(String name, double value, double uncertainty, long id){
         this.setName(name);
         this.setValue(value);
         this.setUncertainty(uncertainty);
@@ -42,11 +50,17 @@ public class Variable {
         this.uncertainty = uncertainty;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean equals(Variable variable){
+        return this.name.compareTo(variable.getName())==0 &&
+                this.value==variable.getValue()&&
+                this.uncertainty==variable.getUncertainty();
     }
 }
