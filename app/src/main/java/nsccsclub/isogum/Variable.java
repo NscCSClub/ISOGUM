@@ -60,7 +60,9 @@ public class Variable {
 
     public boolean equals(Variable variable){
         return this.name.compareTo(variable.getName())==0 &&
-                this.value==variable.getValue()&&
-                this.uncertainty==variable.getUncertainty();
+                (this.value <= variable.getValue()+.001 &&
+                        this.value >= variable.getValue() - .001)&&
+                (this.uncertainty <= variable.getUncertainty() + .001 &&
+                this.uncertainty >= variable.uncertainty - .001);
     }
 }

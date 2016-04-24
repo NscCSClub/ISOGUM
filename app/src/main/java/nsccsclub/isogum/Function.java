@@ -1,5 +1,7 @@
 package nsccsclub.isogum;
 
+import android.util.Log;
+
 /**
  * This is the bare shell for a funciton object I created it to test an SQL LITE data base
  * none of the methods have been checked debugged or commented this needs to be reworked
@@ -49,7 +51,10 @@ public class Function {
     }
 
     public boolean equals(Function function){
-        return this.name.compareTo(function.getName())==0 &&
-                this.function.compareTo(function.getFunction())==0;
+        boolean nameTest = this.name.compareTo(function.getName())==0;
+        boolean functionTest = this.function.compareTo(function.getFunction())==0;
+//        Log.d("Function", String.valueOf(nameTest));
+//        Log.d("Function", String.valueOf(functionTest));
+        return nameTest && functionTest;
     }
 }

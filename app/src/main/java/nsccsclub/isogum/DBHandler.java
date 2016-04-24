@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,10 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //both string sql commands are used for creating the database
-        String CREATE_FUNCTIONS_TABLE = "CREATE TABLE " + TABLE_FUNCTIONS + "("
+        String CREATE_FUNCTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_FUNCTIONS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_FUNCTION + " TEXT" + ")";
-        String CREATE_VARIABLES_TABLE = "CREATE TABLE " + TABLE_FUNCTIONS + "("
+        String CREATE_VARIABLES_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_VARIABLES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_VALUE + " REAL," +  KEY_UNCERTAINTY + " REAL" + ")";
         db.execSQL(CREATE_FUNCTIONS_TABLE);
@@ -226,15 +227,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Variable getVariable(long id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_VARIABLES, new String[]{ KEY_ID,
+        Cursor cursor = db.query(TABLE_VARIABLES, new String[]{KEY_ID,
                         KEY_NAME, KEY_VALUE, KEY_UNCERTAINTY}, KEY_ID + " = ?",
                 new String[]{String.valueOf(id)},
-                null,null,null,null);
+                null, null, null, null);
+
         if (cursor!= null) {
             cursor.moveToFirst();
+
         }
         Variable variable = new Variable(cursor.getString(1),
-                Double.parseDouble(cursor.getString(2)),Double.parseDouble(cursor.getString(3)), Long.parseLong(cursor.getString(0)));
+                Double.parseDouble(cursor.getString(2)),Double.parseDouble(cursor.getString(3)),
+                Long.parseLong(cursor.getString(0)));
+
 
         db.close();
         cursor.close();
@@ -245,7 +250,7 @@ public class DBHandler extends SQLiteOpenHelper {
         List<Variable> list = new ArrayList<Variable>();
 
         //get all varaibles from database
-        String selectQuery = "SELECT * FROM" + TABLE_VARIABLES;
+        String selectQuery = "SELECT * FROM " + TABLE_VARIABLES;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
