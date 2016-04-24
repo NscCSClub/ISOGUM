@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Holds general methods for storing and saving data, in the ISO GUM application.
  * Created by csconway on 4/21/2016.
  */
 public class DBHandler extends SQLiteOpenHelper {
@@ -47,6 +49,10 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    /**
+     * Generic constructor for the DBHandler should be used for most every general case
+     * @param context The activity holding the handler.
+     */
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -100,9 +106,22 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //CRUD METHODS FUNCTIONS
+
+    /**
+     * Creates a new function and stores it in the database.
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>Name must be unique, check with the is duplicate name methods</li>
+     *         <li>All data must be tested and valid</li>
+     *     </ul>
+     * </div>
+     * @param function The new function to add.
+     */
     public void createFunction(Function function){
         SQLiteDatabase db = this.getWritableDatabase();
 
+        //get bundle of value sto add
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, function.getName());
         contentValues.put(KEY_FUNCTION, function.getFunction());
@@ -111,23 +130,38 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    /**
+     * Gives a function in the database.
+     * @throws IllegalArgumentException illegal argument exception if the function is not in the database.
+     * @param id The unique id of the function.
+     * @return The desired function.
+     */
     public Function getFunction(long id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_FUNCTIONS, new String[]{ KEY_ID,
-        KEY_NAME, KEY_FUNCTION}, KEY_ID + " = ?",
+        Cursor cursor = db.query(TABLE_FUNCTIONS, new String[]{KEY_ID,
+                        KEY_NAME, KEY_FUNCTION}, KEY_ID + " = ?",
                 new String[]{String.valueOf(id)},
-                null,null,null,null);
+                null, null, null, null);
+        Function function=null;
         if (cursor!= null) {
             cursor.moveToFirst();
+        }else{
+            return function;
         }
-        Function function = new Function(cursor.getString(1),
-                cursor.getString(2), Long.parseLong(cursor.getString(0)));
+        function = new Function(cursor.getString(1),
+                    cursor.getString(2), Long.parseLong(cursor.getString(0)));
+
 
         db.close();
         cursor.close();
         return function;
     }
 
+    /**
+     * Gives all of the functions in the database.
+     * @return All existing functions in the database.
+     */
     public List<Function> getAllFunctions(){
         List<Function> list = new ArrayList<Function>();
 
@@ -135,9 +169,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_FUNCTIONS;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
         Function function;
-
         //loop through cursor entries and add to list
         if (cursor.moveToFirst()){
             do{
@@ -151,6 +183,18 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Updates a function in the database.
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>The function must exist.</li>
+     *         <li>The function must have a valid database id.</li>
+     *     </ul>
+     * </div>
+     * @param function The function to update
+     * @return The id of the function.
+     */
     public long updateFunction(Function function){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -159,18 +203,38 @@ public class DBHandler extends SQLiteOpenHelper {
         contentValues.put(KEY_FUNCTION, function.getFunction());
 
         long id = db.update(TABLE_FUNCTIONS, contentValues, KEY_ID + " = ?",
-                new String[] {String.valueOf(function.getId())});
+                new String[]{String.valueOf(function.getId())});
         db.close();
         return id;
     }
 
+
+    /**
+     * Deletes a function in the database.
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>The function must exist in the database.</li>
+     *     </ul>
+     * </div>
+     * @param function The function to delete.
+     */
     public void deleteFunction(Function function){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_FUNCTIONS, KEY_ID + " = ?",
-                new  String[] { String.valueOf(function.getId())});
+        try {
+            db.delete(TABLE_FUNCTIONS, KEY_ID + " = ?",
+                    new String[]{String.valueOf(function.getId())});
+        }catch (Exception e){
+            throw  new IllegalArgumentException("The function does not exist.");
+        }
         db.close();
     }
 
+    /**
+     * Checks if the function has a duplicated name in the database.
+     * @param function The function to check.
+     * @return True for duplicate, false for unique.
+     */
     public boolean isDuplicateFunction(Function function){
         //select all from database
         String selectQuery = "SELECT * FROM " + TABLE_FUNCTIONS;
@@ -192,6 +256,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * Finds a function by name in the database.
+     * @param name The name of the function to search for.
+     * @return The unique id of the function.
+     */
     public long findFunctionByName(String name){
         String selectQuery = "SELECT * FROM " + TABLE_FUNCTIONS;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -213,6 +282,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     //CRUD METHODS VARIABLES
+
+    /**
+     * Creates a new variable in the database.
+     * @param variable
+     */
     public void createVariable(Variable variable){
         SQLiteDatabase db = this.getWritableDatabase();
 
