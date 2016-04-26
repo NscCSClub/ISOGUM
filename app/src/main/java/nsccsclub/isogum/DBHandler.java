@@ -285,7 +285,15 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Creates a new variable in the database.
-     * @param variable
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>The variable must have a unique name, use isDuplicate method in this class
+     *         to check.</li>
+     *         <li>The variable must be checked and tested to be valid.</li>
+     *     </ul>
+     * </div>
+     * @param variable The variable to create.
      */
     public void createVariable(Variable variable){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -299,6 +307,17 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Fetches a variable stored in the database by database id.
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>This must be a current valid database id.</li>
+     *     </ul>
+     * </div>
+     * @param id The unique current database id of the variable.
+     * @return The variable object, null if it does not exist.
+     */
     public Variable getVariable(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_VARIABLES, new String[]{KEY_ID,
@@ -306,13 +325,14 @@ public class DBHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)},
                 null, null, null, null);
 
+        Variable variable = null;
         if (cursor!= null) {
             cursor.moveToFirst();
+            variable = new Variable(cursor.getString(1),
+                    Double.parseDouble(cursor.getString(2)),Double.parseDouble(cursor.getString(3)),
+                    Long.parseLong(cursor.getString(0)));
 
         }
-        Variable variable = new Variable(cursor.getString(1),
-                Double.parseDouble(cursor.getString(2)),Double.parseDouble(cursor.getString(3)),
-                Long.parseLong(cursor.getString(0)));
 
 
         db.close();
@@ -320,6 +340,10 @@ public class DBHandler extends SQLiteOpenHelper {
         return variable;
     }
 
+    /**
+     * Returns a list of all variables currently stored in the database.
+     * @return List of all current stored variables.
+     */
     public List<Variable> getAllVariables(){
         List<Variable> list = new ArrayList<Variable>();
 
@@ -330,6 +354,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         Variable variable;
 
+        //todo check this! this should not work in current implementation
         // loop through cursor and add entries to list
         if (cursor.moveToFirst()){
             do{
@@ -337,6 +362,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         Double.parseDouble(cursor.getString(2)),
                                 Double.parseDouble(cursor.getString(3)),
                                         Long.parseLong(cursor.getString(0)));
+                list.add(variable);
             } while (cursor.moveToNext());
         }
         db.close();
@@ -344,6 +370,19 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Updates a variable currently stored int the database.
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>The variable must have a current database id, and must have been
+     *         fetched from the database.</li>
+     *         <li>The variable must exist in the databse.</li>
+     *     </ul>
+     * </div>
+     * @param variable The variable to update.
+     * @return The new database id of the stored object.
+     */
     public long updateVariable(Variable variable){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -359,6 +398,18 @@ public class DBHandler extends SQLiteOpenHelper {
         return id;
     }
 
+    /**
+     * Deleste a variable currently stored in the database.
+     * <div>
+     *     <h3>Preconditions</h3>
+     *     <ul>
+     *         <li>The variable must have a current database id, and must have been
+     *         fetched from the database.</li>
+     *         <li>The variable must exist in the databse.</li>
+     *     </ul>
+     * </div>
+     * @param variable The variable to delete.
+     */
     public void deleteVariable(Variable variable){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_VARIABLES, KEY_ID + " = ?",
@@ -387,6 +438,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * Gives the id of a variable stored in the database, based on unique name.
+     * @param name The name of the varaible to find.
+     * @return The id of the variable, -1 if not found.
+     */
     public long findVariableByName(String name){
         String selectQuery = "SELECT * FROM " + TABLE_VARIABLES;
         SQLiteDatabase db = this.getReadableDatabase();
