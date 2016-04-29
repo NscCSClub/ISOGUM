@@ -262,6 +262,8 @@ public class CreateFunctionFragment extends Fragment{
         view.findViewById(R.id.right).setOnClickListener(onClickListener);
         view.findViewById(R.id.del).setOnClickListener(onClickListener);
         view.findViewById(R.id.var).setOnClickListener(onClickListener);
+        view.findViewById(R.id.save).setOnClickListener(onClickListener);
+        view.findViewById(R.id.cancel).setOnClickListener(onClickListener);
         return view;
     }
 

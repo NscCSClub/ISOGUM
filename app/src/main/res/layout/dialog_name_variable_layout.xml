@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:layout="@id/name_label"
 
-        android:id="@+id/varaible_name_field" />
+        android:id="@+id/varaible_name_field"
+        android:singleLine="true" />
 
 
 
