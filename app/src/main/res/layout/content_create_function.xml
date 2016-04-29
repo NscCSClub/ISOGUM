@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/function_content">
-    <RelativeLayout
+    <fragment android:name="nsccsclub.isogum.CreateFunctionFragment"
+        android:id="@+id/function_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_create_function"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="2.5dp"
+        android:layout_marginBottom="5dp" />
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/function_field">
@@ -91,5 +102,5 @@
             android:gravity="center"
             android:orientation="vertical">
         </LinearLayout>
-    </RelativeLayout>
+    </RelativeLayout>-->
 </LinearLayout>

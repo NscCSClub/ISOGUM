@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".1"
                 android:id="@+id/create_function_function_field"
-                android:paddingBottom="10dp">
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -37,7 +37,10 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/editText"
-                    android:padding="@dimen/field_margin" />
+                    android:padding="@dimen/field_margin"
+                    android:nestedScrollingEnabled="false"
+                    android:singleLine="true"
+                    android:inputType="none" />
             </LinearLayout>
 
             <LinearLayout
@@ -47,7 +50,7 @@
                 android:layout_weight=".1"
                 android:layout_below="@id/create_function_function_field"
                 android:id="@+id/create_function_keys"
-                android:paddingTop="10dp">
+                android:paddingTop="5dp">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -60,13 +63,12 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".66"
-                        android:paddingRight="5dp">
+                        android:layout_weight=".66">
 
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="aSin()"
+                            android:text="aSin"
                             android:id="@+id/aSin"
                             android:layout_weight=".2"
                             android:onClick="onTextButton" />
@@ -74,7 +76,7 @@
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="ACos()"
+                            android:text="ACos"
                             android:id="@+id/aCos"
                             android:layout_weight=".2"
                             android:onClick="onTextButton"/>
@@ -82,10 +84,11 @@
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="aTan()"
+                            android:text="atan"
                             android:id="@+id/aTan"
                             android:layout_weight=".2"
-                            android:onClick="onTextButton"/>
+                            android:onClick="onTextButton"
+                            android:padding="1dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -93,12 +96,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".33"
-                        android:paddingLeft="5dp">
+                        android:paddingLeft="0dp">
 
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="ln()"
+                            android:text="ln"
                             android:id="@+id/ln"
                             android:layout_weight=".2"
                             android:onClick="onTextButton"/>
@@ -106,7 +109,7 @@
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="log()"
+                            android:text="log"
                             android:id="@+id/log"
                             android:layout_weight=".2"
                             android:onClick="onTextButton"/>
@@ -126,12 +129,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".66"
-                        android:layout_marginRight="5dp">
+                        android:layout_marginRight="0dp">
 
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="Sin()"
+                            android:text="Sin"
                             android:id="@+id/sin"
                             android:layout_weight=".2"
                             android:onClick="onTextButton"/>
@@ -139,7 +142,7 @@
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="Cos()"
+                            android:text="Cos"
                             android:id="@+id/cos"
                             android:layout_weight=".2"
                             android:onClick="onTextButton"/>
@@ -147,7 +150,7 @@
                         <Button
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:text="Tan()"
+                            android:text="Tan"
                             android:id="@+id/tan"
                             android:layout_weight=".2"
                             android:onClick="onTextButton"/>
@@ -158,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".33"
-                        android:layout_marginLeft="5dp">
+                        android:layout_marginLeft="0dp">
 
                         <Button
                             android:layout_width="fill_parent"
@@ -190,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".66"
-                        android:paddingRight="5dp">
+                        android:paddingRight="1dp">
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -226,7 +229,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".33"
-                        android:paddingLeft="5dp">
+                        android:paddingLeft="1dp">
 
                         <Button
                             android:layout_width="fill_parent"
@@ -258,7 +261,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".66"
-                        android:paddingRight="5dp">
+                        android:paddingRight="1dp">
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -293,7 +296,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".33"
-                        android:paddingLeft="5dp">
+                        android:paddingLeft="1dp">
 
                         <Button
                             android:layout_width="fill_parent"
@@ -325,7 +328,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".66"
-                        android:paddingRight="5dp">
+                        android:paddingRight="1dp">
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -360,7 +363,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".33"
-                        android:paddingLeft="5dp">
+                        android:paddingLeft="1dp">
 
                         <Button
                             android:layout_width="fill_parent"
@@ -392,7 +395,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".66"
-                        android:paddingRight="5dp">
+                        android:paddingRight="1dp">
 
                         <Button
                             style="?android:attr/buttonStyleSmall"
@@ -408,7 +411,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:text="."
-                            android:id="@+id/."
+                            android:id="@+id/point"
                             android:layout_weight=".33"
                             android:onClick="onTextButton"/>
 
@@ -427,7 +430,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight=".33"
-                        android:paddingLeft="5dp">
+                        android:paddingLeft="1dp">
 
                         <Button
                             android:layout_width="fill_parent"
@@ -454,8 +457,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight=".1"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp">
 
                     <Button
                         android:layout_width="wrap_content"
@@ -471,9 +474,10 @@
                         android:text="variable"
                         android:id="@+id/var"
                         android:layout_weight=".66"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:onClick="onVariableButton"/>
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:onClick="onVariableButton"
+                        android:nestedScrollingEnabled="true" />
 
                     <Button
                         android:layout_width="wrap_content"
@@ -489,7 +493,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight=".1"
-                    android:paddingTop="5dp">
+                    android:paddingTop="1dp">
 
                     <Button
                         android:layout_width="fill_parent"
@@ -497,7 +501,7 @@
                         android:text="cancel"
                         android:id="@+id/cancel"
                         android:layout_weight=".5"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="1dp"
                         android:onClick="onActionButton"/>
 
                     <Button
@@ -506,7 +510,7 @@
                         android:text="save"
                         android:id="@+id/save"
                         android:layout_weight=".5"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="1dp"
                         android:onClick="onActionButton"/>
                 </LinearLayout>
             </LinearLayout>

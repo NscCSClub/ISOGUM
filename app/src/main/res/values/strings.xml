@@ -26,6 +26,10 @@
     <string name="title_activity_variable">VariableActivity</string>
     <string name="title_activity_help">HelpActivity</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="name_variable_header">Variable</string>
+    <string name="name_new_variable">Name:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Strings related to Settings -->
 

@@ -1,13 +1,18 @@
 package nsccsclub.isogum;
 
+import android.support.v4.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 
@@ -19,7 +24,8 @@ import android.widget.EditText;
  * Use the {@link CreateFunctionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateFunctionFragment extends Fragment {
+public class CreateFunctionFragment extends Fragment{
+    public static final String LOG_CODE = "CreateFunctionFragment";
 
     private static final String ARG_FUNCTION = "function";
     private static final String ARG_NAME = "name";
@@ -27,7 +33,7 @@ public class CreateFunctionFragment extends Fragment {
     private String function;
     private String name;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener listener;
 
     public CreateFunctionFragment() {
         // Required empty public constructor
@@ -42,7 +48,7 @@ public class CreateFunctionFragment extends Fragment {
      * @return A new instance of fragment CreateFunctionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateFunctionFragment newInstance(String param1, String param2, EditText functionEdit) {
+    public static CreateFunctionFragment newInstance(String param1, String param2) {
         CreateFunctionFragment fragment = new CreateFunctionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FUNCTION, param1);
@@ -57,7 +63,21 @@ public class CreateFunctionFragment extends Fragment {
         if (getArguments() != null) {
             function = getArguments().getString(ARG_FUNCTION);
             name = getArguments().getString(ARG_NAME);
+            ((EditText)this.getActivity().findViewById(R.id.editText)).setText(function);
         }
+
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        View view = inflater.inflate(R.layout.fragment_create_function, container, false);
+
+
 
 
         View.OnClickListener onClickListener = new View.OnClickListener(){
@@ -107,33 +127,260 @@ public class CreateFunctionFragment extends Fragment {
                         case (R.id.num9):
                             editable.insert(start,"9");
                             break;
+                        case (R.id.point):
+                            editable.insert(start,".");
+                            break;
+                        case (R.id.neg):
+                            editable.insert(start,"-");
+                            break;
+                        case (R.id.sin):
+                            editable.insert(start,"sin()");
+                            editText.setSelection(editText.getSelectionStart() - 1);
+                            break;
+                        case (R.id.cos):
+                            editable.insert(start,"cos()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.tan):
+                            editable.insert(start,"tan()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.aSin):
+                            editable.insert(start,"aSin()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.aCos):
+                            editable.insert(start,"aCos()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.aTan):
+                            editable.insert(start,"aTan()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.ln):
+                            editable.insert(start, "ln()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.log):
+                            editable.insert(start,"log()");
+                            editText.setSelection(editText.getSelectionStart()-1);
+                            break;
+                        case (R.id.leftParen):
+                            editable.insert(start, "(");
+                            break;
+                        case (R.id.rightParen):
+                            editable.insert(start, ")");
+                            break;
+                        case (R.id.div):
+                            editable.insert(start,"/");
+                            break;
+                        case (R.id.times):
+                            editable.insert(start,"*");
+                            break;
+                        case (R.id.minus):
+                            editable.insert(start,"-");
+                            break;
+                        case (R.id.plus):
+                            editable.insert(start,"+");
+                            break;
+                        case (R.id.pow):
+                            editable.insert(start,"^");
+                            break;
+                        case (R.id.e):
+                            editable.insert(start,"[e]");
+                            break;
+                        case (R.id.pi):
+                            editable.insert(start,"[pi]");
+                            break;
+                        case (R.id.left):
+                            editText.setSelection(smartSelectLeft(editable,start));
+                            break;
+                        case (R.id.right):
+                            editText.setSelection(smartSelectRight(editable,start));
+                            break;
+                        case (R.id.del):
+                            if (start!=0) {
+                                editable.delete(start - 1, start);
+                            }
+                            break;
+                        case (R.id.var):
+                            listener.nameVariable();
 
-
+                            break;
                     }
                 }
             }
         };
+        View.OnTouchListener onTouchListener= new View.OnTouchListener(){
+
+
+            /**
+             * Called when a touch event is dispatched to a view. This allows listeners to
+             * get a chance to respond before the target view.
+             *
+             * @param v     The view the touch event has been dispatched to.
+             * @param event The MotionEvent object containing full information about
+             *              the event.
+             * @return True if the listener has consumed the event, false otherwise.
+             */
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        };
+        view.findViewById(R.id.editText).setOnTouchListener(onTouchListener);
+        view.findViewById(R.id.num0).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num1).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num2).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num3).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num4).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num5).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num6).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num7).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num8).setOnClickListener(onClickListener);
+        view.findViewById(R.id.num9).setOnClickListener(onClickListener);
+        view.findViewById(R.id.point).setOnClickListener(onClickListener);
+        view.findViewById(R.id.neg).setOnClickListener(onClickListener);
+        view.findViewById(R.id.sin).setOnClickListener(onClickListener);
+        view.findViewById(R.id.cos).setOnClickListener(onClickListener);
+        view.findViewById(R.id.tan).setOnClickListener(onClickListener);
+        view.findViewById(R.id.aSin).setOnClickListener(onClickListener);
+        view.findViewById(R.id.aCos).setOnClickListener(onClickListener);
+        view.findViewById(R.id.aTan).setOnClickListener(onClickListener);
+        view.findViewById(R.id.ln).setOnClickListener(onClickListener);
+        view.findViewById(R.id.log).setOnClickListener(onClickListener);
+        view.findViewById(R.id.leftParen).setOnClickListener(onClickListener);
+        view.findViewById(R.id.rightParen).setOnClickListener(onClickListener);
+        view.findViewById(R.id.div).setOnClickListener(onClickListener);
+        view.findViewById(R.id.times).setOnClickListener(onClickListener);
+        view.findViewById(R.id.minus).setOnClickListener(onClickListener);
+        view.findViewById(R.id.plus).setOnClickListener(onClickListener);
+        view.findViewById(R.id.pow).setOnClickListener(onClickListener);
+        view.findViewById(R.id.e).setOnClickListener(onClickListener);
+        view.findViewById(R.id.pi).setOnClickListener(onClickListener);
+        view.findViewById(R.id.left).setOnClickListener(onClickListener);
+        view.findViewById(R.id.right).setOnClickListener(onClickListener);
+        view.findViewById(R.id.del).setOnClickListener(onClickListener);
+        view.findViewById(R.id.var).setOnClickListener(onClickListener);
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_function, container, false);
+    public void addVar(String var){
+
+        EditText destination = (EditText) this.getActivity().findViewById(R.id.editText);
+        Editable editable = destination.getText();
+        int start = destination.getSelectionStart();
+        editable.insert(start, "[" + var + "]");
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private int smartSelectLeft(Editable editable, int start) {
+        Log.d(LOG_CODE, "Smart Left Called   Start: "+start);
+        Log.d(LOG_CODE,"String: "+editable.toString());
+        int move = 0;
+
+        if (start==0){
+            return 0;
         }
+        String text = editable.toString();
+        char ch = text.charAt(start-1);
+        Log.d(LOG_CODE, "Initial letter :" +ch);
+        move--;
+        if (isLeftOperator(ch)){
+            Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
+            if (ch =='('){
+                return smartSelectLeft(editable,start-1);
+            }
+
+            return start+move;
+        }
+
+        while(!isStop(ch)) {
+            Log.d(LOG_CODE, "loop test failed " + ch + " is not an operator");
+
+            if (Math.abs(move) == start) {
+                Log.d(LOG_CODE, "Reached begining, early exit, 1st char: " + ch);
+                return 0;
+            }
+            move--;
+            ch = text.charAt(start + move);
+            Log.d(LOG_CODE,"Not a place to stop, new char: " + ch);
+        }
+
+        Log.d(LOG_CODE, "Loop test passed " +ch + " is an operator.");
+        if(isLeftOperator(ch)){
+            Log.d(LOG_CODE, "Last char was operator, new idx: "+(start+move +1));
+            return start+move +1;
+        }
+        Log.d(LOG_CODE, "Found stopping place final idx: "+(start+move));
+        return start+move;
     }
+
+    private boolean isLeftOperator(char ch) {
+        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'|| ch =='('){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isRightOperator(char ch) {
+        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^' || ch==')'){
+            return true;
+        }
+        return false;
+    }
+
+
+    private boolean isStop(char ch) {
+        if (ch==')' || ch=='('||
+                ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
+            return true;
+        }
+        return false;
+    }
+    private int smartSelectRight(Editable editable, int start) {
+        Log.d(LOG_CODE, "Smart select called start: " + start);
+        Log.d(LOG_CODE, "String: "+ editable.toString());
+        int move = 0;
+
+        if (start==editable.toString().length()-1){
+            Log.d(LOG_CODE,"Started at last index: " + start);
+            return start+1;
+        }
+        else if(start == editable.toString().length()){
+            return start;
+        }
+        String text = editable.toString();
+        char ch = text.charAt(start);
+        Log.d(LOG_CODE, "Initial char: " + ch);
+        move++;
+
+        while(!isStop(ch)) {
+            Log.d(LOG_CODE, "Loop test failed " + ch + " is not a stop char");
+
+            if (start+move==text.length()-1) {
+                Log.d(LOG_CODE, "Reached end in loop, final idx: " + (start+ move));
+                return start + move+1;
+            }
+            move++;
+            ch = text.charAt(start + move);
+        }
+        Log.d(LOG_CODE,"Loop test passsed "+ ch +" is a stop char");
+        if(ch=='('){
+            return start+move+1;
+        }
+        Log.d(LOG_CODE, "final idx : " + (start+ move));
+        return start+move;
+    }
+
+
+
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            listener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -143,20 +390,12 @@ public class CreateFunctionFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
-    public void onTextButton(View view){
 
-    }
 
-    public void onVariableButton(View view){
 
-    }
-
-    public void onActionButton(View view){
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -169,8 +408,12 @@ public class CreateFunctionFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        public void nameVariable();
+
+    }
+
+    private enum Type{
+        OPERATOR,NUMBER,COMPOSITE,VARIABLE;
     }
 
 
