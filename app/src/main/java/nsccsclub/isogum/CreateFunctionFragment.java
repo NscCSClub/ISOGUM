@@ -206,8 +206,10 @@ public class CreateFunctionFragment extends Fragment{
                         case (R.id.var):
                             listener.nameVariable();
 
+
                             break;
                     }
+                    impliedMulitply(editable);
                 }
             }
         };
@@ -267,12 +269,124 @@ public class CreateFunctionFragment extends Fragment{
         return view;
     }
 
+    private void impliedMulitply(Editable editable) {
+        String text = editable.toString();
+        char ch;
+        for (int i = text.length()-1; i >= 0; i-- ){
+            ch = text.charAt(i);
+//            Log.d(LOG_CODE,"testing : " + ch);
+            if ((ch == '(')&& i > 0){
+//                Log.d(LOG_CODE,"testing : " + ch);
+                if (!(isOperator(text.charAt(i-1)))&&!(definedFunction(text,i))&&text.charAt(i-1)!='('){
+                    editable.insert(i,"*");
+                }
+            }
+            if (ch =='['&& i>0){
+                if (!isOperator(text.charAt(i-1))&& text.charAt(i-1)!='('){
+                    editable.insert(i,"*");
+                }
+            }
+            if (isNumber(ch)&&i>0){
+                if (!isOperator(text.charAt(i-1))&&!isNumber(text.charAt(i-1))&&
+                        text.charAt(i-1)!='(' && text.charAt(i-1)!='.'){
+                    editable.insert(i,"*");
+                }
+            }
+            if (definedFunction(text,i)){
+//                Log.d(LOG_CODE,"found function! : " + ch);
+                int start = findBegin(text,i);
+                if (start!=-1){
+//                    Log.d(LOG_CODE,"found beginning! " + ch);
+                    if (start>0&&!isOperator(text.charAt(start-1))&&text.charAt(start-1)!='('){
+                        editable.insert(start,"*");
+                    }
+                }
+            }
+        }
+    }
+
+    private int findBegin(String text, int i) {
+        String test;
+        if (i-2>=0){
+            test = text.substring(i-2,i);
+//            Log.d(LOG_CODE,"substring implied multiply length 2 " + test);
+            if(test.compareTo("ln")==0){
+                return i-2;
+            }
+        }
+        if (i-3>=0){
+            test = text.substring(i-3,i);
+//            Log.d(LOG_CODE,"substring implied multiply length 3 " + test);
+            if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
+                    ||test.compareTo("log")==0){
+                return i-3;
+            }
+        }
+        if (i-4>=0){
+            test = text.substring(i-4,i);
+//            Log.d(LOG_CODE,"substring implied multiply length 4 " + test);
+            if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
+                return i-4;
+            }
+        }
+        return -1;
+    }
+
+    private boolean definedFunction(String text, int i) {
+        String test;
+        if (i-2>=0){
+            test = text.substring(i-2,i);
+            //Log.d(LOG_CODE,"substring implied multiply length 2 " + test);
+            if(test.compareTo("ln")==0){
+//                Log.d(LOG_CODE,"it worked");
+                return true;
+            }
+        }
+        if (i-3>=0){
+            test = text.substring(i-3,i);
+//            Log.d(LOG_CODE,"substring implied multiply length 3 " + test);
+            if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
+                    ||test.compareTo("log")==0){
+//                Log.d(LOG_CODE,"it worked");
+                return true;
+            }
+        }
+        if (i-4>=0){
+            test = text.substring(i-4,i);
+//            Log.d(LOG_CODE,"substring implied multiply length 4 " + test);
+            if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
+//                Log.d(LOG_CODE,"it worked");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isOperator(char ch) {
+        if(ch == '+'|| ch == '-' || ch == '*'||ch =='/'||ch == '^'){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isNumber(char ch) {
+        try {
+            Integer.parseInt(""+ch);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
     public void addVar(String var){
 
         EditText destination = (EditText) this.getActivity().findViewById(R.id.editText);
         Editable editable = destination.getText();
         int start = destination.getSelectionStart();
         editable.insert(start, "[" + var + "]");
+        impliedMulitply(editable);
     }
 
     private int smartSelectLeft(Editable editable, int start) {
@@ -289,21 +403,24 @@ public class CreateFunctionFragment extends Fragment{
         move--;
         if (isLeftOperator(ch)){
             Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
-            if (ch =='('){
-                return smartSelectLeft(editable,start-1);
+            if (ch=='('){
+                return smartSelectLeft(editable,start+move);
             }
-
             return start+move;
         }
+        if (ch == ']' ){
+            return smartSelectLeft(editable,start+move);
+        }
 
-        while(!isStop(ch)) {
+        while(!isStopLeft(ch)) {
             Log.d(LOG_CODE, "loop test failed " + ch + " is not an operator");
 
+            move--;
             if (Math.abs(move) == start) {
                 Log.d(LOG_CODE, "Reached begining, early exit, 1st char: " + ch);
-                return 0;
+                return start+move;
             }
-            move--;
+
             ch = text.charAt(start + move);
             Log.d(LOG_CODE,"Not a place to stop, new char: " + ch);
         }
@@ -313,7 +430,8 @@ public class CreateFunctionFragment extends Fragment{
             Log.d(LOG_CODE, "Last char was operator, new idx: "+(start+move +1));
             return start+move +1;
         }
-        Log.d(LOG_CODE, "Found stopping place final idx: "+(start+move));
+
+        Log.d(LOG_CODE, "Found stopping place final idx: " + (start + move));
         return start+move;
     }
 
@@ -332,8 +450,15 @@ public class CreateFunctionFragment extends Fragment{
     }
 
 
-    private boolean isStop(char ch) {
-        if (ch==')' || ch=='('||
+    private boolean isStopRight(char ch) {
+        if (ch==')' || ch=='('|| ch == '['||
+                ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
+            return true;
+        }
+        return false;
+    }
+    private boolean isStopLeft(char ch) {
+        if (ch==')' || ch=='('|| ch == ']'||
                 ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
             return true;
         }
@@ -355,8 +480,16 @@ public class CreateFunctionFragment extends Fragment{
         char ch = text.charAt(start);
         Log.d(LOG_CODE, "Initial char: " + ch);
         move++;
+        if (isRightOperator(ch)){
+            Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
+            return start+move;
+        }
+        if(ch =='['){
+            return smartSelectRight(editable,start+1);
+        }
 
-        while(!isStop(ch)) {
+
+        while(!isStopRight(ch)) {
             Log.d(LOG_CODE, "Loop test failed " + ch + " is not a stop char");
 
             if (start+move==text.length()-1) {
@@ -367,7 +500,7 @@ public class CreateFunctionFragment extends Fragment{
             ch = text.charAt(start + move);
         }
         Log.d(LOG_CODE,"Loop test passsed "+ ch +" is a stop char");
-        if(ch=='('){
+        if(ch=='('||ch ==']'){
             return start+move+1;
         }
         Log.d(LOG_CODE, "final idx : " + (start+ move));
