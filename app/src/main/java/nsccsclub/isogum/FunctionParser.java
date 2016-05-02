@@ -1,5 +1,7 @@
 package nsccsclub.isogum;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -10,6 +12,7 @@ public class FunctionParser {
     private String function;
     private  int idx;
     private ArrayList<Token> tokens;
+    public final String LOG_CODE = "FunctionParser";
 
     /**
      * Default constructor function needs to be set
@@ -28,19 +31,13 @@ public class FunctionParser {
     }
 
     public Token getNext(){
-        Token token = tokens.get(idx);
-        this.setIdx(idx+1);
-        return token;
-    }
-
-    public Token getPrev(){
-        this.setIdx(idx-1);
-        Token token = tokens.get(idx);
-        return token;
+         Token token = tokens.get(idx);
+         this.setIdx(idx + 1);
+         return token;
     }
 
     public  boolean hasNext(){
-        return idx == function.length();
+        return (idx < tokens.size());
     }
 
     private ArrayList<Token> getTokens(){
@@ -48,7 +45,10 @@ public class FunctionParser {
         int idx = 0, temp = 0;
         char ch;
         while (idx < getFunction().length()){
+
             ch = getFunction().charAt(idx);
+            Log.d(LOG_CODE, "loop idx :" + idx);
+            Log.d(LOG_CODE, "loop char :" + ch);
             if (ch =='('){
                 list.add(new Token(Type.LEFT_PAREN,ch));
                 idx++;
@@ -63,55 +63,79 @@ public class FunctionParser {
             }
             else if (isNumber(ch)){
                 temp = idx;
+                Log.d(LOG_CODE, "initial number : " + ch);
+                boolean flag = false;
                 if (idx < getFunction().length()-1) {
                     idx++;
                     ch = getFunction().charAt(idx);
+                    Log.d(LOG_CODE, "2nd char : " +ch);
+                    flag = true;
                 }
                 while ((isNumber(ch)||ch == '.')&& idx < getFunction().length()-1){
                     idx++;
                     ch = getFunction().charAt(idx);
+
+                    Log.d(LOG_CODE, "end number char : " + ch);
                 }
-                list.add(new Token(Type.NUMBER,
-                        Double.parseDouble(getFunction().substring(temp, idx))));
-                idx++;
+
+
+                if (getFunction().substring(temp, idx).compareTo("") != 0) {
+                    Log.d(LOG_CODE, "adding number : " +getFunction().substring(temp, idx));
+                    list.add(new Token(Type.NUMBER,
+                            Double.parseDouble(getFunction().substring(temp, idx))));
+                }
+                if (!flag){
+                    idx++;
+                }
             }
             else if (ch =='['){
+                Log.d(LOG_CODE,"Potential variable!");
                 temp = idx;
                 if(idx< getFunction().length()-1){
+                    Log.d(LOG_CODE,"1st char of variable should always excecute");
                     idx++;
                     ch = getFunction().charAt(idx);
                 }
+                else {
+                    Log.d(LOG_CODE,"empty variable");
+                    list.add(new Token(Type.UNDEFINED, getFunction().substring(temp, idx)));
+                    idx++;
+                }
                 while(ch != ']' && idx < getFunction().length()-1){
+                    Log.d(LOG_CODE,"variable name letter : " +ch);
                     idx ++;
                     ch = getFunction().charAt(idx);
                 }
                 idx++;
-                if (idx < getFunction().length()){
-                    if(ch == ']'){
-                        list.add(new Token(Type.VARIABLE, getFunction().substring(temp, idx + 1)));
-                    }
-                    else {
-                        list.add(new Token(Type.UNDEFINED, getFunction().substring(temp, idx + 1)));
-                    }
+                Log.d(LOG_CODE, "ending character ; " + ch);
+                if(ch == ']'){
+                    list.add(new Token(Type.VARIABLE, getFunction().substring(temp, idx)));
                 }
                 else {
-                    list.add(new Token(Type.UNDEFINED, getFunction().substring(temp, idx)));
+                    Log.d(LOG_CODE,"invalid ending char");
+                    list.add(new Token(Type.UNDEFINED, getFunction().substring(temp, idx )));
                 }
 
             }
             else if (isStartFunction(ch)){
                 if (isDefinedFunction(function,idx)){
-                    list.add(new Token(whatType(function,idx),whatString(whatType(function, idx))));
+                    String string = whatString(whatType(function, idx));
+                    Token token = new Token(whatType(function,idx),string);
+                    Log.d(LOG_CODE, "Added function! type: " + token.getType().toString() + " value : " + token.getValue().toString());
+                    list.add(token);
+                    idx += string.length();
                 }
                 else {
                     list.add(new Token(Type.UNDEFINED, ""));
+                    idx++;
                 }
 
-                idx++;
+
 
             }
             else {
                 list.add(new Token(Type.UNDEFINED, ch));
+                idx++;
             }
         }
 
@@ -154,73 +178,74 @@ public class FunctionParser {
     private Type whatType(String function, int idx) {
 
         String test;
+        if (idx+1 < function.length()){
+            test = function.substring(idx,idx+2);
+            Log.d(LOG_CODE,"type test length 2 " + test);
+            if(test.compareTo("ln")==0){
+                Log.d(LOG_CODE,"it worked" + Type.LN.toString());
+                return Type.LN;
+            }
+        }
         if (idx+2 < function.length()){
             test = function.substring(idx,idx+3);
-            //Log.d(LOG_CODE,"substring implied multiply length 2 " + test);
-            if(test.compareTo("ln")==0){
-//                Log.d(LOG_CODE,"it worked");
-                return Type.LN;
+            Log.d(LOG_CODE,"Type test length 3 " + test);
+            if (test.compareTo("sin") == 0) {
+                Log.d(LOG_CODE,"it worked sin");
+                return Type.SIN;
+            } else if (test.compareTo("cos") == 0) {
+                Log.d(LOG_CODE,"it worked cos");
+                return Type.COS;
+            } else if (test.compareTo("tan") == 0) {
+                Log.d(LOG_CODE,"it worked tan");
+                return Type.TAN;
+            } else if (test.compareTo("log") == 0) {
+                Log.d(LOG_CODE,"it worked log");
+                return Type.LOG;
             }
         }
         if (idx+3 < function.length()){
             test = function.substring(idx,idx+4);
-//            Log.d(LOG_CODE,"substring implied multiply length 3 " + test);
-            if (test.compareTo("sin") == 0) {
-//                Log.d(LOG_CODE,"it worked");
-                return Type.SIN;
-            } else if (test.compareTo("cos") == 0) {
-//                Log.d(LOG_CODE,"it worked");
-                return Type.COS;
-            } else if (test.compareTo("tan") == 0) {
-//                Log.d(LOG_CODE,"it worked");
-                return Type.TAN;
-            } else if (test.compareTo("log") == 0) {
-//                Log.d(LOG_CODE,"it worked");
-                return Type.LOG;
-            }
-        }
-        if (idx+4 < function.length()){
-            test = function.substring(idx,idx+5);
-//            Log.d(LOG_CODE,"substring implied multiply length 4 " + test);
+            Log.d(LOG_CODE,"type test length 4 " + test);
             if (test.compareTo("aSin") == 0) {
-//                Log.d(LOG_CODE,"it worked");
+                Log.d(LOG_CODE,"it worked aSin");
                 return Type.ASIN;
             } else if (test.compareTo("aCos") == 0) {
-//                Log.d(LOG_CODE,"it worked");
+                Log.d(LOG_CODE,"it worked aCos");
                 return Type.ACOS;
             } else if (test.compareTo("aTan") == 0) {
-//                Log.d(LOG_CODE,"it worked");
+                Log.d(LOG_CODE,"it worked aTan");
                 return Type.ATAN;
             }
         }
+        Log.d(LOG_CODE, "type test failed");
         return Type.UNDEFINED;
     }
 
     private boolean isDefinedFunction(String function, int idx) {
 
         String test;
+        if (idx+1 < function.length()){
+            test = function.substring(idx,idx+2);
+            Log.d(LOG_CODE,"testing function length 2: " + test);
+            if(test.compareTo("ln")==0){
+                Log.d(LOG_CODE,"it worked : " + test);
+                return true;
+            }
+        }
         if (idx+2 < function.length()){
             test = function.substring(idx,idx+3);
-            //Log.d(LOG_CODE,"substring implied multiply length 2 " + test);
-            if(test.compareTo("ln")==0){
-//                Log.d(LOG_CODE,"it worked");
+            Log.d(LOG_CODE,"testing function length 3 : " + test);
+            if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
+                    ||test.compareTo("log")==0){
+                Log.d(LOG_CODE,"it worked : " + test);
                 return true;
             }
         }
         if (idx+3 < function.length()){
             test = function.substring(idx,idx+4);
-//            Log.d(LOG_CODE,"substring implied multiply length 3 " + test);
-            if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
-                    ||test.compareTo("log")==0){
-//                Log.d(LOG_CODE,"it worked");
-                return true;
-            }
-        }
-        if (idx+4 < function.length()){
-            test = function.substring(idx,idx+5);
-//            Log.d(LOG_CODE,"substring implied multiply length 4 " + test);
+            Log.d(LOG_CODE,"testing function length 4 " + test);
             if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
-//                Log.d(LOG_CODE,"it worked");
+                Log.d(LOG_CODE,"it worked : " + test);
                 return true;
             }
         }
@@ -229,6 +254,7 @@ public class FunctionParser {
     }
 
     private boolean isStartFunction(char ch) {
+        Log.d(LOG_CODE,"checking if start of function :" + ch);
         if (ch == 's' || ch == 'c' || ch == 't' || ch == 'a' || ch == 'l'){
             return true;
         }
@@ -272,7 +298,7 @@ public class FunctionParser {
     }
 
     private void setIdx(int idx) {
-        if(idx >=0 && idx < function.length()) {
+        if(idx >=-1 && idx < function.length()) {
             this.idx = idx;
         }
     }
