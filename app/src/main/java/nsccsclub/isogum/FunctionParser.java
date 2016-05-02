@@ -303,6 +303,81 @@ public class FunctionParser {
         }
     }
 
+    public boolean isValid(){
+        Token token=null;
+        boolean test = true;
+        this.setIdx(0);
+        Log.d(LOG_CODE, "validity: ");
+
+
+        while (hasNext()){
+            Log.d(LOG_CODE,"idx : " + idx);
+
+            token = getNext();
+            if(idx ==0 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
+                return false;
+            }
+            Log.d(LOG_CODE, "testing valididty " + token.toString());
+            Log.d(LOG_CODE,"testing next type : "  + getNextType().toString());
+            if(isFunction(token.getType())){
+                Log.d(LOG_CODE,"testing function next type : "  + getNextType().toString());
+
+                test = test && getNextType() == Type.LEFT_PAREN;
+
+            }
+            else if (token.getType()==Type.NUMBER ||token.getType()==Type.VARIABLE){
+                Log.d(LOG_CODE,"testing number next type : "  + getNextType().toString());
+                Log.d(LOG_CODE,"idx come on: " + idx );
+                     test = test && (getNextType()==Type.OPERATOR || getNextType()==Type.RIGHT_PAREN
+                     ||getNextType() == Type.NONE);
+                Log.d(LOG_CODE,"idx come on: " + idx );
+            }
+            else if (token.getType()==Type.OPERATOR || token.getType() == Type.LEFT_PAREN){
+                Log.d(LOG_CODE,"testing operateor or left paren next type : "  + getNextType().toString());
+                test = test && (getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER ||
+                        getNextType()== Type.VARIABLE || isFunction(getNextType()));
+            }
+            else if ( token.getType() == Type.RIGHT_PAREN){
+                Log.d(LOG_CODE,"testing right paren next type : "  + getNextType().toString());
+                test = test &&(getNextType()==Type.RIGHT_PAREN||
+                        getNextType()== Type.OPERATOR || getNextType() == Type.NONE);
+            }
+            else if ( token.getType() == Type.LEFT_PAREN){
+                Log.d(LOG_CODE,"testing left paren next type : "  + getNextType().toString());
+                test = test &&(getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER||
+                        getNextType()== Type.VARIABLE || isFunction(getNextType()) );
+            }
+            else {
+                test = false;
+            }
+            if(!test){
+
+
+                return test;
+            }
+        }
+
+        return test;
+    }
+
+    private boolean isFunction(Type type) {
+        if (type == Type.LN || type == Type.LOG || type == Type.SIN || type == Type.COS ||
+                type == Type.TAN || type == Type.ASIN || type == Type.ACOS || type == Type.ATAN){
+            return true;
+        }
+        return false;
+    }
+
+    private Type getNextType(){
+        if (idx < tokens.size()-1){
+            return tokens.get(idx ).getType();
+        }
+        else {
+            return Type.NONE;
+        }
+    }
+
+
     public class Token{
         private Type type;
         private Object value;
@@ -340,7 +415,7 @@ public class FunctionParser {
 
     public enum Type{
         VARIABLE, NUMBER, OPERATOR, SIN,COS,TAN,ASIN, ACOS, ATAN,
-        LOG, LN, LEFT_PAREN, RIGHT_PAREN, UNDEFINED;
+        LOG, LN, LEFT_PAREN, RIGHT_PAREN, UNDEFINED, NONE;
 
     }
 }
