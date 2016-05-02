@@ -298,9 +298,8 @@ public class FunctionParser {
     }
 
     private void setIdx(int idx) {
-        if(idx >=-1 && idx < function.length()) {
             this.idx = idx;
-        }
+
     }
 
     public boolean isValid(){
@@ -312,9 +311,12 @@ public class FunctionParser {
 
         while (hasNext()){
             Log.d(LOG_CODE,"idx : " + idx);
+            if(!test){
+                return test;
+            }
 
             token = getNext();
-            if(idx ==0 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
+            if(idx ==1 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
                 return false;
             }
             Log.d(LOG_CODE, "testing valididty " + token.toString());
@@ -327,13 +329,14 @@ public class FunctionParser {
             }
             else if (token.getType()==Type.NUMBER ||token.getType()==Type.VARIABLE){
                 Log.d(LOG_CODE,"testing number next type : "  + getNextType().toString());
-                Log.d(LOG_CODE,"idx come on: " + idx );
                      test = test && (getNextType()==Type.OPERATOR || getNextType()==Type.RIGHT_PAREN
                      ||getNextType() == Type.NONE);
-                Log.d(LOG_CODE,"idx come on: " + idx );
+
             }
             else if (token.getType()==Type.OPERATOR || token.getType() == Type.LEFT_PAREN){
                 Log.d(LOG_CODE,"testing operateor or left paren next type : "  + getNextType().toString());
+
+                Log.d(LOG_CODE,"idx come on: " + idx );
                 test = test && (getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER ||
                         getNextType()== Type.VARIABLE || isFunction(getNextType()));
             }
@@ -351,8 +354,6 @@ public class FunctionParser {
                 test = false;
             }
             if(!test){
-
-
                 return test;
             }
         }
@@ -369,7 +370,7 @@ public class FunctionParser {
     }
 
     private Type getNextType(){
-        if (idx < tokens.size()-1){
+        if (idx < tokens.size()){
             return tokens.get(idx ).getType();
         }
         else {

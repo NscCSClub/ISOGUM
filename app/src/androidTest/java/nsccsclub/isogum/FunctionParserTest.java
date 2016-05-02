@@ -158,6 +158,7 @@ public class FunctionParserTest extends TestCase {
         parser.setFunction("33.33");
         assertTrue(parser.isValid());
         parser.setFunction("[hello]*33");
+
         while(parser.hasNext()){
             Log.d(LOG_CODE, "deb"+ parser.getNext().toString());
         }
@@ -169,7 +170,7 @@ public class FunctionParserTest extends TestCase {
         assertTrue(parser.isValid());
         parser.setFunction("[hello]*33*tan(47)");
         assertTrue(parser.isValid());
-        parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan()))");
+        parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan(34)))");
         assertTrue(parser.isValid());
 
 
