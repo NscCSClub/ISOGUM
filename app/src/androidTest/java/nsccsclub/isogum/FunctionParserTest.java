@@ -40,19 +40,14 @@ public class FunctionParserTest extends TestCase {
         parser.setFunction("33");
         assertTrue(parser.getNext().getType() == FunctionParser.Type.NUMBER);
         parser.setFunction("42.6969");
-//        Log.d(LOG_CODE,"testing double " +parser.getNext().getValue());
-        assertTrue(parser.getNext().getType() == FunctionParser.Type.NUMBER);
-
+        double d = Double.valueOf(parser.getNext().getValue().toString());
+        assertTrue(d >= 42.696 && d <= 42.697 );
         parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan()))");
         assertTrue(parser.getNext().getType() == FunctionParser.Type.VARIABLE);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.OPERATOR);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.COS);
-
         assertTrue(parser.getNext().getType() == FunctionParser.Type.LEFT_PAREN);
-
         assertTrue(parser.getNext().getType() == FunctionParser.Type.NUMBER);
-
-
         assertTrue(parser.getNext().getType() == FunctionParser.Type.OPERATOR);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.NUMBER);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.RIGHT_PAREN);
@@ -61,7 +56,6 @@ public class FunctionParserTest extends TestCase {
         assertTrue(parser.getNext().getType() == FunctionParser.Type.NUMBER);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.OPERATOR);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.NUMBER);
-
         assertTrue(parser.getNext().getType() == FunctionParser.Type.RIGHT_PAREN);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.OPERATOR);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.TAN);
@@ -74,12 +68,13 @@ public class FunctionParserTest extends TestCase {
         assertTrue(parser.getNext().getType() == FunctionParser.Type.RIGHT_PAREN);
         assertTrue(parser.getNext().getType() == FunctionParser.Type.RIGHT_PAREN);
         parser.setFunction("36sin");
-        while (parser.hasNext()){
-            Log.d(LOG_CODE,"hi there! "+parser.getNext().toString());
-        }
-
-
-
+        assertTrue(Double.valueOf(parser.getNext().getValue().toString()) == 36);
+        parser.setFunction("36*sin(64.666)");
+        parser.getNext();
+        parser.getNext();
+        parser.getNext();
+        parser.getNext();
+        assertTrue(Double.valueOf(parser.getNext().getValue().toString())==64.666);
     }
 
 
@@ -90,8 +85,7 @@ public class FunctionParserTest extends TestCase {
         parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan()))");
 
         while(parser.hasNext()){
-
-            Log.d(LOG_CODE, parser.getNext().toString());
+            parser.getNext();
         }
 
 
@@ -124,10 +118,6 @@ public class FunctionParserTest extends TestCase {
         parser.setFunction("sin()");
         assertFalse(parser.isValid());
         parser.setFunction("36sin");
-        while (parser.hasNext()){
-            Log.d(LOG_CODE,"testing123 " + parser.getNext().toString());
-        }
-        parser.setFunction("36sin");
         assertFalse(parser.isValid());
         parser.setFunction("42sin(42)");
         assertFalse(parser.isValid());
@@ -158,26 +148,18 @@ public class FunctionParserTest extends TestCase {
         parser.setFunction("33.33");
         assertTrue(parser.isValid());
         parser.setFunction("[hello]*33");
-
-        while(parser.hasNext()){
-            Log.d(LOG_CODE, "deb"+ parser.getNext().toString());
-        }
-
-        parser.setFunction("[hello]*33");
         assertTrue(parser.isValid());
-
         parser.setFunction("[hello]*33*cos(36)");
         assertTrue(parser.isValid());
         parser.setFunction("[hello]*33*tan(47)");
         assertTrue(parser.isValid());
         parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan(34)))");
         assertTrue(parser.isValid());
-
-
-
-
-
-
-
+        parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan(34))");
+        assertFalse(parser.isValid());
+        parser.setFunction("[e]^cos(34.8888+69)*(45^2)*tan(cos(aTan(34)))hellokitty");
+        assertFalse(parser.isValid());
+        parser.setFunction("[e]^[hello");
+        assertFalse(parser.isValid());
     }
 }

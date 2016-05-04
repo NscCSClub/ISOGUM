@@ -5,13 +5,29 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
+ * Parser to transform raw string input into acceptable form for storing in the database, contains
+ * methods to check for valid string input.
  * Created by csconway on 4/30/2016.
  */
 public class FunctionParser {
 
+    /**
+     * raw string function to parse
+     */
     private String function;
+    /**
+     * idx for getting tokens and traversing the function
+     */
     private  int idx;
+    /**
+     * Array of tokens, see type enum for details, outlines all possible types of parameters
+     * for a valid function
+     */
     private ArrayList<Token> tokens;
+
+    /**
+     * Code for using  the logcat in android monitor.
+     */
     public final String LOG_CODE = "FunctionParser";
 
     /**
@@ -30,102 +46,122 @@ public class FunctionParser {
         this.setFunction(function);
     }
 
-    public Token getNext(){
+    /**
+     * gets the next token in the function, is of Type enum
+     * @return The next token in the function
+     */
+    protected Token getNext(){
          Token token = tokens.get(idx);
          this.setIdx(idx + 1);
          return token;
     }
 
-    public  boolean hasNext(){
+    /**
+     * checks to see if there are more tokens to parse in the function
+     * @return
+     */
+    protected boolean hasNext(){
         return (idx < tokens.size());
     }
 
+    /**
+     * gets a list of tokens to check for a function
+     * @return List of tokens of the function.
+     */
     private ArrayList<Token> getTokens(){
         ArrayList<Token> list = new ArrayList<Token>();
         int idx = 0, temp = 0;
         char ch;
+        //iterate through the function
         while (idx < getFunction().length()){
 
+            //get a character to test
             ch = getFunction().charAt(idx);
-            Log.d(LOG_CODE, "loop idx :" + idx);
-            Log.d(LOG_CODE, "loop char :" + ch);
             if (ch =='('){
+                //found a left paren
                 list.add(new Token(Type.LEFT_PAREN,ch));
                 idx++;
             }
             else if (ch == ')'){
+                //found a right paren
                 list.add(new Token(Type.RIGHT_PAREN,ch));
                 idx++;
             }
             else if (isOperator(ch)){
+                //found an operator
                 list.add(new Token(Type.OPERATOR,ch));
                 idx++;
             }
             else if (isNumber(ch)){
+                //idx of start of number
                 temp = idx;
-                Log.d(LOG_CODE, "initial number : " + ch);
+                //takes care of length one integer
                 boolean flag = false;
                 if (idx < getFunction().length()-1) {
+                    //our number is longer than length 1 keep going
                     idx++;
                     ch = getFunction().charAt(idx);
-                    Log.d(LOG_CODE, "2nd char : " +ch);
                     flag = true;
                 }
-                while ((isNumber(ch)||ch == '.')&& idx < getFunction().length()-1){
+                while ((isNumber(ch)||ch == '.')&& idx < getFunction().length()-1) {
+                    //gets all remaining digits and iterates until it reaches one past the end.
                     idx++;
                     ch = getFunction().charAt(idx);
-
-                    Log.d(LOG_CODE, "end number char : " + ch);
                 }
 
-
+                //boolean test prevents random null pointer exception
+                //not sure where it came from
                 if (getFunction().substring(temp, idx).compareTo("") != 0) {
-                    Log.d(LOG_CODE, "adding number : " +getFunction().substring(temp, idx));
+                    //adds token to list
                     list.add(new Token(Type.NUMBER,
                             Double.parseDouble(getFunction().substring(temp, idx))));
                 }
+                //extra increment to handle one digit numbers
                 if (!flag){
                     idx++;
                 }
             }
             else if (ch =='['){
-                Log.d(LOG_CODE,"Potential variable!");
+                //found a named anonymous varaiable
                 temp = idx;
                 if(idx< getFunction().length()-1){
-                    Log.d(LOG_CODE,"1st char of variable should always excecute");
+                    //make sure the variable has a valid  name
                     idx++;
                     ch = getFunction().charAt(idx);
                 }
                 else {
-                    Log.d(LOG_CODE,"empty variable");
+                    //invalid list add undefined token to list
                     list.add(new Token(Type.UNDEFINED, getFunction().substring(temp, idx)));
                     idx++;
                 }
                 while(ch != ']' && idx < getFunction().length()-1){
-                    Log.d(LOG_CODE,"variable name letter : " +ch);
+                    //get the full valid name
                     idx ++;
                     ch = getFunction().charAt(idx);
                 }
                 idx++;
-                Log.d(LOG_CODE, "ending character ; " + ch);
                 if(ch == ']'){
+                    //store it if valid
                     list.add(new Token(Type.VARIABLE, getFunction().substring(temp, idx)));
                 }
                 else {
-                    Log.d(LOG_CODE,"invalid ending char");
+                    //no closing paren, invalid
                     list.add(new Token(Type.UNDEFINED, getFunction().substring(temp, idx )));
                 }
 
             }
             else if (isStartFunction(ch)){
+                //checks  to see if char is a start of a predefined function
                 if (isDefinedFunction(function,idx)){
+                    //find a string representation of the function based on index
                     String string = whatString(whatType(function, idx));
+                    //translate that into a token and add it
                     Token token = new Token(whatType(function,idx),string);
-                    Log.d(LOG_CODE, "Added function! type: " + token.getType().toString() + " value : " + token.getValue().toString());
                     list.add(token);
                     idx += string.length();
                 }
                 else {
+                    //user entered in something we do not recognize if we end here.
                     list.add(new Token(Type.UNDEFINED, ""));
                     idx++;
                 }
@@ -143,6 +179,11 @@ public class FunctionParser {
         return list;
     }
 
+    /**
+     * basically Type.toString()
+     * @param type The type to find a string represenation of.
+     * @return The string represenation of the Type Enum.
+     */
     private String whatString(Type type) {
         String function;
         if (type == Type.SIN){
@@ -170,6 +211,7 @@ public class FunctionParser {
             function = "ln";
         }
         else {
+            //unrecognized or bad type!
             function = "unf";
         }
         return function;
@@ -180,44 +222,32 @@ public class FunctionParser {
         String test;
         if (idx+1 < function.length()){
             test = function.substring(idx,idx+2);
-            Log.d(LOG_CODE,"type test length 2 " + test);
             if(test.compareTo("ln")==0){
-                Log.d(LOG_CODE,"it worked" + Type.LN.toString());
                 return Type.LN;
             }
         }
         if (idx+2 < function.length()){
             test = function.substring(idx,idx+3);
-            Log.d(LOG_CODE,"Type test length 3 " + test);
             if (test.compareTo("sin") == 0) {
-                Log.d(LOG_CODE,"it worked sin");
                 return Type.SIN;
             } else if (test.compareTo("cos") == 0) {
-                Log.d(LOG_CODE,"it worked cos");
                 return Type.COS;
             } else if (test.compareTo("tan") == 0) {
-                Log.d(LOG_CODE,"it worked tan");
                 return Type.TAN;
             } else if (test.compareTo("log") == 0) {
-                Log.d(LOG_CODE,"it worked log");
                 return Type.LOG;
             }
         }
         if (idx+3 < function.length()){
             test = function.substring(idx,idx+4);
-            Log.d(LOG_CODE,"type test length 4 " + test);
             if (test.compareTo("aSin") == 0) {
-                Log.d(LOG_CODE,"it worked aSin");
                 return Type.ASIN;
             } else if (test.compareTo("aCos") == 0) {
-                Log.d(LOG_CODE,"it worked aCos");
                 return Type.ACOS;
             } else if (test.compareTo("aTan") == 0) {
-                Log.d(LOG_CODE,"it worked aTan");
                 return Type.ATAN;
             }
         }
-        Log.d(LOG_CODE, "type test failed");
         return Type.UNDEFINED;
     }
 
@@ -226,26 +256,20 @@ public class FunctionParser {
         String test;
         if (idx+1 < function.length()){
             test = function.substring(idx,idx+2);
-            Log.d(LOG_CODE,"testing function length 2: " + test);
             if(test.compareTo("ln")==0){
-                Log.d(LOG_CODE,"it worked : " + test);
                 return true;
             }
         }
         if (idx+2 < function.length()){
             test = function.substring(idx,idx+3);
-            Log.d(LOG_CODE,"testing function length 3 : " + test);
             if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
                     ||test.compareTo("log")==0){
-                Log.d(LOG_CODE,"it worked : " + test);
                 return true;
             }
         }
         if (idx+3 < function.length()){
             test = function.substring(idx,idx+4);
-            Log.d(LOG_CODE,"testing function length 4 " + test);
             if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
-                Log.d(LOG_CODE,"it worked : " + test);
                 return true;
             }
         }
@@ -254,7 +278,6 @@ public class FunctionParser {
     }
 
     private boolean isStartFunction(char ch) {
-        Log.d(LOG_CODE,"checking if start of function :" + ch);
         if (ch == 's' || ch == 'c' || ch == 't' || ch == 'a' || ch == 'l'){
             return true;
         }
@@ -306,47 +329,41 @@ public class FunctionParser {
         Token token=null;
         boolean test = true;
         this.setIdx(0);
-        Log.d(LOG_CODE, "validity: ");
-
+        int paren =0;
 
         while (hasNext()){
-            Log.d(LOG_CODE,"idx : " + idx);
             if(!test){
                 return test;
             }
+
 
             token = getNext();
             if(idx ==1 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
                 return false;
             }
-            Log.d(LOG_CODE, "testing valididty " + token.toString());
-            Log.d(LOG_CODE,"testing next type : "  + getNextType().toString());
             if(isFunction(token.getType())){
-                Log.d(LOG_CODE,"testing function next type : "  + getNextType().toString());
 
                 test = test && getNextType() == Type.LEFT_PAREN;
 
             }
             else if (token.getType()==Type.NUMBER ||token.getType()==Type.VARIABLE){
-                Log.d(LOG_CODE,"testing number next type : "  + getNextType().toString());
                      test = test && (getNextType()==Type.OPERATOR || getNextType()==Type.RIGHT_PAREN
                      ||getNextType() == Type.NONE);
 
             }
             else if (token.getType()==Type.OPERATOR || token.getType() == Type.LEFT_PAREN){
-                Log.d(LOG_CODE,"testing operateor or left paren next type : "  + getNextType().toString());
-
-                Log.d(LOG_CODE,"idx come on: " + idx );
+                if(token.getType()==Type.LEFT_PAREN){
+                    paren++;
+                }
                 test = test && (getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER ||
                         getNextType()== Type.VARIABLE || isFunction(getNextType()));
             }
             else if ( token.getType() == Type.RIGHT_PAREN){
-                Log.d(LOG_CODE,"testing right paren next type : "  + getNextType().toString());
+                paren--;
                 test = test &&(getNextType()==Type.RIGHT_PAREN||
                         getNextType()== Type.OPERATOR || getNextType() == Type.NONE);
             }
             else if ( token.getType() == Type.LEFT_PAREN){
-                Log.d(LOG_CODE,"testing left paren next type : "  + getNextType().toString());
                 test = test &&(getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER||
                         getNextType()== Type.VARIABLE || isFunction(getNextType()) );
             }
@@ -358,7 +375,7 @@ public class FunctionParser {
             }
         }
 
-        return test;
+        return test && paren ==0;
     }
 
     private boolean isFunction(Type type) {
