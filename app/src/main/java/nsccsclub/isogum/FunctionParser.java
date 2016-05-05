@@ -217,15 +217,22 @@ public class FunctionParser {
         return function;
     }
 
+    /**
+     * Gives the type of a valid defined function e.g sin, cos ... .
+     * @param function The function to parse.
+     * @param idx The starting index of the function.
+     * @return The valid type of the function.
+     */
     private Type whatType(String function, int idx) {
-
         String test;
+        //idterate through the function and search for length two functions
         if (idx+1 < function.length()){
             test = function.substring(idx,idx+2);
             if(test.compareTo("ln")==0){
                 return Type.LN;
             }
         }
+        //idterate through the function and search for length three functions
         if (idx+2 < function.length()){
             test = function.substring(idx,idx+3);
             if (test.compareTo("sin") == 0) {
@@ -238,6 +245,8 @@ public class FunctionParser {
                 return Type.LOG;
             }
         }
+
+        //idterate through the function and search for length three functions
         if (idx+3 < function.length()){
             test = function.substring(idx,idx+4);
             if (test.compareTo("aSin") == 0) {
@@ -248,18 +257,27 @@ public class FunctionParser {
                 return Type.ATAN;
             }
         }
+        //something went wrong and this method was not fed a valid function.
         return Type.UNDEFINED;
     }
 
+    /**
+     * Tests a sequence of characacters in a given function string for a defined function, cos,
+     * sin ect...
+     * @param function The function to parse.
+     * @param idx The index to start searching at.
+     * @return True for valid function at index.
+     */
     private boolean isDefinedFunction(String function, int idx) {
-
         String test;
+        //check for lenght 2 functions.
         if (idx+1 < function.length()){
             test = function.substring(idx,idx+2);
             if(test.compareTo("ln")==0){
                 return true;
             }
         }
+        //check for lenght 3 functions.
         if (idx+2 < function.length()){
             test = function.substring(idx,idx+3);
             if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
@@ -267,16 +285,21 @@ public class FunctionParser {
                 return true;
             }
         }
+        //check for lenght 4 functions.
         if (idx+3 < function.length()){
             test = function.substring(idx,idx+4);
             if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
                 return true;
             }
         }
-
         return false;
     }
 
+    /**
+     * Checks that a character is a valid start for a function.
+     * @param ch The character to test
+     * @return True for valid start, more validation needed.
+     */
     private boolean isStartFunction(char ch) {
         if (ch == 's' || ch == 'c' || ch == 't' || ch == 'a' || ch == 'l'){
             return true;
@@ -284,6 +307,11 @@ public class FunctionParser {
         return false;
     }
 
+    /**
+     * tests if a given letter is a valid number.
+     * @param ch the letter to check
+     * @return True if number.
+     */
     private boolean isNumber(char ch) {
         try {
             Integer.parseInt(""+ch);
@@ -294,90 +322,130 @@ public class FunctionParser {
         return true;
     }
 
+    /**
+     * checks if a given character is a mathematical operator.
+     * @param ch letter to check.
+     * @return True if is Operator.
+     */
     private boolean isOperator(char ch) {
-
         if (ch == '*' || ch == '/' || ch == '+' || ch == '-' || ch == '^'){
             return true;
         }
-
         return false;
     }
 
     /**
-     * The function to parse.
+     * Gives the function associated with this object.
+     * @return The function.
      */
     private String getFunction() {
         return function;
     }
 
+    /**
+     * Sets the function associated with this object.
+     * @param function The function.
+     */
     public void setFunction(String function) {
         this.function = function;
+        //resets the index
         this.setIdx(0);
+        //gets all tokens associated with this object.
         this.tokens = getTokens();
     }
 
+    /**
+     * Gives the parsing index for this object.
+     * @return The parsing index.
+     */
     private int getIdx() {
         return idx;
     }
 
+    /**
+     * Sets the parsing index for this object.
+     * @param idx The new parsing index.
+     */
     private void setIdx(int idx) {
             this.idx = idx;
 
     }
 
+    /**
+     * Tests function for validity.
+     * @return
+     */
     public boolean isValid(){
+        //token to check and store into.
         Token token=null;
+        //default valid
         boolean test = true;
+        //sets parsing index
         this.setIdx(0);
+        //counter for number of parentheses in the function
+        //positive for too many left parn
+        //negative for too many right paren
         int paren =0;
 
+        //iterate through every token in the list
         while (hasNext()){
             if(!test){
+                //ealy exit for bad data
                 return test;
             }
-
-
             token = getNext();
             if(idx ==1 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
+                //function can never start with either of these two characters.
                 return false;
             }
             if(isFunction(token.getType())){
-
+                //functions can only be followed by left parentheses
                 test = test && getNextType() == Type.LEFT_PAREN;
 
             }
             else if (token.getType()==Type.NUMBER ||token.getType()==Type.VARIABLE){
+                //numbers an variables can only be followed by operators, closing paren, and
+                // end of function
                      test = test && (getNextType()==Type.OPERATOR || getNextType()==Type.RIGHT_PAREN
                      ||getNextType() == Type.NONE);
 
             }
             else if (token.getType()==Type.OPERATOR || token.getType() == Type.LEFT_PAREN){
+                //operators, left parenthese can only be followed by numbers, left paren and
+                // variables
                 if(token.getType()==Type.LEFT_PAREN){
+                    //increment paren counter
                     paren++;
                 }
                 test = test && (getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER ||
                         getNextType()== Type.VARIABLE || isFunction(getNextType()));
             }
             else if ( token.getType() == Type.RIGHT_PAREN){
+                //Right paren can only be followed by right paren, operators, and be the end of the
+                // function.
+                //decrement paren counter
                 paren--;
                 test = test &&(getNextType()==Type.RIGHT_PAREN||
                         getNextType()== Type.OPERATOR || getNextType() == Type.NONE);
             }
-            else if ( token.getType() == Type.LEFT_PAREN){
-                test = test &&(getNextType()==Type.LEFT_PAREN|| getNextType() == Type.NUMBER||
-                        getNextType()== Type.VARIABLE || isFunction(getNextType()) );
-            }
             else {
+                //not recognized!
                 test = false;
             }
             if(!test){
+                //again early exit in case of bad input
                 return test;
             }
         }
-
+        //makes sure all parentheses balance
         return test && paren ==0;
     }
 
+    /**
+     * Checks if a given typ eis classified as a function.
+     * @param type The type to check.
+     * @return True for function.
+     */
     private boolean isFunction(Type type) {
         if (type == Type.LN || type == Type.LOG || type == Type.SIN || type == Type.COS ||
                 type == Type.TAN || type == Type.ASIN || type == Type.ACOS || type == Type.ATAN){
@@ -386,6 +454,10 @@ public class FunctionParser {
         return false;
     }
 
+    /**
+     * Gets the type off the next token in the tokens field. returns none if end of list.
+     * @return The type of the next token.
+     */
     private Type getNextType(){
         if (idx < tokens.size()){
             return tokens.get(idx ).getType();
@@ -396,8 +468,18 @@ public class FunctionParser {
     }
 
 
-    public class Token{
+    /**
+     * Token class for the function parser contains the type of the token and physical string
+     * representation of the token.
+     */
+    private class Token{
+        /**
+         * The type of the token
+         */
         private Type type;
+        /**
+         * The true value of the token, string, double, or integer.
+         */
         private Object value;
 
         /**
@@ -405,33 +487,56 @@ public class FunctionParser {
          * @param type The type of mathematical operator this is.
          * @param value The actual string representation;
          */
-        public Token(Type type, Object value){
+        private Token(Type type, Object value){
             this.setType(type);
             this.setValue(value);
         }
 
-        public Type getType() {
+        /**
+         * Gives the type of the token.
+         * @return The type of the token.
+         */
+        private Type getType() {
             return type;
         }
 
-        public void setType(Type type) {
+        /**
+         * Sets the type of the token.
+         * @param type The new type of the token.
+         */
+        private void setType(Type type) {
             this.type = type;
         }
 
-        public Object getValue() {
+        /**
+         * Gives the value of the token.
+         * @return The value of the token, double, integer, or string.
+         */
+        private Object getValue() {
             return value;
         }
 
-        public void setValue(Object value) {
+        /**
+         * Sets the value of the token.
+         * @param value The new value of the token.
+         */
+         private void setValue(Object value) {
             this.value = value;
         }
 
+        /**
+         * The string representation of the token, for debugging purposes only.
+         * @return The string representation of the token.
+         */
         public String toString(){
             return "Token: "+ type.toString() +", " + value.toString();
         }
     }
 
-    public enum Type{
+    /**
+     * Enum to distinguish differen types of tokens.
+     */
+    private enum Type{
         VARIABLE, NUMBER, OPERATOR, SIN,COS,TAN,ASIN, ACOS, ATAN,
         LOG, LN, LEFT_PAREN, RIGHT_PAREN, UNDEFINED, NONE;
 
