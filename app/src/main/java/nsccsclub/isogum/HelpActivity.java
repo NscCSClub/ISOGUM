@@ -72,18 +72,18 @@ public class HelpActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-            // Handle the camera action
-            if (id == R.id.nav_function) {
-                Intent intent = new Intent(this,FunctionActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.nav_variable) {
-                Intent intent = new Intent(this, VariableActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.nav_help) {
+        // Handle the camera action
+        if (id == R.id.nav_function) {
+            Intent intent = new Intent(this,FunctionActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_variable) {
+            Intent intent = new Intent(this, VariableActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_help) {
 
-            } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_settings) {
 
-            }
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
