@@ -16,15 +16,9 @@ import android.widget.Toast;
 import java.util.Objects;
 
 /**
- * The creation screen for an uncertainty object, currently being implemented
- * <p/>
- * <div>
- * <h4>Items currently supported<h4/>
- * <ul>
- * <li>Create new function<li/>
- * <li>Create new variable<li/>
- * <ul/>
- * <div/>
+ * The creation screen for an uncertainty object, currently being implemented. Contains a function
+ * fragment and a dialog to support naming custom variables, some lifecycle callback methods still
+ * need to be implemented
  */
 public class CreateFunctionActivity extends AppCompatActivity implements
         CreateFunctionFragment.OnFragmentInteractionListener,NameVariableDialog.NameDialogListener{
@@ -40,9 +34,6 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_function);
 
-//        inputKeyboard = new InputKeyboard(this,R.id.keyboardview_function,R.layout.keyboard_layout);
-//        inputKeyboard.registerEditText(R.id.create_function_name_bar);
-//        inputKeyboard.registerEditText(R.id.create_function_value_bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -50,22 +41,13 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(savedInstanceState);
+        //todo implement on restore instance state
 
-        // Restore state members from saved instance
-//        ((EditText)findViewById(R.id.create_function_name_bar)).setText(
-//                savedInstanceState.getString(TEMP_NAME));
-//        ((EditText)findViewById(R.id.create_function_value_bar)).setText(
-//                savedInstanceState.getString(TEMP_FUNCTION));
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-//        // Save the current state of all text fields
-//        savedInstanceState.putString(TEMP_NAME,
-//                ((EditText)findViewById(R.id.create_function_name_bar)).getText().toString());
-//        savedInstanceState.putString(TEMP_FUNCTION,
-//                ((EditText) findViewById(R.id.create_function_value_bar)).getText().toString());
-//        // Always call the superclass so it can save the view hierarchy state
+        //todo implement on save instance state
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -76,22 +58,31 @@ public class CreateFunctionActivity extends AppCompatActivity implements
 
 
     @Override
+    /**
+     * Creates a name varible dialog
+     */
     public void nameVariable() {
         NameVariableDialog dialog = new NameVariableDialog();
         dialog.show(getSupportFragmentManager(),"name");
     }
 
     @Override
+    /**
+     * checks a variable name for valididty and adds it to the edit text window
+     */
     public void onPositiveClick(DialogFragment dialog) {
         EditText editText = (EditText)dialog.getDialog().findViewById(R.id.varaible_name_field);
         String content = editText.getText().toString();
         if (content.compareTo("e")==0 || content.compareTo("pi")==0){
+            //e and pi are not valid variable names
             Toast.makeText(getApplicationContext(),"Cannot name e or pi",Toast.LENGTH_SHORT).show();
         }
         else{
+            //get back to the function fragment
             CreateFunctionFragment createFunctionFragment =
                     (CreateFunctionFragment)getSupportFragmentManager().
                             findFragmentById(R.id.function_fragment);
+            //add variable to the edit text window.
             createFunctionFragment.addVar(content);
         }
     }

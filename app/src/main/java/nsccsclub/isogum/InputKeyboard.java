@@ -1,5 +1,5 @@
 package nsccsclub.isogum;
-//todo create parser for easy debugging
+
 
 import android.app.Activity;
 import android.inputmethodservice.Keyboard;
@@ -24,6 +24,8 @@ import static nsccsclub.isogum.R.integer.keyboard_number;
  * website for Maarten: www.fampennings.nl/maarten/android/09keyboard.html
  * Used code from stack exchange
  * stackoverflow.com/questions/16174179/set-keyboard-mode-in-android-custom-keyboard
+ * DEPRECEATED DO NOT USE!
+ * @deprecated do not use!!!!!!!!!!!!!!!!!!!!!!!
  */
 public class InputKeyboard{
 
