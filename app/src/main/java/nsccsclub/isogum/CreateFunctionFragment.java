@@ -356,33 +356,32 @@ public class CreateFunctionFragment extends Fragment{
     }
 
     /**
-     *
-     * @param text
-     * @param i
-     * @return
+     * checks if there is defined function at the start of a given index in a string
+     * @param text The string to check.
+     * @param i The index to search at.
+     * @return True if defined function exists
      */
     private boolean definedFunction(String text, int i) {
         String test;
+        //checks for function of length 2
         if (i-2>=0){
             test = text.substring(i-2,i);
             if(test.compareTo("ln")==0){
                 return true;
             }
         }
+        //checks for function of length 3.
         if (i-3>=0){
             test = text.substring(i-3,i);
-//            Log.d(LOG_CODE,"substring implied multiply length 3 " + test);
             if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
                     ||test.compareTo("log")==0){
-//                Log.d(LOG_CODE,"it worked");
                 return true;
             }
         }
+        //checks for function of length f=4.
         if (i-4>=0){
             test = text.substring(i-4,i);
-//            Log.d(LOG_CODE,"substring implied multiply length 4 " + test);
             if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
-//                Log.d(LOG_CODE,"it worked");
                 return true;
             }
         }
@@ -390,6 +389,11 @@ public class CreateFunctionFragment extends Fragment{
         return false;
     }
 
+    /**
+     * Checks if a given character is a mathematical operator.
+     * @param ch The char to check.
+     * @return True if mathematical operator.
+     */
     private boolean isOperator(char ch) {
         if(ch == '+'|| ch == '-' || ch == '*'||ch =='/'||ch == '^'){
             return true;
@@ -397,6 +401,11 @@ public class CreateFunctionFragment extends Fragment{
         return false;
     }
 
+    /**
+     * Checks if a character is a number.
+     * @param ch The character to check.
+     * @return True if the char is a number.
+     */
     private boolean isNumber(char ch) {
         try {
             Integer.parseInt(""+ch);
@@ -407,6 +416,10 @@ public class CreateFunctionFragment extends Fragment{
         return true;
     }
 
+    /**
+     * Adds a variable to the edittext windwon in the activity.
+     * @param var The variable to add.
+     */
     public void addVar(String var){
 
         EditText destination = (EditText) this.getActivity().findViewById(R.id.editText);
@@ -416,18 +429,26 @@ public class CreateFunctionFragment extends Fragment{
         impliedMulitply(editable);
     }
 
+    /**
+     * Moves the cursor to the left to the next term.
+     * @param editable The edit text function to move around in.
+     * @param start The index we are currently at.
+     * @return The index of the next term to the left.
+     */
     private int smartSelectLeft(Editable editable, int start) {
-        Log.d(LOG_CODE, "Smart Left Called   Start: "+start);
-        Log.d(LOG_CODE,"String: "+editable.toString());
+//        Log.d(LOG_CODE, "Smart Left Called   Start: "+start);
+//        Log.d(LOG_CODE,"String: "+editable.toString());
         int move = 0;
 
         if (start==0){
             return 0;
         }
         String text = editable.toString();
+        //moves one char over.
         char ch = text.charAt(start-1);
-        Log.d(LOG_CODE, "Initial letter :" +ch);
+//        Log.d(LOG_CODE, "Initial letter :" +ch);
         move--;
+        //if its an operator stop here
         if (isLeftOperator(ch)){
             Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
             if (ch=='('){
@@ -435,33 +456,42 @@ public class CreateFunctionFragment extends Fragment{
             }
             return start+move;
         }
+        //if we are next to a variable we should skip to the end
         if (ch == ']' ){
             return smartSelectLeft(editable,start+move);
         }
 
+        //searches the string for the next stopping criterion
         while(!isStopLeft(ch)) {
-            Log.d(LOG_CODE, "loop test failed " + ch + " is not an operator");
-
+//            Log.d(LOG_CODE, "loop test failed " + ch + " is not an operator");
+            //move to the left
             move--;
             if (Math.abs(move) == start) {
-                Log.d(LOG_CODE, "Reached begining, early exit, 1st char: " + ch);
+                //we have reached the beggining of the string we can stop
+//                Log.d(LOG_CODE, "Reached begining, early exit, 1st char: " + ch);
                 return start+move;
             }
-
+            //increment the character to the next one
             ch = text.charAt(start + move);
-            Log.d(LOG_CODE,"Not a place to stop, new char: " + ch);
+//            Log.d(LOG_CODE,"Not a place to stop, new char: " + ch);
         }
-
-        Log.d(LOG_CODE, "Loop test passed " +ch + " is an operator.");
+//        Log.d(LOG_CODE, "Loop test passed " +ch + " is an operator.");
         if(isLeftOperator(ch)){
-            Log.d(LOG_CODE, "Last char was operator, new idx: "+(start+move +1));
+            //if we reached an operator we need to move back one
+//            Log.d(LOG_CODE, "Last char was operator, new idx: "+(start+move +1));
             return start+move +1;
         }
 
-        Log.d(LOG_CODE, "Found stopping place final idx: " + (start + move));
+//        Log.d(LOG_CODE, "Found stopping place final idx: " + (start + move));
         return start+move;
     }
 
+    /**
+     * Checks to see if the current character is an operator for  the smart select left funciton
+     * that we need to move back from.
+     * @param ch The char to check.
+     * @return True if we need to move back
+     */
     private boolean isLeftOperator(char ch) {
         if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'|| ch =='('){
             return true;
@@ -469,6 +499,12 @@ public class CreateFunctionFragment extends Fragment{
         return false;
     }
 
+    /**
+     * Checks to see if the current character is an operator for  the smart select Right funciton
+     * that we need to move back from.
+     * @param ch The char to check.
+     * @return True if we need to move back
+     */
     private boolean isRightOperator(char ch) {
         if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^' || ch==')'){
             return true;
@@ -477,6 +513,11 @@ public class CreateFunctionFragment extends Fragment{
     }
 
 
+    /**
+     * Checks if the current char is a place for the smart select right function to stop at.
+     * @param ch The char to check.
+     * @return True if we need to stop.
+     */
     private boolean isStopRight(char ch) {
         if (ch==')' || ch=='('|| ch == '['||
                 ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
@@ -484,6 +525,12 @@ public class CreateFunctionFragment extends Fragment{
         }
         return false;
     }
+
+    /**
+     * Checks if the current char is a place for the smart select left function to stop at.
+     * @param ch The char to check.
+     * @return True if we need to stop.
+     */
     private boolean isStopLeft(char ch) {
         if (ch==')' || ch=='('|| ch == ']'||
                 ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
@@ -491,46 +538,62 @@ public class CreateFunctionFragment extends Fragment{
         }
         return false;
     }
+
+    /**
+     * Moves the cursor to the right to the next term.
+     * @param editable The edit text function to move around in.
+     * @param start The index we are currently at.
+     * @return The index of the next term to the right.
+     */
     private int smartSelectRight(Editable editable, int start) {
-        Log.d(LOG_CODE, "Smart select called start: " + start);
-        Log.d(LOG_CODE, "String: "+ editable.toString());
+//        Log.d(LOG_CODE, "Smart select called start: " + start);
+//        Log.d(LOG_CODE, "String: "+ editable.toString());
         int move = 0;
 
         if (start==editable.toString().length()-1){
-            Log.d(LOG_CODE,"Started at last index: " + start);
+//            Log.d(LOG_CODE,"Started at last index: " + start);
+            //reached 2nd to the end of the function, move righ one
             return start+1;
         }
         else if(start == editable.toString().length()){
+            //reached end of function do not scroll
             return start;
         }
+        //get the initial char and move one to the right.
         String text = editable.toString();
         char ch = text.charAt(start);
-        Log.d(LOG_CODE, "Initial char: " + ch);
+//        Log.d(LOG_CODE, "Initial char: " + ch);
         move++;
         if (isRightOperator(ch)){
-            Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
+//            Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
+            //1st char is an operator we can stop
             return start+move;
         }
         if(ch =='['){
-            return smartSelectRight(editable,start+1);
+            //if we are at the start of a variable we should skip through it's contents.
+            return smartSelectRight(editable, start + 1);
         }
 
 
         while(!isStopRight(ch)) {
-            Log.d(LOG_CODE, "Loop test failed " + ch + " is not a stop char");
+            //parse the string to the right until we reach a stopping character or the end of String
+//            Log.d(LOG_CODE, "Loop test failed " + ch + " is not a stop char");
 
             if (start+move==text.length()-1) {
-                Log.d(LOG_CODE, "Reached end in loop, final idx: " + (start+ move));
+                //we have reached the end, we can stop
+//                Log.d(LOG_CODE, "Reached end in loop, final idx: " + (start+ move));
                 return start + move+1;
             }
             move++;
             ch = text.charAt(start + move);
         }
-        Log.d(LOG_CODE,"Loop test passsed "+ ch +" is a stop char");
+//        Log.d(LOG_CODE,"Loop test passsed "+ ch +" is a stop char");
         if(ch=='('||ch ==']'){
+            // we can iterate one more in each of these special cases
+            //this is a bug fix
             return start+move+1;
         }
-        Log.d(LOG_CODE, "final idx : " + (start+ move));
+//        Log.d(LOG_CODE, "final idx : " + (start+ move));
         return start+move;
     }
 
@@ -539,6 +602,9 @@ public class CreateFunctionFragment extends Fragment{
 
 
     @Override
+    /**
+     * makes sure the host activity has implemented the proper interfaces.
+     */
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -550,6 +616,7 @@ public class CreateFunctionFragment extends Fragment{
     }
 
     @Override
+    //kills all listeners
     public void onDetach() {
         super.onDetach();
         listener = null;
@@ -570,13 +637,10 @@ public class CreateFunctionFragment extends Fragment{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+        /**
+         * Gets a variable name, checks for uniqueness and sets it in the edit text window.
+         */
         public void nameVariable();
 
     }
-
-    private enum Type{
-        OPERATOR,NUMBER,COMPOSITE,VARIABLE;
-    }
-
-
 }

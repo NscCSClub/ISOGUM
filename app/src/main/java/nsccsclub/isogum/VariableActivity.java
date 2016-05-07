@@ -131,9 +131,6 @@ public class VariableActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_variable) {
 
-        } else if (id == R.id.nav_help) {
-            Intent intent = new Intent(this,HelpActivity.class);
-            startActivity(intent);
         } else if (id == R.id.nav_settings) {
 
         }
