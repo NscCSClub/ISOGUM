@@ -25,11 +25,23 @@ import android.widget.EditText;
  * create an instance of this fragment.
  */
 public class CreateFunctionFragment extends Fragment{
+    /**
+     * log code for using logcat
+     */
     public static final String LOG_CODE = "CreateFunctionFragment";
 
+    /**
+     * Argument for updating an existing function needs to be implemented
+     */
     private static final String ARG_FUNCTION = "function";
+    /**
+     * 2nd argument for updating an existing function
+     */
     private static final String ARG_NAME = "name";
 
+    /**
+     *
+     */
     private String function;
     private String name;
 
@@ -40,15 +52,16 @@ public class CreateFunctionFragment extends Fragment{
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Creates the fragment with additionap parameters
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param param1 The existing function to edit.
+     * @param param2 name of the function for saving data.
      * @return A new instance of fragment CreateFunctionFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO: implement editing existing functions
     public static CreateFunctionFragment newInstance(String param1, String param2) {
+        //create a new instance of the fragment with arguments will be used w the edit function
+        // fragment
         CreateFunctionFragment fragment = new CreateFunctionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FUNCTION, param1);
@@ -58,6 +71,9 @@ public class CreateFunctionFragment extends Fragment{
     }
 
     @Override
+    /**
+     * Creates a the fragment and sets arguments
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -65,21 +81,17 @@ public class CreateFunctionFragment extends Fragment{
             name = getArguments().getString(ARG_NAME);
             ((EditText)this.getActivity().findViewById(R.id.editText)).setText(function);
         }
-
-
-
     }
 
     @Override
+    /**
+     * Creates the view and hooks up listeners with the parent activity. All keys are hooked up
+     * in this method
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_create_function, container, false);
-
-
-
-
         View.OnClickListener onClickListener = new View.OnClickListener(){
 
 
@@ -92,6 +104,7 @@ public class CreateFunctionFragment extends Fragment{
             public void onClick(View v) {
 
                 if (v != null){
+                    //edit text is the only focusable object in the activity so we should be okay.
                     EditText editText = (EditText) getActivity().getCurrentFocus();
                     int start = editText.getSelectionStart();
                     Editable editable = editText.getText();
@@ -205,14 +218,14 @@ public class CreateFunctionFragment extends Fragment{
                             break;
                         case (R.id.var):
                             listener.nameVariable();
-
-
                             break;
                     }
+                    //todo shift calling implied multiply to the end when we hit save
                     impliedMulitply(editable);
                 }
             }
         };
+        //hookup keys here
         View.OnTouchListener onTouchListener= new View.OnTouchListener(){
 
 
@@ -269,14 +282,18 @@ public class CreateFunctionFragment extends Fragment{
         return view;
     }
 
+    /**
+     * puts multiplication symbols in all unused operator spaces in a string.
+     * @param editable The editable text from a an editText field.
+     */
     private void impliedMulitply(Editable editable) {
         String text = editable.toString();
         char ch;
+    //iteratre trhough the function
         for (int i = text.length()-1; i >= 0; i-- ){
             ch = text.charAt(i);
-//            Log.d(LOG_CODE,"testing : " + ch);
+            //find character and see if there is a gap where we need an implied multiply
             if ((ch == '(')&& i > 0){
-//                Log.d(LOG_CODE,"testing : " + ch);
                 if (!(isOperator(text.charAt(i-1)))&&!(definedFunction(text,i))&&text.charAt(i-1)!='('){
                     editable.insert(i,"*");
                 }
@@ -293,10 +310,9 @@ public class CreateFunctionFragment extends Fragment{
                 }
             }
             if (definedFunction(text,i)){
-//                Log.d(LOG_CODE,"found function! : " + ch);
+                //searches ahead of cursor position and finds out fia defined function exists
                 int start = findBegin(text,i);
                 if (start!=-1){
-//                    Log.d(LOG_CODE,"found beginning! " + ch);
                     if (start>0&&!isOperator(text.charAt(start-1))&&text.charAt(start-1)!='('){
                         editable.insert(start,"*");
                     }
@@ -305,40 +321,51 @@ public class CreateFunctionFragment extends Fragment{
         }
     }
 
+    /**
+     * finds the begginof a function from an index, must be defined.
+     * @param text The function to parse.
+     * @param i the index to start at.
+     * @return The index of the start of the function, -1 if not found.
+     */
     private int findBegin(String text, int i) {
         String test;
+        //checks for fucntion sof length two.
         if (i-2>=0){
             test = text.substring(i-2,i);
-//            Log.d(LOG_CODE,"substring implied multiply length 2 " + test);
             if(test.compareTo("ln")==0){
                 return i-2;
             }
         }
+        //checks for function of length 3.
         if (i-3>=0){
             test = text.substring(i-3,i);
-//            Log.d(LOG_CODE,"substring implied multiply length 3 " + test);
             if(test.compareTo("sin")==0||test.compareTo("cos")==0||test.compareTo("tan")==0
                     ||test.compareTo("log")==0){
                 return i-3;
             }
         }
+        //checks for function of length 4.
         if (i-4>=0){
             test = text.substring(i-4,i);
-//            Log.d(LOG_CODE,"substring implied multiply length 4 " + test);
             if(test.compareTo("aSin")==0||test.compareTo("aCos")==0||test.compareTo("aTan")==0){
                 return i-4;
             }
         }
+        //we didnt find it.
         return -1;
     }
 
+    /**
+     *
+     * @param text
+     * @param i
+     * @return
+     */
     private boolean definedFunction(String text, int i) {
         String test;
         if (i-2>=0){
             test = text.substring(i-2,i);
-            //Log.d(LOG_CODE,"substring implied multiply length 2 " + test);
             if(test.compareTo("ln")==0){
-//                Log.d(LOG_CODE,"it worked");
                 return true;
             }
         }
