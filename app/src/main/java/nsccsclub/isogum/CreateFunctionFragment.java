@@ -498,7 +498,7 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if we need to move back
      */
     private boolean isLeftOperator(char ch) {
-        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'|| ch =='('){
+        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'|| ch =='('|| ch==')'){
             return true;
         }
         return false;
@@ -511,7 +511,7 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if we need to move back
      */
     private boolean isRightOperator(char ch) {
-        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^' || ch==')'){
+        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^' || ch==')'||ch=='('){
             return true;
         }
         return false;
@@ -592,7 +592,7 @@ public class CreateFunctionFragment extends Fragment{
             ch = text.charAt(start + move);
         }
 //        Log.d(LOG_CODE,"Loop test passsed "+ ch +" is a stop char");
-        if(ch=='('||ch ==']'){
+        if(ch ==']'){
             // we can iterate one more in each of these special cases
             //this is a bug fix
             return start+move+1;

@@ -75,8 +75,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     public void saveFunction(EditText editText) {
         FunctionParser functionParser = new FunctionParser();
         DBHandler dbHandler = new DBHandler(this.getApplicationContext());
-        Log.d(LOG_CODE, "hello");
-        Log.d(LOG_CODE, editText.getText().toString());
+
         //checks if valid data
         functionParser.setFunction(editText.getText().toString());
         if (functionParser.isValid()){
