@@ -1,25 +1,20 @@
 package nsccsclub.isogum;
 
-import android.support.v4.app.DialogFragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CreateFunctionFragment.OnFragmentInteractionListener} interface
+ * {@link nsccsclub.isogum.CreateFunctionFragment.OnFunctionFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link CreateFunctionFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -45,7 +40,9 @@ public class CreateFunctionFragment extends Fragment{
     private String function;
     private String name;
 
-    private OnFragmentInteractionListener listener;
+    private EditText editText;
+
+    private OnFunctionFragmentInteractionListener listener;
 
     public CreateFunctionFragment() {
         // Required empty public constructor
@@ -105,9 +102,10 @@ public class CreateFunctionFragment extends Fragment{
 
                 if (v != null){
                     //edit text is the only focusable object in the activity so we should be okay.
-                    EditText editText = (EditText) getActivity().getCurrentFocus();
-                    int start = editText.getSelectionStart();
-                    Editable editable = editText.getText();
+                    //Initialize edit text here
+                    setEditText((EditText) getActivity().getCurrentFocus());
+                    int start = getEditText().getSelectionStart();
+                    Editable editable = getEditText().getText();
                     int id = v.getId();
                     switch (id){
                         case (R.id.num0):
@@ -148,35 +146,35 @@ public class CreateFunctionFragment extends Fragment{
                             break;
                         case (R.id.sin):
                             editable.insert(start,"sin()");
-                            editText.setSelection(editText.getSelectionStart() - 1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.cos):
                             editable.insert(start,"cos()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.tan):
                             editable.insert(start,"tan()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.aSin):
                             editable.insert(start,"aSin()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.aCos):
                             editable.insert(start,"aCos()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.aTan):
                             editable.insert(start,"aTan()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.ln):
                             editable.insert(start, "ln()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.log):
                             editable.insert(start,"log()");
-                            editText.setSelection(editText.getSelectionStart()-1);
+                            getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
                         case (R.id.leftParen):
                             editable.insert(start, "(");
@@ -206,10 +204,10 @@ public class CreateFunctionFragment extends Fragment{
                             editable.insert(start,"[pi]");
                             break;
                         case (R.id.left):
-                            editText.setSelection(smartSelectLeft(editable,start));
+                            getEditText().setSelection(smartSelectLeft(editable, start));
                             break;
                         case (R.id.right):
-                            editText.setSelection(smartSelectRight(editable,start));
+                            getEditText().setSelection(smartSelectRight(editable, start));
                             break;
                         case (R.id.del):
                             if (start!=0) {
@@ -219,9 +217,16 @@ public class CreateFunctionFragment extends Fragment{
                         case (R.id.var):
                             listener.nameVariable();
                             break;
+                        case (R.id.save):
+
+                            break;
+                        case (R.id.cancel):
+
+                            break;
                     }
                     //todo shift calling implied multiply to the end when we hit save
-                    impliedMulitply(editable);
+                    //
+                    // impliedMulitply(editable);
                 }
             }
         };
@@ -426,7 +431,7 @@ public class CreateFunctionFragment extends Fragment{
         Editable editable = destination.getText();
         int start = destination.getSelectionStart();
         editable.insert(start, "[" + var + "]");
-        impliedMulitply(editable);
+//        impliedMulitply(editable);
     }
 
     /**
@@ -450,10 +455,7 @@ public class CreateFunctionFragment extends Fragment{
         move--;
         //if its an operator stop here
         if (isLeftOperator(ch)){
-            Log.d(LOG_CODE, "1st char is operator, early exit. idx: " + (start+move));
-            if (ch=='('){
-                return smartSelectLeft(editable,start+move);
-            }
+
             return start+move;
         }
         //if we are next to a variable we should skip to the end
@@ -546,8 +548,7 @@ public class CreateFunctionFragment extends Fragment{
      * @return The index of the next term to the right.
      */
     private int smartSelectRight(Editable editable, int start) {
-//        Log.d(LOG_CODE, "Smart select called start: " + start);
-//        Log.d(LOG_CODE, "String: "+ editable.toString());
+//        Log.d(LOG_CODE, "Smart : "+ editable.toString());
         int move = 0;
 
         if (start==editable.toString().length()-1){
@@ -607,8 +608,8 @@ public class CreateFunctionFragment extends Fragment{
      */
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            listener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnFunctionFragmentInteractionListener) {
+            listener = (OnFunctionFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -622,8 +623,13 @@ public class CreateFunctionFragment extends Fragment{
         listener = null;
     }
 
+    public EditText getEditText() {
+        return editText;
+    }
 
-
+    public void setEditText(EditText editText) {
+        this.editText = editText;
+    }
 
 
     /**
@@ -636,11 +642,22 @@ public class CreateFunctionFragment extends Fragment{
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnFunctionFragmentInteractionListener {
         /**
          * Gets a variable name, checks for uniqueness and sets it in the edit text window.
          */
         public void nameVariable();
+
+        /**
+         * checks the function for valididty, displays an error message if not valid, if valid it
+         * stores it in the database, then returns the activity to th last screen
+         */
+        public void saveFunction(CreateFunctionFragment fragment);
+
+        /**
+         * cancel function, returns to the last activity.
+         */
+        public void cancelFunction();
 
     }
 }

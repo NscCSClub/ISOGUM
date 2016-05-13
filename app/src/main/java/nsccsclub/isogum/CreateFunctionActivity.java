@@ -21,11 +21,14 @@ import java.util.Objects;
  * need to be implemented
  */
 public class CreateFunctionActivity extends AppCompatActivity implements
-        CreateFunctionFragment.OnFragmentInteractionListener,NameVariableDialog.NameDialogListener{
+        CreateFunctionFragment.OnFunctionFragmentInteractionListener,NameVariableDialog.NameDialogListener{
 
     //class constants used for storing and retrieving temporary data
     static final String TEMP_NAME = "function_name";
     static final String TEMP_FUNCTION = "function_function";
+
+    DBHandler dbHandler;
+    FunctionParser functionParser;
 
 
 
@@ -35,6 +38,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_create_function);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        dbHandler = new DBHandler(this);
 
     }
 
@@ -64,6 +68,46 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     public void nameVariable() {
         NameVariableDialog dialog = new NameVariableDialog();
         dialog.show(getSupportFragmentManager(),"name");
+    }
+
+    /**
+     * checks the function for valididty, displays an error message if not valid, if valid it
+     * stores it in the database, then returns the activity to th last screen
+     */
+    @Override
+    public void saveFunction(CreateFunctionFragment fragment) {
+        //checks if valid data
+        functionParser.setFunction(fragment.getEditText().getText().toString());
+        if (functionParser.isValid()){
+            //if valid
+            //todo implement naming framework after popup activity
+            Function function = new Function("FIX_THIS",functionParser.getFunction());
+            if(dbHandler.isDuplicateFunction(function)){
+                //we are updating and existing variable
+                //find the id and store it
+                function.setId(dbHandler.findFunctionByName(function.getName()));
+                dbHandler.updateFunction(function);
+                this.onBackPressed();
+            }
+            else {
+                //we are creating a new function we are good to go
+                dbHandler.createFunction(function);
+                this.onBackPressed();
+            }
+        }
+        else {
+            //something is wrong with the user defined function show popup
+            Toast.makeText(getApplicationContext(),"Invalid Function",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * cancel function, returns to the last activity.
+     */
+    @Override
+    public void cancelFunction() {
+        this.onBackPressed();
+
     }
 
     @Override

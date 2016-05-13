@@ -131,8 +131,8 @@ public class FunctionActivity extends AppCompatActivity
             Intent intent = new Intent(this, VariableActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_help) {
-            Intent intent = new Intent(this,HelpActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this,HelpActivity.class);
+//            startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
 

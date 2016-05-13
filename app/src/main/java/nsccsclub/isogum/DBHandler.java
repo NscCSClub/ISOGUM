@@ -244,11 +244,11 @@ public class DBHandler extends SQLiteOpenHelper {
         //iterate through names and check for duplicates
         if (cursor.moveToFirst()){
             do{
-               if (function.getName().compareTo(cursor.getString(1))==0){
-                   db.close();
-                   cursor.close();
-                   return true;
-               }
+                if (function.getName().compareTo(cursor.getString(1))==0){
+                    db.close();
+                    cursor.close();
+                    return true;
+                }
             } while(cursor.moveToNext());
         }
         db.close();
