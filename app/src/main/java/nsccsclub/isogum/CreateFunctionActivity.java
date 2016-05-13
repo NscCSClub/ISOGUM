@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,14 +24,11 @@ import java.util.Objects;
 public class CreateFunctionActivity extends AppCompatActivity implements
         CreateFunctionFragment.OnFunctionFragmentInteractionListener,NameVariableDialog.NameDialogListener{
 
+    public final String LOG_CODE = "CreateFunctionActivity";
+
     //class constants used for storing and retrieving temporary data
     static final String TEMP_NAME = "function_name";
     static final String TEMP_FUNCTION = "function_function";
-
-    DBHandler dbHandler;
-    FunctionParser functionParser;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,6 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_create_function);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        dbHandler = new DBHandler(this);
 
     }
 
@@ -75,9 +72,13 @@ public class CreateFunctionActivity extends AppCompatActivity implements
      * stores it in the database, then returns the activity to th last screen
      */
     @Override
-    public void saveFunction(CreateFunctionFragment fragment) {
+    public void saveFunction(EditText editText) {
+        FunctionParser functionParser = new FunctionParser();
+        DBHandler dbHandler = new DBHandler(this.getApplicationContext());
+        Log.d(LOG_CODE, "hello");
+        Log.d(LOG_CODE, editText.getText().toString());
         //checks if valid data
-        functionParser.setFunction(fragment.getEditText().getText().toString());
+        functionParser.setFunction(editText.getText().toString());
         if (functionParser.isValid()){
             //if valid
             //todo implement naming framework after popup activity
@@ -87,12 +88,12 @@ public class CreateFunctionActivity extends AppCompatActivity implements
                 //find the id and store it
                 function.setId(dbHandler.findFunctionByName(function.getName()));
                 dbHandler.updateFunction(function);
-                this.onBackPressed();
+                this.finish();
             }
             else {
                 //we are creating a new function we are good to go
                 dbHandler.createFunction(function);
-                this.onBackPressed();
+                this.finish();
             }
         }
         else {
@@ -106,7 +107,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
      */
     @Override
     public void cancelFunction() {
-        this.onBackPressed();
+        this.finish();
 
     }
 

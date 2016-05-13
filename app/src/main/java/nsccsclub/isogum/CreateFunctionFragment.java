@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -88,7 +89,7 @@ public class CreateFunctionFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_function, container, false);
+        final View view = inflater.inflate(R.layout.fragment_create_function, container, false);
         View.OnClickListener onClickListener = new View.OnClickListener(){
 
 
@@ -218,10 +219,12 @@ public class CreateFunctionFragment extends Fragment{
                             listener.nameVariable();
                             break;
                         case (R.id.save):
+                            impliedMulitply(editable);
 
+                            listener.saveFunction(getEditText());
                             break;
                         case (R.id.cancel):
-
+                            listener.cancelFunction();
                             break;
                     }
                     //todo shift calling implied multiply to the end when we hit save
@@ -652,7 +655,7 @@ public class CreateFunctionFragment extends Fragment{
          * checks the function for valididty, displays an error message if not valid, if valid it
          * stores it in the database, then returns the activity to th last screen
          */
-        public void saveFunction(CreateFunctionFragment fragment);
+        public void saveFunction(EditText editText);
 
         /**
          * cancel function, returns to the last activity.
