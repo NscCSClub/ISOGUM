@@ -3,48 +3,50 @@ package nsccsclub.isogum;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.MenuInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.PopupMenu;
+import android.view.View;
 
-public class VariableActivity extends AppCompatActivity
+/**
+ * Created by csconway on 5/13/2016.
+ */
+public class HelpActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,
         PopupMenu.OnMenuItemClickListener{
 
-    @Override
+@Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_variable);
+        setContentView(R.layout.activity_help);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopup(findViewById(R.id.fab));
-            }
+@Override
+public void onClick(View view) {
+        showPopup(findViewById(R.id.fab));
+        }
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
     public void showPopup(View v) {
         //creates the popup object
         PopupMenu popup = new PopupMenu(this,v);
@@ -59,7 +61,7 @@ public class VariableActivity extends AppCompatActivity
 
         //makes visible in activity
         popup.show();
-    }
+        }
 
 
     @Override
@@ -73,20 +75,18 @@ public class VariableActivity extends AppCompatActivity
 
         //starts create activity with proper message
         switch(item.getItemId()) {
-            case R.id.new_function:
-                intent = new Intent(this,CreateFunctionActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.new_variable:
-                intent = new Intent(this,CreateVariableActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                //unrecognizable input try again
-                return false;
+        case R.id.new_function:
+            intent = new Intent(this,CreateFunctionActivity.class);
+            startActivity(intent);
+            return true;
+        case R.id.new_variable:
+            intent = new Intent(this,CreateVariableActivity.class);
+            startActivity(intent);
+            return true;
+        default:
+        //unrecognizable input try again
+        return false;
         }
-
-
     }
 
     @Override
@@ -102,7 +102,7 @@ public class VariableActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.variable, menu);
+        getMenuInflater().inflate(R.menu.help, menu);
         return true;
     }
 
@@ -118,8 +118,8 @@ public class VariableActivity extends AppCompatActivity
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+            return super.onOptionsItemSelected(item);
+        }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -130,12 +130,14 @@ public class VariableActivity extends AppCompatActivity
             Intent intent = new Intent(this, FunctionActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_variable) {
+            Intent intent = new Intent(this, VariableActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_help){
-            Intent intent = new Intent(this, HelpActivity.class);
-            startActivity(intent);
+        }
+        else if (id == R.id.nav_help){
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
