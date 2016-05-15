@@ -22,8 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".1"
-                android:id="@+id/create_function_function_field"
-                android:paddingBottom="5dp">
+                android:id="@+id/create_function_function_field">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,15 +48,14 @@
                 android:layout_height="fill_parent"
                 android:layout_weight=".1"
                 android:layout_below="@id/create_function_function_field"
-                android:id="@+id/create_function_keys"
-                android:paddingTop="5dp">
+                android:id="@+id/create_function_keys">
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight=".1"
-                    android:paddingTop="5dp">
+                    android:paddingTop="1dp">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -79,7 +77,7 @@
                             android:text="ACos"
                             android:id="@+id/aCos"
                             android:layout_weight=".2"
-                            android:onClick="onTextButton"/>
+                            android:onClick="onTextButton" />
 
                         <Button
                             android:layout_width="fill_parent"
@@ -122,7 +120,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight=".1"
-                    android:paddingBottom="5dp">
+                    android:paddingBottom="1dp">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -192,7 +190,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".66"
+                        android:layout_weight="1"
                         android:paddingRight="1dp">
 
                         <Button
@@ -228,7 +226,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".33"
+                        android:layout_weight=".01"
                         android:paddingLeft="1dp">
 
                         <Button
@@ -260,7 +258,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".66"
+                        android:layout_weight="1"
                         android:paddingRight="1dp">
 
                         <Button
@@ -295,7 +293,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".33"
+                        android:layout_weight=".01"
                         android:paddingLeft="1dp">
 
                         <Button
@@ -327,7 +325,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".66"
+                        android:layout_weight="1"
                         android:paddingRight="1dp">
 
                         <Button
@@ -362,7 +360,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".33"
+                        android:layout_weight=".01"
                         android:paddingLeft="1dp">
 
                         <Button
@@ -388,13 +386,14 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight=".1">
+                    android:layout_weight=".1"
+                    android:paddingBottom="1dp">
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".66"
+                        android:layout_weight="1"
                         android:paddingRight="1dp">
 
                         <Button
@@ -429,7 +428,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight=".33"
+                        android:layout_weight=".01"
                         android:paddingLeft="1dp">
 
                         <Button
@@ -456,9 +455,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight=".1"
-                    android:paddingTop="1dp"
-                    android:paddingBottom="1dp">
+                    android:layout_weight=".1">
 
                     <Button
                         android:layout_width="wrap_content"
