@@ -1,5 +1,6 @@
 package nsccsclub.isogum;
 
+import android.renderscript.Double2;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
@@ -79,6 +80,14 @@ public class FunctionParserTest extends AndroidTestCase {
         parser.getNext();
         parser.getNext();
         assertTrue(Double.valueOf(parser.getNext().getValue().toString())==64.666);
+        parser.setFunction("-4*-34");
+        assertTrue(Double.valueOf(parser.getNext().getValue().toString())==-4);
+        assertTrue(parser.getNext().getValue().toString().equals("*"));
+        assertTrue(Double.valueOf(parser.getNext().getValue().toString())==-34);
+        parser.setFunction("-4*-3");
+        assertTrue(Double.valueOf(parser.getNext().getValue().toString())==-4);
+        assertTrue(parser.getNext().getValue().toString().equals("*"));
+        assertTrue(Double.valueOf(parser.getNext().getValue().toString())==-3);
     }
 
 
@@ -166,5 +175,6 @@ public class FunctionParserTest extends AndroidTestCase {
         assertFalse(parser.isValid());
         parser.setFunction("[e]^[hello");
         assertFalse(parser.isValid());
+
     }
 }

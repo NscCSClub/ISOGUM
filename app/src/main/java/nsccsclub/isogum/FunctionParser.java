@@ -74,7 +74,6 @@ public class FunctionParser {
         char ch;
         //iterate through the function
         while (idx < getFunction().length()){
-
             //get a character to test
             ch = getFunction().charAt(idx);
             if (ch =='('){
@@ -94,17 +93,13 @@ public class FunctionParser {
                             (idx<getFunction().length()-1&& isNumber(getFunction().charAt(idx+1)) &&
                             idx>0 && (getFunction().charAt(idx-1)=='('||
                                     isOperator(getFunction().charAt(idx-1))))){
-
-                        Log.d(LOG_CODE,"test passed");
                         //idx of start of number
                         temp = idx;
-                        //takes care of length one integer
-                        boolean flag = false;
+
                         if (idx < getFunction().length()-1) {
                             //our number is longer than length 1 keep going
                             idx++;
                             ch = getFunction().charAt(idx);
-                            flag = true;
                         }
                         while ((isNumber(ch)||ch == '.')&& idx < getFunction().length()-1) {
                             //gets all remaining digits and iterates until it reaches one past the end.
@@ -116,8 +111,16 @@ public class FunctionParser {
                         //not sure where it came from
                         if (getFunction().substring(temp, idx).compareTo("") != 0) {
                             //adds token to list
-                            list.add(new Token(Type.NUMBER,
-                                    Double.parseDouble(getFunction().substring(temp, idx))));
+
+                            if(isNumber(ch) ) {
+                                list.add(new Token(Type.NUMBER,
+                                        Double.parseDouble(getFunction().substring(temp, idx+1))));
+                                idx++;
+                            }
+                            else{
+                                list.add(new Token(Type.NUMBER,
+                                        Double.parseDouble(getFunction().substring(temp, idx))));
+                            }
                         }
                         //extra increment to handle one digit numbers
                         idx--;
