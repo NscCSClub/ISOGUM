@@ -1,5 +1,6 @@
 package nsccsclub.isogum;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 ;
 import android.app.Dialog;
@@ -58,7 +59,7 @@ public class NameVariableDialog extends android.support.v4.app.DialogFragment {
         super.onAttach(context);
         if (context instanceof NameDialogListener) {
             listener = (NameDialogListener) context;
-        } else {
+
             throw new RuntimeException(context.toString()
                     + " must implement NameDialogListnerf");
         }

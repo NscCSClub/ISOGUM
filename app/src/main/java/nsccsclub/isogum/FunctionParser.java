@@ -89,7 +89,45 @@ public class FunctionParser {
             }
             else if (isOperator(ch)){
                 //found an operator
-                list.add(new Token(Type.OPERATOR,ch));
+                if (ch == '-'){
+                    if ((idx == 0 && getFunction().length()>1 && isNumber(getFunction().charAt(idx+1))) ||
+                            (idx<getFunction().length()-1&& isNumber(getFunction().charAt(idx+1)) &&
+                            idx>0 && (getFunction().charAt(idx-1)=='('||
+                                    isOperator(getFunction().charAt(idx-1))))){
+
+                        Log.d(LOG_CODE,"test passed");
+                        //idx of start of number
+                        temp = idx;
+                        //takes care of length one integer
+                        boolean flag = false;
+                        if (idx < getFunction().length()-1) {
+                            //our number is longer than length 1 keep going
+                            idx++;
+                            ch = getFunction().charAt(idx);
+                            flag = true;
+                        }
+                        while ((isNumber(ch)||ch == '.')&& idx < getFunction().length()-1) {
+                            //gets all remaining digits and iterates until it reaches one past the end.
+                            idx++;
+                            ch = getFunction().charAt(idx);
+                        }
+
+                        //boolean test prevents random null pointer exception
+                        //not sure where it came from
+                        if (getFunction().substring(temp, idx).compareTo("") != 0) {
+                            //adds token to list
+                            list.add(new Token(Type.NUMBER,
+                                    Double.parseDouble(getFunction().substring(temp, idx))));
+                        }
+                        //extra increment to handle one digit numbers
+                        idx--;
+                    }
+                    else {
+                        list.add(new Token(Type.OPERATOR, ch));
+                    }
+                }else {
+                    list.add(new Token(Type.OPERATOR, ch));
+                }
                 idx++;
             }
             else if (isNumber(ch)){
@@ -389,11 +427,13 @@ public class FunctionParser {
 
         //iterate through every token in the list
         while (hasNext()){
+
             if(!test){
                 //ealy exit for bad data
                 return test;
             }
             token = getNext();
+            Log.d(LOG_CODE,"type: " +token.getType());
             if(idx ==1 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
                 //function can never start with either of these two characters.
                 return false;

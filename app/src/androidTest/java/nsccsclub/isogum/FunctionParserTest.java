@@ -1,14 +1,18 @@
 package nsccsclub.isogum;
 
+import android.test.AndroidTestCase;
 import android.util.Log;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+
 /**
  * Created by csconway on 5/1/2016.
  */
-public class FunctionParserTest extends TestCase {
+public class FunctionParserTest extends AndroidTestCase {
     public final String LOG_CODE = "FunctionParserTest";
+
 
 
     public void testGetNext() throws Exception {
@@ -76,6 +80,7 @@ public class FunctionParserTest extends TestCase {
         parser.getNext();
         assertTrue(Double.valueOf(parser.getNext().getValue().toString())==64.666);
     }
+
 
 
 
