@@ -436,7 +436,7 @@ public class FunctionParser {
                 return test;
             }
             token = getNext();
-            Log.d(LOG_CODE,"type: " +token.getType());
+//            Log.d(LOG_CODE,"type: " +token.getType());
             if(idx ==1 &&(token.getType()==Type.OPERATOR||token.getType()==Type.RIGHT_PAREN)){
                 //function can never start with either of these two characters.
                 return false;

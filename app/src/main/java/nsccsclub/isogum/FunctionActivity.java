@@ -18,6 +18,11 @@ import android.widget.PopupMenu;
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
 
+    /**
+     * the name of a created fucntion or variable.
+     */
+    public static final String EXTRA_NAME = "name";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +78,12 @@ public class FunctionActivity extends AppCompatActivity
         switch(item.getItemId()) {
             case R.id.new_function:
                 intent = new Intent(this,CreateFunctionActivity.class);
+                intent.putExtra(this.EXTRA_NAME,"INSERT_NAME_HERE");
                 startActivity(intent);
                 return true;
             case R.id.new_variable:
                 intent = new Intent(this,CreateVariableActivity.class);
+                intent.putExtra(this.EXTRA_NAME,"INSERT_NAME_HERE");
                 startActivity(intent);
                 return true;
             default:

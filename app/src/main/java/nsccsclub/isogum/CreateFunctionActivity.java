@@ -24,17 +24,26 @@ import java.util.Objects;
 public class CreateFunctionActivity extends AppCompatActivity implements
         CreateFunctionFragment.OnFunctionFragmentInteractionListener,NameVariableDialog.NameDialogListener{
 
+    /**
+     * The log code for useing the log class and logcat
+     */
     public final String LOG_CODE = "CreateFunctionActivity";
 
-    //class constants used for storing and retrieving temporary data
-    static final String TEMP_NAME = "function_name";
-    static final String TEMP_FUNCTION = "function_function";
+    /**
+     * The name of the function that we are creating
+     */
+    public String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_function);
 
+        //setting the name of the function and header bar
+        Intent intent = getIntent();
+        name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
+
+        getSupportActionBar().setTitle(name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }

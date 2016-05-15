@@ -75,10 +75,12 @@ public class VariableActivity extends AppCompatActivity
         switch(item.getItemId()) {
             case R.id.new_function:
                 intent = new Intent(this,CreateFunctionActivity.class);
+                intent.putExtra(FunctionActivity.EXTRA_NAME, "INSERT_NAME_HERE");
                 startActivity(intent);
                 return true;
             case R.id.new_variable:
                 intent = new Intent(this,CreateVariableActivity.class);
+                intent.putExtra(FunctionActivity.EXTRA_NAME, "INSERT_NAME_HERE");
                 startActivity(intent);
                 return true;
             default:
