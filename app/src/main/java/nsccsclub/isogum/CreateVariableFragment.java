@@ -7,27 +7,41 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CreateVariableFragment.OnFragmentInteractionListener} interface
+ * {@link CreateVariableFragment.OnVariableFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link CreateVariableFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class CreateVariableFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    /**
+     * log code for using logcat
+     */
+    public static final String LOG_CODE = "CreateVariableFragment";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    /**
+     * Argument for updating an existing variable needs to be implemented
+     */
+    private static final String ARG_VALUE = "value";
+    /**
+     * 2nd argument for updating an existing function
+     */
+    private static final String ARG_NAME = "name";
 
-    private OnFragmentInteractionListener mListener;
+    /**
+     *
+     */
+    private String value;
+    private String name;
+
+    private EditText editText;
+
+    private OnVariableFragmentInteractionListener listener;
 
     public CreateVariableFragment() {
         // Required empty public constructor
@@ -45,8 +59,8 @@ public class CreateVariableFragment extends Fragment {
     public static CreateVariableFragment newInstance(String param1, String param2) {
         CreateVariableFragment fragment = new CreateVariableFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_VALUE, param1);
+        args.putString(ARG_NAME, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,8 +69,8 @@ public class CreateVariableFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            value = getArguments().getString(ARG_VALUE);
+            name = getArguments().getString(ARG_NAME);
         }
     }
 
@@ -69,16 +83,16 @@ public class CreateVariableFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (listener != null) {
+            listener.onFragmentInteraction(uri);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnVariableFragmentInteractionListener) {
+            listener = (OnVariableFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -88,7 +102,7 @@ public class CreateVariableFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     /**
@@ -101,7 +115,7 @@ public class CreateVariableFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnVariableFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }

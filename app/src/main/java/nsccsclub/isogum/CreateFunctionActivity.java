@@ -22,7 +22,7 @@ import java.util.Objects;
  * need to be implemented
  */
 public class CreateFunctionActivity extends AppCompatActivity implements
-        CreateFunctionFragment.OnFunctionFragmentInteractionListener,NameVariableDialog.NameDialogListener{
+        CreateFunctionFragment.OnFunctionFragmentInteractionListener, NameVariableDialog.NameDialogListener {
 
     /**
      * The log code for useing the log class and logcat
@@ -73,7 +73,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
      */
     public void nameVariable() {
         NameVariableDialog dialog = new NameVariableDialog();
-        dialog.show(getSupportFragmentManager(),"name");
+        dialog.show(getSupportFragmentManager(), "name");
     }
 
     /**
@@ -118,10 +118,8 @@ public class CreateFunctionActivity extends AppCompatActivity implements
 
     }
 
+
     @Override
-    /**
-     * checks a variable name for valididty and adds it to the edit text window
-     */
     public void onPositiveClick(DialogFragment dialog) {
         EditText editText = (EditText)dialog.getDialog().findViewById(R.id.varaible_name_field);
         String content = editText.getText().toString();

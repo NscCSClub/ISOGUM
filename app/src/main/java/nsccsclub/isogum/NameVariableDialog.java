@@ -57,9 +57,11 @@ public class NameVariableDialog extends android.support.v4.app.DialogFragment {
      */
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof NameDialogListener) {
+        if (context instanceof NameVariableDialog.NameDialogListener) {
             listener = (NameDialogListener) context;
 
+        }
+        else{
             throw new RuntimeException(context.toString()
                     + " must implement NameDialogListnerf");
         }
