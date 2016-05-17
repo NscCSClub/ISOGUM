@@ -7,7 +7,7 @@ import android.util.Log;
  * relating to calculating uncertainty.
  * Created by csconway on 4/21/2016.
  */
-public class Function {
+public class Function implements Comparable<Function>{
     /**
      * The unique name of the function, must be tested in SQLLite data base for uniqueness.
      */
@@ -22,6 +22,8 @@ public class Function {
      */
     private long id;
 
+    private String derivative;
+
     /**
      * Creates a function object with no database id, useful for simple unstored calculations,
      * or initially storing the object.
@@ -33,6 +35,21 @@ public class Function {
         this.setFunction(function);
         // id has not been set by database yet
         this.setId(-1);
+        this.setDerivative("");
+    }
+
+    /**
+     * Creates a function object with no database id, useful for simple unstored calculations,
+     * or initially storing the object.
+     * @param name The name of the function.
+     * @param function The functino to evaluate.
+     */
+    public Function(String name, String function, String derivative){
+        this.setName(name);
+        this.setFunction(function);
+        // id has not been set by database yet
+        this.setId(-1);
+        this.setDerivative(derivative);
     }
 
     /**
@@ -42,10 +59,11 @@ public class Function {
      * @param function The function to evaluate
      * @param id The database id of the function.
      */
-    public Function(String name, String function, long id){
+    public Function(String name, String function, String derivative, long id){
         this.setName(name);
         this.setFunction(function);
         this.setId(id);
+        this.setDerivative(derivative);
     }
 
     /**
@@ -115,5 +133,35 @@ public class Function {
         boolean nameTest = this.name.compareTo(function.getName())==0;
         boolean functionTest = this.function.compareTo(function.getFunction())==0;
         return nameTest && functionTest;
+    }
+
+    /**
+     * Compares this object to the specified object to determine their relative
+     * order.
+     *
+     * @param another the object to compare to this instance.
+     * @return a negative integer if this instance is less than {@code another};
+     * a positive integer if this instance is greater than.
+     *
+     * COMPARES BASED ON LEXOGRAPHIC NAME
+     * {@code another}; 0 if this instance has the same order as
+     * {@code another}.
+     * @throws ClassCastException if {@code another} cannot be converted into something
+     *                            comparable to {@code this} instance.
+     */
+    @Override
+    public int compareTo(Function another) {
+        return this.name.compareTo(another.getName());
+    }
+
+    /**
+     * The generic derivative of the function.
+     */
+    public String getDerivative() {
+        return derivative;
+    }
+
+    public void setDerivative(String derivative) {
+        this.derivative = derivative;
     }
 }

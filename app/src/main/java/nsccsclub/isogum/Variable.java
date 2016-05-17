@@ -4,7 +4,7 @@ package nsccsclub.isogum;
  * A variable to be passed into a function object for the ISO GUM calculator.
  * Created by csconway on 4/21/2016.
  */
-public class Variable {
+public class Variable implements Comparable<Variable>{
     /**
      * The unique name of the variable.
      */
@@ -130,5 +130,24 @@ public class Variable {
                         this.value >= variable.getValue() - .00001)&&
                 (this.uncertainty <= variable.getUncertainty() + .00001 &&
                 this.uncertainty >= variable.uncertainty - .00001);
+    }
+
+    /**
+     * Compares this object to the specified object to determine their relative
+     * order.
+     *
+     * TESTS BASED ON LEXOGRAPHIC NAME
+     *
+     * @param another the object to compare to this instance.
+     * @return a negative integer if this instance is less than {@code another};
+     * a positive integer if this instance is greater than
+     * {@code another}; 0 if this instance has the same order as
+     * {@code another}.
+     * @throws ClassCastException if {@code another} cannot be converted into something
+     *                            comparable to {@code this} instance.
+     */
+    @Override
+    public int compareTo(Variable another) {
+        return this.getName().compareTo(another.getName());
     }
 }
