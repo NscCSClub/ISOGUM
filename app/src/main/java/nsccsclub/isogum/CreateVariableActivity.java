@@ -49,30 +49,34 @@ public class CreateVariableActivity extends AppCompatActivity implements
 
     /**
      * checks the variable for valididty, displays an error message if not valid, if valid it
-     * stores it in the database, then returns the activity to th last screen
+     * stores it in the database, then returns the activity to th last screen.
+     *
+     * If uncertainty is left blank it is set to zero
      *
      * @param value the edit text field containing the current value.
      * @param uncertainty The edit text field containging the current uncertainty.
      */
     @Override
-    public void saveVariable(EditText value, EditText uncertainty) {
-        String val = value.getText().toString();
-        String unc = uncertainty.getText().toString();
+    public void saveVariable(String value, String uncertainty) {
         //make sure there is a valid data here
         double v=0, u=0;
         try{
-            v = Double.parseDouble(val);
+            v = Double.parseDouble(value);
         }catch (Exception e){
             Toast.makeText(getApplicationContext(),
                     "The value is not a valid number.", Toast.LENGTH_SHORT).show();
             return;
         }
         try{
-            u = Double.parseDouble(unc);
+            u = Double.parseDouble(uncertainty);
         }catch (Exception e){
-            Toast.makeText(getApplicationContext(),
+            if(uncertainty.compareTo("")!=0){
+                Toast.makeText(getApplicationContext(),
                     "The uncertainty is not a valid number", Toast.LENGTH_SHORT).show();
-            return;
+                return;
+            }else{
+                u = 0;
+            }
         }
         //check for duplicates
         DBHandler dbHandler = new DBHandler(this.getApplicationContext());

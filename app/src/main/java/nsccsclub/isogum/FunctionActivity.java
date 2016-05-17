@@ -83,7 +83,7 @@ public class FunctionActivity extends AppCompatActivity
                 return true;
             case R.id.new_variable:
                 intent = new Intent(this,CreateVariableActivity.class);
-                intent.putExtra(this.EXTRA_NAME,"INSERT_NAME_HERE");
+                intent.putExtra(this.EXTRA_NAME,"INSERT_V_NAME_HERE");
                 startActivity(intent);
                 return true;
             default:

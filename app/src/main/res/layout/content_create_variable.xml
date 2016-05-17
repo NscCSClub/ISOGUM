@@ -4,9 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/variable_content">
+    android:id="@+id/variable_content"
+    tools:context="nsccsclub.isogum.CreateVariableActivity">
     <fragment android:name="nsccsclub.isogum.CreateVariableFragment"
-        android:id="@+id/function_fragment"
+        android:id="@+id/variable_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_create_variable"

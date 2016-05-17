@@ -96,7 +96,7 @@ public class CreateVariableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_create_function, container, false);
+        final View view = inflater.inflate(R.layout.fragment_create_variable, container, false);
         View.OnClickListener onClickListener = new View.OnClickListener(){
 
 
@@ -169,7 +169,10 @@ public class CreateVariableFragment extends Fragment {
                             break;
 
                         case (R.id.save):
-                            listener.saveVariable(value_field, uncertaindy_field);
+                            listener.saveVariable(((EditText)view.findViewById(R.id.editText))
+                                    .getText().toString(),
+                                    ((EditText)view.findViewById(R.id.editText))
+                                            .getText().toString());
                             break;
                         case (R.id.cancel):
                             listener.cancelVariable();
@@ -193,10 +196,14 @@ public class CreateVariableFragment extends Fragment {
              */
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.requestFocus();
                 return true;
             }
         };
         view.findViewById(R.id.editText).setOnTouchListener(onTouchListener);
+        view.findViewById(R.id.editText).setFocusable(true);
+        view.findViewById(R.id.editText3).setOnTouchListener(onTouchListener);
+        view.findViewById(R.id.editText3).setFocusable(true);
         view.findViewById(R.id.num0).setOnClickListener(onClickListener);
         view.findViewById(R.id.num1).setOnClickListener(onClickListener);
         view.findViewById(R.id.num2).setOnClickListener(onClickListener);
@@ -251,7 +258,7 @@ public class CreateVariableFragment extends Fragment {
          * checks the variable for valididty, displays an error message if not valid, if valid it
          * stores it in the database, then returns the activity to th last screen
          */
-        public void saveVariable(EditText value, EditText uncertainty);
+        public void saveVariable(String value, String uncertainty);
 
         /**
          * cancel variable, returns to the last activity.
