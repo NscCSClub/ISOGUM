@@ -46,7 +46,8 @@ public class CreateVariableFragment extends Fragment {
     private String name;
     private String uncertainty;
 
-    private EditText editText;
+    private EditText value_field;
+    private EditText uncertaindy_field;
 
     private OnVariableFragmentInteractionListener listener;
 
@@ -110,9 +111,9 @@ public class CreateVariableFragment extends Fragment {
                 if (v != null){
                     //edit text is the only focusable object in the activity so we should be okay.
                     //Initialize edit text here
-                    setEditText((EditText) getActivity().getCurrentFocus());
-                    int start = getEditText().getSelectionStart();
-                    Editable editable = getEditText().getText();
+                    EditText current = ((EditText) getActivity().getCurrentFocus());
+                    int start = current.getSelectionStart();
+                    Editable editable = current.getText();
                     int id = v.getId();
                     switch (id){
                         case (R.id.num0):
@@ -158,17 +159,17 @@ public class CreateVariableFragment extends Fragment {
                             break;
                         case (R.id.left):
                             if(start>0){
-                                getEditText().setSelection(start-1);
+                                current.setSelection(start-1);
                             }
                             break;
                         case (R.id.right):
                             if(start<editable.length()){
-                                getEditText().setSelection(start+1);
+                                current.setSelection(start+1);
                             }
                             break;
 
                         case (R.id.save):
-                            listener.saveVariable(editText);
+                            listener.saveVariable(value_field, uncertaindy_field);
                             break;
                         case (R.id.cancel):
                             listener.cancelVariable();
@@ -227,13 +228,7 @@ public class CreateVariableFragment extends Fragment {
         }
     }
 
-    public EditText getEditText() {
-        return editText;
-    }
 
-    public void setEditText(EditText editText) {
-        this.editText = editText;
-    }
 
     @Override
     public void onDetach() {
@@ -256,7 +251,7 @@ public class CreateVariableFragment extends Fragment {
          * checks the variable for valididty, displays an error message if not valid, if valid it
          * stores it in the database, then returns the activity to th last screen
          */
-        public void saveVariable(EditText editText);
+        public void saveVariable(EditText value, EditText uncertainty);
 
         /**
          * cancel variable, returns to the last activity.

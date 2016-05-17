@@ -88,8 +88,8 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         functionParser.setFunction(editText.getText().toString());
         if (functionParser.isValid()){
             //if valid
-            //todo implement naming framework after popup activity
-            Function function = new Function("FIX_THIS",functionParser.getFunction());
+
+            Function function = new Function(name,functionParser.getFunction());
             if(dbHandler.isDuplicateFunction(function)){
                 //we are updating and existing variable
                 //find the id and store it

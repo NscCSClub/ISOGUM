@@ -20,35 +20,21 @@
             android:padding="@dimen/field_margin" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
             android:padding="@dimen/field_margin"
             android:nestedScrollingEnabled="false"
             android:singleLine="true"
             android:inputType="none" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="+/-"
-            android:id="@+id/textView2"
-            android:padding="@dimen/field_margin" />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText2"
-            android:padding="@dimen/field_margin"
-            android:nestedScrollingEnabled="false"
-            android:singleLine="true"
-            android:inputType="none" />
+
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight=".1"
-        android:layout_below="@id/create_variable_variable_field"
+        android:layout_below="@id/create_variable_uncertainty_field"
         android:id="@+id/create_varaible_keys">
 
         <LinearLayout
@@ -99,8 +85,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".1">
-
+            android:layout_weight=".1"
+            android:layout_below="@id/create_variable_variable_field"            >
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -285,6 +271,30 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_variable_uncertainty_field"
+        android:layout_below="@+id/create_variable_variable_field">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=" +/- "
+            android:id="@+id/textView3"
+            android:padding="@dimen/field_margin" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText3"
+            android:padding="@dimen/field_margin"
+            android:nestedScrollingEnabled="false"
+            android:singleLine="true"
+            android:inputType="none" />
+    </LinearLayout>
 
 
 </RelativeLayout>

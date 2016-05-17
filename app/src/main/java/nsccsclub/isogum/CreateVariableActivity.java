@@ -1,9 +1,11 @@
 package nsccsclub.isogum;
 
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class CreateVariableActivity extends AppCompatActivity implements
         CreateVariableFragment.OnVariableFragmentInteractionListener{
@@ -49,11 +51,41 @@ public class CreateVariableActivity extends AppCompatActivity implements
      * checks the variable for valididty, displays an error message if not valid, if valid it
      * stores it in the database, then returns the activity to th last screen
      *
-     * @param editText
+     * @param value the edit text field containing the current value.
+     * @param uncertainty The edit text field containging the current uncertainty.
      */
     @Override
-    public void saveVariable(EditText editText) {
-        //todo implment this
+    public void saveVariable(EditText value, EditText uncertainty) {
+        String val = value.getText().toString();
+        String unc = uncertainty.getText().toString();
+        //make sure there is a valid data here
+        double v=0, u=0;
+        try{
+            v = Double.parseDouble(val);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),
+                    "The value is not a valid number.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try{
+            u = Double.parseDouble(unc);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),
+                    "The uncertainty is not a valid number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //check for duplicates
+        DBHandler dbHandler = new DBHandler(this.getApplicationContext());
+
+        Variable variable = new Variable(name, v, u);
+        if(dbHandler.isDuplicateVariable(variable)){
+            variable.setId(dbHandler.findVariableByName(variable.getName()));
+            dbHandler.updateVariable(variable);
+        }
+        else{
+            dbHandler.createVariable(variable);
+        }
+        this.finish();
     }
 
     /**
@@ -61,6 +93,6 @@ public class CreateVariableActivity extends AppCompatActivity implements
      */
     @Override
     public void cancelVariable() {
-        //todo implement this
+        this.finish();
     }
 }
