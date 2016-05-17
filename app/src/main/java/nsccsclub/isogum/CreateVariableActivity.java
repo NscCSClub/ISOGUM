@@ -1,31 +1,66 @@
 package nsccsclub.isogum;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.EditText;
 
-public class CreateVariableActivity extends AppCompatActivity {
+public class CreateVariableActivity extends AppCompatActivity implements
+        CreateVariableFragment.OnVariableFragmentInteractionListener{
 
-    private InputKeyboard inputKeyboard;
+    /**
+     * The log code for useing the log class and logcat
+     */
+    public final String LOG_CODE = "CreateVariableActivity";
+    /**
+     * The name of the variable that we are creating
+     */
+    public String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_variable);
-        inputKeyboard = new InputKeyboard(this,R.id.keyboardview_variable,R.layout.keyboard_layout);
-        inputKeyboard.registerEditText(R.id.create_variable_name_bar);
-        inputKeyboard.registerEditText(R.id.create_variable_value_bar);
-        inputKeyboard.registerEditText(R.id.create_variable_uncertainty_bar);
+
+        //setting the name in the header bar
+        Intent intent = getIntent();
+        name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
+        getSupportActionBar().setTitle(name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+        //todo implement on restore instance state
+
+    }
+
     @Override
-    public void onBackPressed(){
-        // closes the keyboard if it is visible, or it closes the activity
-        if (inputKeyboard.isKeyboardVisible()){
-            inputKeyboard.hideInputKeyboard();
-        }
-        else {
-            this.finish();
-        }
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        //todo implement on save instance state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onBackPressed(){ this.finish(); }
+
+    /**
+     * checks the variable for valididty, displays an error message if not valid, if valid it
+     * stores it in the database, then returns the activity to th last screen
+     *
+     * @param editText
+     */
+    @Override
+    public void saveVariable(EditText editText) {
+        //todo implment this
+    }
+
+    /**
+     * cancel variable, returns to the last activity.
+     */
+    @Override
+    public void cancelVariable() {
+        //todo implement this
     }
 }

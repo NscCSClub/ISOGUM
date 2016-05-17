@@ -34,12 +34,17 @@ public class CreateVariableFragment extends Fragment {
      * 2nd argument for updating an existing function
      */
     private static final String ARG_NAME = "name";
+    /**
+     * 3rd argument for updating an existing variable
+     */
+    private static final String ARG_UNCERTAINTY = "uncertainty";
 
     /**
      *
      */
     private String value;
     private String name;
+    private String uncertainty;
 
     private EditText editText;
 
@@ -58,11 +63,12 @@ public class CreateVariableFragment extends Fragment {
      * @return A new instance of fragment CreateVariableFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateVariableFragment newInstance(String param1, String param2) {
+    public static CreateVariableFragment newInstance(String param1, String param2, String param3) {
         CreateVariableFragment fragment = new CreateVariableFragment();
         Bundle args = new Bundle();
         args.putString(ARG_VALUE, param1);
         args.putString(ARG_NAME, param2);
+        args.putString(ARG_UNCERTAINTY, param3);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,6 +82,7 @@ public class CreateVariableFragment extends Fragment {
         if (getArguments() != null) {
             value = getArguments().getString(ARG_VALUE);
             name = getArguments().getString(ARG_NAME);
+            uncertainty = getArguments().getString(ARG_UNCERTAINTY);
             ((EditText)this.getActivity().findViewById(R.id.editText)).setText(value);
         }
     }
@@ -161,10 +168,10 @@ public class CreateVariableFragment extends Fragment {
                             break;
 
                         case (R.id.save):
-                            listener.saveFunction(editText);
+                            listener.saveVariable(editText);
                             break;
                         case (R.id.cancel):
-                            listener.cancelFunction();
+                            listener.cancelVariable();
                             break;
                     }
                 }
@@ -249,11 +256,11 @@ public class CreateVariableFragment extends Fragment {
          * checks the variable for valididty, displays an error message if not valid, if valid it
          * stores it in the database, then returns the activity to th last screen
          */
-        public void saveFunction(EditText editText);
+        public void saveVariable(EditText editText);
 
         /**
          * cancel variable, returns to the last activity.
          */
-        public void cancelFunction();
+        public void cancelVariable();
     }
 }

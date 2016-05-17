@@ -15,14 +15,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/function_symbol"
+            android:text="x=..."
             android:id="@+id/textView"
             android:padding="@dimen/field_margin" />
 
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
+            android:padding="@dimen/field_margin"
+            android:nestedScrollingEnabled="false"
+            android:singleLine="true"
+            android:inputType="none" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="+/-"
+            android:id="@+id/textView2"
+            android:padding="@dimen/field_margin" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText2"
             android:padding="@dimen/field_margin"
             android:nestedScrollingEnabled="false"
             android:singleLine="true"
