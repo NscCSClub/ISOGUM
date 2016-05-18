@@ -8,14 +8,14 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".1"
+
         android:id="@+id/create_variable_variable_field">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="x=..."
+            android:text="@string/x_equals"
             android:id="@+id/textView"
             android:padding="@dimen/field_margin" />
 
@@ -24,9 +24,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/editText"
             android:padding="@dimen/field_margin"
-            android:nestedScrollingEnabled="false"
             android:singleLine="true"
-            android:inputType="none" />
+            android:inputType="none"
+            tools:targetApi="lollipop" />
 
     </LinearLayout>
     <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=" +/- "
+            android:text="@string/title_plus_minus"
             android:id="@+id/textView3"
             android:padding="@dimen/field_margin" />
 
@@ -49,7 +49,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/editText3"
             android:padding="@dimen/field_margin"
-            android:nestedScrollingEnabled="false"
             android:singleLine="true"
             android:inputType="none" />
     </LinearLayout>
@@ -58,7 +57,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_weight=".1"
         android:layout_below="@id/create_variable_uncertainty_field"
         android:id="@+id/create_varaible_keys">
 
@@ -66,11 +64,12 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".1">
+            android:layout_weight=".1"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingRight="1dp">
@@ -79,7 +78,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="7"
+                    android:text="@string/number_7"
                     android:id="@+id/num7"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -88,7 +87,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="8"
+                    android:text="@string/number_8"
                     android:id="@+id/num8"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -97,7 +96,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="9"
+                    android:text="@string/number_9"
                     android:id="@+id/num9"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -110,10 +109,11 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".1">
+            android:layout_weight=".1"
+            android:baselineAligned="false">
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingRight="1dp">
@@ -122,7 +122,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="4"
+                    android:text="@string/number_4"
                     android:id="@+id/num4"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -131,7 +131,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="5"
+                    android:text="@string/number_5"
                     android:id="@+id/num5"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -140,7 +140,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="6"
+                    android:text="@string/number_6"
                     android:id="@+id/num6"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -152,11 +152,12 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".1">
+            android:layout_weight=".1"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingRight="1dp">
@@ -165,7 +166,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="1"
+                    android:text="@string/number_1"
                     android:id="@+id/num1"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -174,7 +175,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="2"
+                    android:text="@string/number_2"
                     android:id="@+id/num2"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -183,7 +184,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="3"
+                    android:text="@string/number_3"
                     android:id="@+id/num3"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -196,11 +197,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".1"
-            android:paddingBottom="1dp">
+            android:paddingBottom="1dp"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingRight="1dp">
@@ -209,7 +211,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="0"
+                    android:text="@string/number_0"
                     android:id="@+id/num0"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -218,7 +220,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="."
+                    android:text="@string/number_point"
                     android:id="@+id/point"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -227,7 +229,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="-"
+                    android:text="@string/operator_minus"
                     android:id="@+id/neg"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -245,7 +247,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="Left"
+                android:text="@string/left"
                 android:id="@+id/left"
                 android:layout_weight=".33"
                 android:onClick="onTextButton"/>
@@ -253,7 +255,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="Delete"
+                android:text="@string/delete"
                 android:id="@+id/del"
                 android:layout_weight=".33"
                 android:onClick="onTextButton"/>
@@ -261,7 +263,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="Right"
+                android:text="@string/right"
                 android:id="@+id/right"
                 android:layout_weight=".33"
                 android:onClick="onTextButton"/>
@@ -278,7 +280,7 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="cancel"
+                android:text="@string/cancel"
                 android:id="@+id/cancel"
                 android:layout_weight=".5"
                 android:layout_marginRight="1dp"
@@ -287,7 +289,7 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="save"
+                android:text="@string/save"
                 android:id="@+id/save"
                 android:layout_weight=".5"
                 android:layout_marginLeft="1dp"

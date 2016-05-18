@@ -2,7 +2,6 @@ package nsccsclub.isogum;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,7 +21,7 @@ public class NameVariableDialog extends android.support.v4.app.DialogFragment {
      * listner to handle key events from host activity. The host activity must implement the
      * listener interface and effectively acts as the listener for this fragment.
      */
-    public NameDialogListener listener;
+    private NameDialogListener listener;
     @Override
     /**
      * Created the dialog for storing custom variable names.
@@ -68,6 +67,6 @@ public class NameVariableDialog extends android.support.v4.app.DialogFragment {
     }
 
     public interface NameDialogListener{
-        public void onPositiveClick(DialogFragment dialog);
+        void onPositiveClick(DialogFragment dialog);
     }
 }

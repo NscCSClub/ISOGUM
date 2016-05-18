@@ -5,6 +5,5 @@
     tools:context=".CreateFunctionActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--todo hookup buttons and set up SQLLITE-->
         <include layout="@layout/content_create_function" />
 </RelativeLayout>

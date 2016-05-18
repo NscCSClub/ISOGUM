@@ -9,7 +9,6 @@ public class CreateFunctionActivityTest extends TestCase {
 
 
     public void testOnCreate() throws Exception {
-        //TODO implement test
     }
 
     public void testOnBackPressed() throws Exception {

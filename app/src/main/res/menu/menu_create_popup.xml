@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- TODO title the menu add and play with visualization of the buttons-->
     <item android:id="@+id/new_function"
         android:title="@string/new_function" />
     <item android:id="@+id/new_variable"

@@ -8,27 +8,20 @@ import junit.framework.TestCase;
 public class FunctionActivityTest extends TestCase {
 
     public void testOnCreate() throws Exception {
-
-        //TODO implement test
     }
 
     public void testOnCreateOptionsMenu() throws Exception {
-
-        //TODO implement test
     }
 
     public void testOnOptionsItemSelected() throws Exception {
 
-        //TODO implement test
     }
 
     public void testShowPopup() throws Exception {
 
-        //TODO implement test
     }
 
     public void testOnMenuItemClick() throws Exception {
 
-        //TODO implement test
     }
 }

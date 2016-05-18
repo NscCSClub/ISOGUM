@@ -1,247 +1,211 @@
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content"
+        android:id="@+id/create_function_function_field">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/function_symbol"
+            android:id="@+id/textView"
+            android:padding="@dimen/field_margin" />
+            <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:padding="@dimen/field_margin"
+            android:singleLine="true"
+            android:inputType="none" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/create_function_function_field"
+        android:id="@+id/create_function_keys">
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".1"
-            android:id="@+id/create_function_function_field">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/function_symbol"
-                android:id="@+id/textView"
-                android:padding="@dimen/field_margin" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:padding="@dimen/field_margin"
-                android:nestedScrollingEnabled="false"
-                android:singleLine="true"
-                android:inputType="none" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight=".1"
-            android:layout_below="@id/create_function_function_field"
-            android:id="@+id/create_function_keys">
-
+            android:paddingTop="1dp"
+            android:baselineAligned="false">
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight=".1"
-                android:paddingTop="1dp">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".66">
-
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".66">
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="@string/asin"
+                    android:id="@+id/aSin"
+                    android:layout_weight=".2"
+                    android:onClick="onTextButton" />
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="aSin"
-                        android:id="@+id/aSin"
-                        android:layout_weight=".2"
-                        android:onClick="onTextButton" />
-
-                    <Button
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:text="ACos"
+                        android:text="@string/acos"
                         android:id="@+id/aCos"
                         android:layout_weight=".2"
                         android:onClick="onTextButton" />
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="atan"
+                        android:text="@string/atan"
                         android:id="@+id/aTan"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"
                         android:padding="1dp" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight=".33"
-                    android:paddingLeft="0dp">
-
+                    android:layout_weight=".33">
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="ln"
+                        android:text="@string/ln"
                         android:id="@+id/ln"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="log"
+                        android:text="@string/log"
                         android:id="@+id/log"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
                 </LinearLayout>
-
             </LinearLayout>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight=".1"
-                android:paddingBottom="1dp">
-
+                android:paddingBottom="1dp"
+                android:baselineAligned="false">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight=".66"
-                    android:layout_marginRight="0dp">
-
+                    android:layout_weight=".66">
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="Sin"
+                        android:text="@string/sin"
                         android:id="@+id/sin"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="Cos"
+                        android:text="@string/cos"
                         android:id="@+id/cos"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="Tan"
+                        android:text="@string/tan"
                         android:id="@+id/tan"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
                 </LinearLayout>
-
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight=".33"
-                    android:layout_marginLeft="0dp">
-
+                    android:layout_weight=".33">
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="("
+                        android:text="@string/left_paren"
                         android:id="@+id/leftParen"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text=")"
+                        android:text="@string/right_paren"
                         android:id="@+id/rightParen"
                         android:layout_weight=".2"
                         android:onClick="onTextButton"/>
                 </LinearLayout>
-
             </LinearLayout>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".1">
-
+                android:layout_weight=".1"
+                android:baselineAligned="false">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingRight="1dp">
-
                     <Button
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="7"
+                        android:text="@string/number_7"
                         android:id="@+id/num7"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
-
                     <Button
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="8"
+                        android:text="@string/number_8"
                         android:id="@+id/num8"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
-
                     <Button
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="9"
+                        android:text="@string/number_9"
                         android:id="@+id/num9"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
-
                 </LinearLayout>
-
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight=".01"
                     android:paddingLeft="1dp">
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="%"
+                        android:text="@string/divide"
                         android:id="@+id/div"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="^"
+                        android:text="@string/pow"
                         android:id="@+id/pow"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
                 </LinearLayout>
-
             </LinearLayout>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".1">
-
+                android:layout_weight=".1"
+                android:baselineAligned="false">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
@@ -253,7 +217,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="4"
+                        android:text="@string/number_4"
                         android:id="@+id/num4"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -262,7 +226,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="5"
+                        android:text="@string/number_5"
                         android:id="@+id/num5"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -271,7 +235,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="6"
+                        android:text="@string/number_6"
                         android:id="@+id/num6"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -287,7 +251,7 @@
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="x"
+                        android:text="@string/times"
                         android:id="@+id/times"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
@@ -295,19 +259,19 @@
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="e"
+                        android:text="@string/exp"
                         android:id="@+id/e"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".1">
+                android:layout_weight=".1"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -320,7 +284,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="1"
+                        android:text="@string/number_1"
                         android:id="@+id/num1"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -329,7 +293,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="2"
+                        android:text="@string/number_2"
                         android:id="@+id/num2"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -338,7 +302,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="3"
+                        android:text="@string/number_3"
                         android:id="@+id/num3"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -350,11 +314,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight=".01"
                     android:paddingLeft="1dp">
-
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="-"
+                        android:text="@string/operator_minus"
                         android:id="@+id/minus"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
@@ -362,7 +325,7 @@
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="pi"
+                        android:text="@string/pi"
                         android:id="@+id/pi"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
@@ -375,7 +338,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".1"
-                android:paddingBottom="1dp">
+                android:paddingBottom="1dp"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -388,7 +352,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="0"
+                        android:text="@string/number_0"
                         android:id="@+id/num0"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -397,7 +361,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="."
+                        android:text="@string/number_point"
                         android:id="@+id/point"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -406,7 +370,7 @@
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="-"
+                        android:text="@string/operator_minus"
                         android:id="@+id/neg"
                         android:layout_weight=".33"
                         android:onClick="onTextButton"/>
@@ -422,7 +386,7 @@
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="+"
+                        android:text="@string/plus"
                         android:id="@+id/plus"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
@@ -430,7 +394,7 @@
                     <Button
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="Delete"
+                        android:text="@string/delete"
                         android:id="@+id/del"
                         android:layout_weight=".5"
                         android:onClick="onTextButton"/>
@@ -448,7 +412,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:text="Left"
+                    android:text="@string/left"
                     android:id="@+id/left"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -456,18 +420,17 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:text="variable"
+                    android:text="@string/variable"
                     android:id="@+id/var"
                     android:layout_weight=".66"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:onClick="onVariableButton"
-                    android:nestedScrollingEnabled="true" />
+                    android:onClick="onVariableButton" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:text="Right"
+                    android:text="@string/right"
                     android:id="@+id/right"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
@@ -483,7 +446,7 @@
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="cancel"
+                    android:text="@string/cancel"
                     android:id="@+id/cancel"
                     android:layout_weight=".5"
                     android:layout_marginRight="1dp"
@@ -492,7 +455,7 @@
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="save"
+                    android:text="@string/save"
                     android:id="@+id/save"
                     android:layout_weight=".5"
                     android:layout_marginLeft="1dp"

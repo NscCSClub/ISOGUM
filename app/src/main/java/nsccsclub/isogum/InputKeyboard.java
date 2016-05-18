@@ -71,7 +71,7 @@ public class InputKeyboard{
     private Keyboard key_math;
 
     //SUPPORTED KEYS AND KEYCODES
-    //TODO WRITE A PROCEDURE FOR ADDING A KEy
+
     public static final int CODE_MATH_KEY =             500000;
     public static final int CODE_123_KEY  =             500001;
     public static final int CODE_ABC_KEY  =             500002;
@@ -156,13 +156,11 @@ public class InputKeyboard{
                      */
                     @Override
                     public void onKey(int primaryCode, int[] keyCodes) {
-                        //todo refactor this method for better design
                         //adapted from Maarten Pennings under Apache License
                         //see url in class description
 
                         //get our edit text window that we are working with checks for incompatable type
                         View focus = host.getWindow().getCurrentFocus();
-                        //todo check this very throroughly in debugger, this should be working
 //                        if(focus==null||focus.getClass()!=EditText.class){
 //                            return;
 //                        }
@@ -356,14 +354,13 @@ public class InputKeyboard{
         keyboardView.setEnabled(false);
     }
 
-    //TODO implement default screen for each textfield
+
     /**
      * Registers an edit text field with this keyboard.
      * @param resID The EditText to register with this keyboard.
      */
     public void registerEditText(int resID){
         //object we are working with
-        //TODO bug here
         EditText editText = (EditText)host.findViewById(resID);
         //makes keyboard appear on user focus and dissapear when focus lost
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -397,7 +394,6 @@ public class InputKeyboard{
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //todo possible solution from online for cursor bug
 //                switch (event.getAction()) {
 //                    case MotionEvent.ACTION_DOWN:
 //                        Layout layout = ((EditText) v).getLayout();

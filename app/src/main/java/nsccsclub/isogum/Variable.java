@@ -66,7 +66,7 @@ public class Variable implements Comparable<Variable>{
      * uniqueness.
      * @param name The new unique name of the variable.
      */
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -98,7 +98,7 @@ public class Variable implements Comparable<Variable>{
      * Sets the uncertianty of the variable, automatically converted to a positive number.
      * @param uncertainty The new uncertainty of the variable.
      */
-    public void setUncertainty(double uncertainty) {
+    private void setUncertainty(double uncertainty) {
         this.uncertainty = Math.abs(uncertainty);
     }
 

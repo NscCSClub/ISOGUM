@@ -342,10 +342,7 @@ public class FunctionParser {
      * @return True for valid start, more validation needed.
      */
     private boolean isStartFunction(char ch) {
-        if (ch == 's' || ch == 'c' || ch == 't' || ch == 'a' || ch == 'l'){
-            return true;
-        }
-        return false;
+        return ch == 's' || ch == 'c' || ch == 't' || ch == 'a' || ch == 'l';
     }
 
     /**
@@ -369,10 +366,7 @@ public class FunctionParser {
      * @return True if is Operator.
      */
     private boolean isOperator(char ch) {
-        if (ch == '*' || ch == '/' || ch == '+' || ch == '-' || ch == '^'){
-            return true;
-        }
-        return false;
+        return ch == '*' || ch == '/' || ch == '+' || ch == '-' || ch == '^';
     }
 
     /**
@@ -490,11 +484,8 @@ public class FunctionParser {
      * @return True for function.
      */
     private boolean isFunction(Type type) {
-        if (type == Type.LN || type == Type.LOG || type == Type.SIN || type == Type.COS ||
-                type == Type.TAN || type == Type.ASIN || type == Type.ACOS || type == Type.ATAN){
-            return true;
-        }
-        return false;
+        return type == Type.LN || type == Type.LOG || type == Type.SIN || type == Type.COS ||
+                type == Type.TAN || type == Type.ASIN || type == Type.ACOS || type == Type.ATAN;
     }
 
     /**
@@ -581,7 +572,7 @@ public class FunctionParser {
      */
      public enum Type{
         VARIABLE, NUMBER, OPERATOR, SIN,COS,TAN,ASIN, ACOS, ATAN,
-        LOG, LN, LEFT_PAREN, RIGHT_PAREN, UNDEFINED, NONE;
+        LOG, LN, LEFT_PAREN, RIGHT_PAREN, UNDEFINED, NONE
 
     }
 }

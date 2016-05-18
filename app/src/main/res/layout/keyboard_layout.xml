@@ -5,12 +5,7 @@
     android:keyWidth="12.5%p"
     android:keyHeight="10%p"
     android:id="@+id/keyboard_layout">
-    <!--todo find way to expand height of keys with horizontal view, they are not tall enough-->
 
-    <!-- todo refactor string input for easy parsing-->
-    <!-- todo allow for touch cursor in edit text-->
-    <!-- todo refactor to have mathematical operators show up in bold for easy parsing-->
-    <!--default keys show up in all keyboards-->
     <Row>
         <Key android:keyWidth="10%p"
              android:codes="500004"  android:keyLabel="//-"   android:keyEdgeFlags="left"/>

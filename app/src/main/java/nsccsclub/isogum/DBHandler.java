@@ -364,7 +364,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         Variable variable;
 
-        //todo check this! this should not work in current implementation
         // loop through cursor and add entries to list
         if (cursor.moveToFirst()){
             do{

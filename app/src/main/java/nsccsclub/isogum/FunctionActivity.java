@@ -41,14 +41,14 @@ public class FunctionActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    public void showPopup(View v) {
+    private void showPopup(View v) {
         //creates the popup object
         PopupMenu popup = new PopupMenu(this,v);
         //create an inflater to reference defined xml menu resource
@@ -78,12 +78,12 @@ public class FunctionActivity extends AppCompatActivity
         switch(item.getItemId()) {
             case R.id.new_function:
                 intent = new Intent(this,CreateFunctionActivity.class);
-                intent.putExtra(this.EXTRA_NAME,"INSERT_NAME_HERE");
+                intent.putExtra(EXTRA_NAME,"INSERT_NAME_HERE");
                 startActivity(intent);
                 return true;
             case R.id.new_variable:
                 intent = new Intent(this,CreateVariableActivity.class);
-                intent.putExtra(this.EXTRA_NAME,"INSERT_V_NAME_HERE");
+                intent.putExtra(EXTRA_NAME,"INSERT_V_NAME_HERE");
                 startActivity(intent);
                 return true;
             default:

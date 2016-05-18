@@ -32,7 +32,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     /**
      * The name of the function that we are creating
      */
-    public String name;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +51,11 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(savedInstanceState);
-        //todo implement on restore instance state
 
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        //todo implement on save instance state
         super.onSaveInstanceState(savedInstanceState);
     }
 

@@ -56,7 +56,6 @@ public class CreateFunctionFragment extends Fragment{
      * @param param2 name of the function for saving data.
      * @return A new instance of fragment CreateFunctionFragment.
      */
-    // TODO: implement editing existing functions
     public static CreateFunctionFragment newInstance(String param1, String param2) {
         //create a new instance of the fragment with arguments will be used w the edit function
         // fragment
@@ -227,9 +226,7 @@ public class CreateFunctionFragment extends Fragment{
                             listener.cancelFunction();
                             break;
                     }
-                    //todo shift calling implied multiply to the end when we hit save
-                    //
-                    // impliedMulitply(editable);
+
                 }
             }
         };
@@ -403,10 +400,7 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if mathematical operator.
      */
     private boolean isOperator(char ch) {
-        if(ch == '+'|| ch == '-' || ch == '*'||ch =='/'||ch == '^'){
-            return true;
-        }
-        return false;
+        return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
     }
 
     /**
@@ -498,10 +492,7 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if we need to move back
      */
     private boolean isLeftOperator(char ch) {
-        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'|| ch =='('|| ch==')'){
-            return true;
-        }
-        return false;
+        return ch == '*' || ch == '/' || ch == '-' || ch == '+' || ch == '^' || ch == '(' || ch == ')';
     }
 
     /**
@@ -511,10 +502,7 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if we need to move back
      */
     private boolean isRightOperator(char ch) {
-        if (ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^' || ch==')'||ch=='('){
-            return true;
-        }
-        return false;
+        return ch == '*' || ch == '/' || ch == '-' || ch == '+' || ch == '^' || ch == ')' || ch == '(';
     }
 
 
@@ -524,11 +512,8 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if we need to stop.
      */
     private boolean isStopRight(char ch) {
-        if (ch==')' || ch=='('|| ch == '['||
-                ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
-            return true;
-        }
-        return false;
+        return ch == ')' || ch == '(' || ch == '[' ||
+                ch == '*' || ch == '/' || ch == '-' || ch == '+' || ch == '^';
     }
 
     /**
@@ -537,11 +522,8 @@ public class CreateFunctionFragment extends Fragment{
      * @return True if we need to stop.
      */
     private boolean isStopLeft(char ch) {
-        if (ch==')' || ch=='('|| ch == ']'||
-                ch=='*' || ch=='/' || ch=='-' || ch=='+' || ch=='^'){
-            return true;
-        }
-        return false;
+        return ch == ')' || ch == '(' || ch == ']' ||
+                ch == '*' || ch == '/' || ch == '-' || ch == '+' || ch == '^';
     }
 
     /**
@@ -626,11 +608,11 @@ public class CreateFunctionFragment extends Fragment{
         listener = null;
     }
 
-    public EditText getEditText() {
+    private EditText getEditText() {
         return editText;
     }
 
-    public void setEditText(EditText editText) {
+    private void setEditText(EditText editText) {
         this.editText = editText;
     }
 
@@ -649,18 +631,18 @@ public class CreateFunctionFragment extends Fragment{
         /**
          * Gets a variable name, checks for uniqueness and sets it in the edit text window.
          */
-        public void nameVariable();
+        void nameVariable();
 
         /**
          * checks the function for valididty, displays an error message if not valid, if valid it
          * stores it in the database, then returns the activity to th last screen
          */
-        public void saveFunction(EditText editText);
+        void saveFunction(EditText editText);
 
         /**
          * cancel function, returns to the last activity.
          */
-        public void cancelFunction();
+        void cancelFunction();
 
     }
 }

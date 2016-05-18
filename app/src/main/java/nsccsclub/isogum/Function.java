@@ -85,7 +85,7 @@ public class Function implements Comparable<Function>{
      * </div>
      * @param name The name of the function object.
      */
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 

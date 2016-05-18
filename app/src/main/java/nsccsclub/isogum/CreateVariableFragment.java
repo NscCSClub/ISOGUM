@@ -63,7 +63,6 @@ public class CreateVariableFragment extends Fragment {
      * @param param2 The name of the function for saving data.
      * @return A new instance of fragment CreateVariableFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static CreateVariableFragment newInstance(String param1, String param2, String param3) {
         CreateVariableFragment fragment = new CreateVariableFragment();
         Bundle args = new Bundle();
@@ -258,11 +257,11 @@ public class CreateVariableFragment extends Fragment {
          * checks the variable for valididty, displays an error message if not valid, if valid it
          * stores it in the database, then returns the activity to th last screen
          */
-        public void saveVariable(String value, String uncertainty);
+        void saveVariable(String value, String uncertainty);
 
         /**
          * cancel variable, returns to the last activity.
          */
-        public void cancelVariable();
+        void cancelVariable();
     }
 }

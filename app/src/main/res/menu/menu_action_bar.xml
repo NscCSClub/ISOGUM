@@ -4,7 +4,7 @@
     <item
         android:id="@+id/call_nav"
         android:orderInCategory="100"
-        android:title="nav"
+        android:title="@string/nav"
         app:showAsAction="ifRoom"
-        ></item>
+        />
 </menu>
