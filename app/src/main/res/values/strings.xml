@@ -94,7 +94,7 @@
     <string name="app_title">ISO GUM Calculator</string>
     <string name="create_new">Create New...</string>
     <string name="x_equals">x=...</string>
-    <string name="title_plus_minus">+/-</string>
+    <string name="title_plus_minus">+/- </string>
     <string name="number_7">7</string>
     <string name="number_8">8</string>
     <string name="number_9">9</string>
@@ -118,14 +118,14 @@
     <string name="sin">Sin</string>
     <string name="cos">Cos</string>
     <string name="tan">Tan</string>
-    <string name="left_paren">(</string>
+    <string name="paren">()</string>
     <string name="right_paren">)</string>
     <string name="divide">%</string>
     <string name="pow">^</string>
     <string name="times">x</string>
     <string name="exp">e</string>
-    <string name="pi" />
-    <string name="plus" />
+    <string name="pi" >pi</string>
+    <string name="plus" >+</string>
     <string name="variable">variable</string>
     <string name="nav">nav</string>
     <string name="enter_name_hint">Enter name here...</string>

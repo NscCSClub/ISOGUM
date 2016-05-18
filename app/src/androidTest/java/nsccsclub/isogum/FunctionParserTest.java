@@ -175,6 +175,8 @@ public class FunctionParserTest extends AndroidTestCase {
         assertFalse(parser.isValid());
         parser.setFunction("[e]^[hello");
         assertFalse(parser.isValid());
+        parser.setFunction("2.sin(3)");
+        assertFalse(parser.isValid());
 
     }
 }

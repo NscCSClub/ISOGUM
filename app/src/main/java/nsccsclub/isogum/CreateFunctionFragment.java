@@ -176,11 +176,9 @@ public class CreateFunctionFragment extends Fragment{
                             editable.insert(start,"log()");
                             getEditText().setSelection(getEditText().getSelectionStart() - 1);
                             break;
-                        case (R.id.leftParen):
-                            editable.insert(start, "(");
-                            break;
-                        case (R.id.rightParen):
-                            editable.insert(start, ")");
+                        case (R.id.Paren):
+                            editable.insert(start, "()");
+                            getEditText().setSelection(getEditText().getSelectionStart()-1);
                             break;
                         case (R.id.div):
                             editable.insert(start,"/");
@@ -260,7 +258,6 @@ public class CreateFunctionFragment extends Fragment{
         view.findViewById(R.id.num8).setOnClickListener(onClickListener);
         view.findViewById(R.id.num9).setOnClickListener(onClickListener);
         view.findViewById(R.id.point).setOnClickListener(onClickListener);
-        view.findViewById(R.id.neg).setOnClickListener(onClickListener);
         view.findViewById(R.id.sin).setOnClickListener(onClickListener);
         view.findViewById(R.id.cos).setOnClickListener(onClickListener);
         view.findViewById(R.id.tan).setOnClickListener(onClickListener);
@@ -269,8 +266,7 @@ public class CreateFunctionFragment extends Fragment{
         view.findViewById(R.id.aTan).setOnClickListener(onClickListener);
         view.findViewById(R.id.ln).setOnClickListener(onClickListener);
         view.findViewById(R.id.log).setOnClickListener(onClickListener);
-        view.findViewById(R.id.leftParen).setOnClickListener(onClickListener);
-        view.findViewById(R.id.rightParen).setOnClickListener(onClickListener);
+        view.findViewById(R.id.Paren).setOnClickListener(onClickListener);
         view.findViewById(R.id.div).setOnClickListener(onClickListener);
         view.findViewById(R.id.times).setOnClickListener(onClickListener);
         view.findViewById(R.id.minus).setOnClickListener(onClickListener);

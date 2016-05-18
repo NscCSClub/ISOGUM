@@ -66,14 +66,6 @@
             android:layout_height="match_parent"
             android:layout_weight=".1"
             android:baselineAligned="false">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingRight="1dp">
-
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="fill_parent"
@@ -101,7 +93,6 @@
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
 
-            </LinearLayout>
 
         </LinearLayout>
 
@@ -111,12 +102,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".1"
             android:baselineAligned="false">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingRight="1dp">
+
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -144,7 +130,7 @@
                     android:id="@+id/num6"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
-            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -154,13 +140,6 @@
             android:layout_height="match_parent"
             android:layout_weight=".1"
             android:baselineAligned="false">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingRight="1dp">
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -188,7 +167,7 @@
                     android:id="@+id/num3"
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
-            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -199,13 +178,6 @@
             android:layout_weight=".1"
             android:paddingBottom="1dp"
             android:baselineAligned="false">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingRight="1dp">
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -234,7 +206,6 @@
                     android:layout_weight=".33"
                     android:onClick="onTextButton"/>
 
-            </LinearLayout>
 
         </LinearLayout>
 

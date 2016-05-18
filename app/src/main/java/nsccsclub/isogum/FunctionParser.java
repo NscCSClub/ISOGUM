@@ -150,6 +150,17 @@ public class FunctionParser {
                     ch = getFunction().charAt(idx);
                 }
 
+                if (ch == '.'){
+                    //boolean test prevents random null pointer exception
+                    //not sure where it came from
+                    if (getFunction().substring(temp, idx).compareTo("") != 0) {
+                        //adds token to list
+                        list.add(new Token(Type.UNDEFINED,
+                                Double.parseDouble(getFunction().substring(temp, idx))));
+                    }
+
+                }
+
                 //boolean test prevents random null pointer exception
                 //not sure where it came from
                 if (getFunction().substring(temp, idx).compareTo("") != 0) {
