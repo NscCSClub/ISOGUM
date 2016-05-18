@@ -41,7 +41,7 @@ public class DBHandlerTest extends AndroidTestCase {
     }
 
     public void testCreateFunction() throws Exception {
-        Function function = new Function("test","f(x)");
+        Function function = new Function("test","f(x)","f'(x)");
         db.createFunction(function);
         long id = db.findFunctionByName("test");
         assertTrue(function.equals(db.getFunction(id)));
@@ -49,21 +49,20 @@ public class DBHandlerTest extends AndroidTestCase {
     }
 
     public void testGetFunction() throws Exception {
-        Function function = new Function("test1","f(x)");
+        Function function = new Function("test1","f(x)","f'(x)");
         db.createFunction(function);
         long id = db.findFunctionByName("test1");
         assertTrue(function.equals(db.getFunction(id)));
     }
 
     public void testGetAllFunctions() throws Exception {
-        Function function2 = new Function("test2","f(x)");
+        Function function2 = new Function("test2","f(x)","f'(x)");
         db.createFunction(function2);
-        Function function3 = new Function("test3","f(x)");
+        Function function3 = new Function("test3","f(x)","f'(x)");
         db.createFunction(function3);
-        Function function4 = new Function("test4","f(x)");
+        Function function4 = new Function("test4","f(x)","f'(x)");
         db.createFunction(function4);
         List<Function> list = db.getAllFunctions();
-
         Iterator<Function> iterator = list.listIterator();
         Function test;
         while (iterator.hasNext()){
@@ -77,9 +76,10 @@ public class DBHandlerTest extends AndroidTestCase {
     }
 
     public void testUpdateFunction() throws Exception {
-        Function function5 = new Function("test5", "f(x)");
+        Function function5 = new Function("test5", "f(x)","f'(x)");
         db.createFunction(function5);
         function5.setFunction("f(y)");
+        function5.setDerivative("f'(y)");
         function5.setId(db.findFunctionByName(function5.getName()));
         db.updateFunction(function5);
         assertTrue(function5.equals(db.getFunction(function5.getId())));
@@ -97,17 +97,17 @@ public class DBHandlerTest extends AndroidTestCase {
     }
 
     public void testIsDuplicateFunction() throws Exception {
-        Function function = new Function("Am I", "a duplicate?");
+        Function function = new Function("Am I", "a duplicate?", "prime");
         db.createFunction(function);
         assertTrue(db.isDuplicateFunction(function));
 
-        Function function1 = new Function("I", "am not");
+        Function function1 = new Function("I", "am not","prime");
         assertFalse(db.isDuplicateFunction(function1));
     }
 
     public void testFindFunctionByName() throws Exception {
-        Function function = new Function("find", "me");
-        Function function1 = new Function("Dont", "find me");
+        Function function = new Function("find", "me","prime");
+        Function function1 = new Function("Dont", "find me","prime");
         db.createFunction(function);
         db.createFunction(function1);
         Function function2 = db.getFunction(db.findFunctionByName(function.getName()));
