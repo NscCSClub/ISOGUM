@@ -2,6 +2,11 @@ package nsccsclub.isogum;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  * A basic function object for the ISO GUM calculator. Contains methods
  * relating to calculating uncertainty.
@@ -163,5 +168,48 @@ public class Function implements Comparable<Function>{
 
     public void setDerivative(String derivative) {
         this.derivative = derivative;
+    }
+
+    public String translator(){
+        FunctionParser functionParser = new FunctionParser(this.getFunction());
+        ArrayList<FunctionParser.Token> list = functionParser.getTokens();
+        Set<String> set = new HashSet<String>();
+        Iterator<FunctionParser.Token> iterator = list.iterator();
+        FunctionParser.Token token;
+        //find all functions and remove duplicates
+        while (iterator.hasNext()){
+            token = iterator.next();
+            if (token.getType()== FunctionParser.Type.VARIABLE){
+                //remove parentheses and add
+                set.add(token.getValue().toString().
+                        substring(1,token.getValue().toString().length()-1));
+            }
+        }
+        Iterator<String> stringIterator =set.iterator();
+        String output = "(";
+        while (stringIterator.hasNext()){
+            output += stringIterator.next()+",";
+        }
+        output = output.substring(0,output.length()-1);
+        output += ") = "+ this.function;
+        output = output.replace("[","");
+        output = output.replace("]","");
+        return "f" + output.toUpperCase();
+    }
+
+    public int getNumVariables(){
+        FunctionParser functionParser = new FunctionParser(this.getFunction());
+        ArrayList<FunctionParser.Token> list = functionParser.getTokens();
+        Iterator<FunctionParser.Token> iterator = list.iterator();
+        FunctionParser.Token token;
+        int count=0;
+        //find all functions
+        while (iterator.hasNext()){
+            token = iterator.next();
+            if (token.getType()== FunctionParser.Type.VARIABLE){
+                count++;
+            }
+        }
+        return count;
     }
 }

@@ -68,7 +68,7 @@ public class FunctionParser {
      * gets a list of tokens to check for a function
      * @return List of tokens of the function.
      */
-    private ArrayList<Token> getTokens(){
+     public ArrayList<Token> getTokens(){
         ArrayList<Token> list = new ArrayList<Token>();
         int idx = 0, temp = 0;
         char ch;
