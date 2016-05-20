@@ -202,12 +202,13 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
         Button delete = (Button) convertView.findViewById(R.id.function_delete);
         Button edit = (Button) convertView.findViewById(R.id.function_edit);
         Button run = (Button) convertView.findViewById(R.id.function_run);
-        //todo hook up listeners here
         final String id = this._listDataHeader.get(groupPosition);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.clickListener(id, Action.DELETE);
+                dataChange(id);
+                notifyDataSetChanged();
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
@@ -224,6 +225,11 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
         });
 
         return convertView;
+    }
+
+    private void dataChange(String id) {
+        this._listDataHeader.remove(id);
+        this._listDataChild.remove(id);
     }
 
     /**
