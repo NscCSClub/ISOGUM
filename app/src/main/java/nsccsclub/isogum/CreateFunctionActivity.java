@@ -33,6 +33,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
      * The name of the function that we are creating
      */
     private String name;
+    private String value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,12 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         //setting the name of the function and header bar
         Intent intent = getIntent();
         name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
+        try{
+            value = intent.getStringExtra(FunctionActivity.EXTRA_VALUE);
+            CreateFunctionFragment fragment = CreateFunctionFragment.newInstance(name,value);
+        }catch (Exception e){
+
+        }
 
         getSupportActionBar().setTitle(name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

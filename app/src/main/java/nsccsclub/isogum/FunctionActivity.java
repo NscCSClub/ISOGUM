@@ -13,23 +13,53 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ExpandableListView;
 import android.widget.PopupMenu;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 public class FunctionActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener {
+
 
     /**
      * the name of a created fucntion or variable.
      */
     public static final String EXTRA_NAME = "name";
+    public static final String EXTRA_VALUE = "value";
+
+
+    /**
+     * Expandable list view
+     */
+    ExpandableListView expandableListView;
+
+    /**
+     * adapter for populating the expandable list view
+     */
+    FunctionExpandableListAdapter adapter;
+
+    /**
+     * List of function objects that are stored in the database to be displayed on the screen
+     */
+    List<String> functionNameList;
+    HashMap<String,List<String>> functionValueMap;
+
+    DBHandler dbHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_function);
+        //sets up a toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //sets up a floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,15 +67,48 @@ public class FunctionActivity extends AppCompatActivity
                 showPopup(findViewById(R.id.fab));
             }
         });
-
+        //sets up an activity drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //sets up the expandable list
+        expandableListView = (ExpandableListView) this.findViewById(R.id.function_list);
+        functionNameList=new ArrayList<String>();
+        functionValueMap=new HashMap<String, List<String>>();
+        dbHandler  = new DBHandler(this.getApplicationContext());
+        //set up data here
+        prepareListData();
+        adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
+        expandableListView.setAdapter(adapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if(groupPosition != previousGroup)
+                    expandableListView.collapseGroup(previousGroup);
+                previousGroup = groupPosition;
+            }
+        });
+    }
+
+    private void prepareListData() {
+        //todo undo hardcoding and hook up to the databse
+        List<Function> functionList = dbHandler.getAllFunctions();
+        Function f = null;
+        List<String> valueList = null;
+        Iterator<Function> iterator = functionList.iterator();
+        while (iterator.hasNext()){
+            f = iterator.next();
+            functionNameList.add(f.getName());
+            valueList = new ArrayList<>();
+            valueList.add(f.getFunction());
+            functionValueMap.put(f.getName(), valueList);
+        }
     }
 
     private void showPopup(View v) {
@@ -57,9 +120,6 @@ public class FunctionActivity extends AppCompatActivity
 
         //registers an action listener
         popup.setOnMenuItemClickListener(this);
-
-
-
         //makes visible in activity
         popup.show();
     }
@@ -148,5 +208,20 @@ public class FunctionActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void clickListener(String name, FunctionExpandableListAdapter.Action action) {
+        if (action == FunctionExpandableListAdapter.Action.DELETE){
+            dbHandler.deleteFunction(dbHandler.getFunction(dbHandler.findFunctionByName(name)));
+        }
+        if (action == FunctionExpandableListAdapter.Action.EDIT){
+            Intent intent = new Intent(this,CreateFunctionActivity.class);
+            intent.putExtra(EXTRA_NAME,"INSERT_NAME_HERE");
+            intent.putExtra(EXTRA_VALUE,
+                    dbHandler.getFunction(dbHandler.findFunctionByName(name)).getFunction());
+            startActivity(intent);
+        }
+
     }
 }

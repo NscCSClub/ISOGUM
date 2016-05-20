@@ -1,14 +1,24 @@
 package nsccsclub.isogum;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Populates an expandable list view with function objects from a database.
+ *
+ * not fully implemented
  * Created by csconway on 5/20/2016.
  */
 public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
@@ -17,6 +27,21 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    private FunctionListListener listener;
+
+    public FunctionExpandableListAdapter(Context context, List<String> listDataHeader,
+                                 HashMap<String, List<String>> listChildData) {
+        this._context = context;
+        this._listDataHeader = listDataHeader;
+        this._listDataChild = listChildData;
+        this.listener=null;
+        if (!(context instanceof FunctionListListener)){
+            throw new RuntimeException("Container class must implement nested interface");
+        }
+        else{
+            listener = (FunctionListListener)context;
+        }
+    }
 
     /**
      * Gets the number of groups.
@@ -25,7 +50,7 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public int getGroupCount() {
-        return 0;
+        return this._listDataHeader.size();
     }
 
     /**
@@ -37,7 +62,7 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 0;
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
     }
 
     /**
@@ -48,7 +73,7 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public Object getGroup(int groupPosition) {
-        return null;
+        return this._listDataHeader.get(groupPosition);
     }
 
     /**
@@ -61,7 +86,8 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return null;
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+                .get(childPosition);
     }
 
     /**
@@ -75,7 +101,7 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     /**
@@ -91,7 +117,7 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return childPosition;
     }
 
     /**
@@ -125,8 +151,26 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      * @return the View corresponding to the group at the specified position
      */
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        return null;
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        if (convertView==null){
+            LayoutInflater inflater = (LayoutInflater) this._context.
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_function_item,null);
+        }
+        TextView name  = (TextView) convertView.findViewById(R.id.function_name);
+        name.setText(this._listDataHeader.get(groupPosition));
+        TextView value = (TextView) convertView.findViewById(R.id.function_value);
+        value.setText(this._listDataChild.get(_listDataHeader.get(groupPosition)).get(0));
+        ImageView groupHolder= (ImageView)convertView.findViewById(R.id.groupHolder);
+
+        if (isExpanded) {
+            groupHolder.setImageResource(R.drawable.ic_menu_manage);
+        } else {
+            groupHolder.setImageResource(R.drawable.ic_menu_manage);
+        }
+
+        return convertView;
     }
 
     /**
@@ -148,8 +192,38 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      * @return the View corresponding to the child at the specified position
      */
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        return null;
+    public View getChildView(int groupPosition, int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+        if(convertView==null){
+            LayoutInflater inflater = (LayoutInflater) this._context.
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_function_options,null);
+        }
+        Button delete = (Button) convertView.findViewById(R.id.function_delete);
+        Button edit = (Button) convertView.findViewById(R.id.function_edit);
+        Button run = (Button) convertView.findViewById(R.id.function_run);
+        //todo hook up listeners here
+        final String id = this._listDataHeader.get(groupPosition);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.clickListener(id, Action.DELETE);
+            }
+        });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.clickListener(id, Action.EDIT);
+            }
+        });
+        run.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.clickListener(id, Action.RUN);
+            }
+        });
+
+        return convertView;
     }
 
     /**
@@ -161,6 +235,14 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
+    }
+
+    public interface FunctionListListener{
+        public void clickListener(String name, Action action);
+    }
+
+    public enum Action{
+        DELETE, EDIT, RUN;
     }
 }

@@ -1,10 +1,12 @@
 package nsccsclub.isogum;
 
 import android.util.Log;
+import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,7 +29,11 @@ public class Function implements Comparable<Function>{
      */
     private long id;
 
+    /**
+     * the symbolic derivative of the function needs to be implemented
+     */
     private String derivative;
+
 
     /**
      * Creates a function object with no database id, useful for simple unstored calculations,
