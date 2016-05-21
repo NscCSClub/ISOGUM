@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -160,7 +158,7 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView name  = (TextView) convertView.findViewById(R.id.function_name);
         name.setText(this._listDataHeader.get(groupPosition));
-        TextView value = (TextView) convertView.findViewById(R.id.function_value);
+        TextView value = (TextView) convertView.findViewById(R.id.function_value_title);
         value.setText(this._listDataChild.get(_listDataHeader.get(groupPosition)).get(0));
         ImageView groupHolder= (ImageView)convertView.findViewById(R.id.groupHolder);
 

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,10 +95,10 @@ public class FunctionActivity extends AppCompatActivity
                 previousGroup = groupPosition;
             }
         });
+        expandableListView.setEmptyView(this.findViewById(R.id.emptyElement));
     }
 
     private void prepareListData() {
-        //todo undo hardcoding and hook up to the databse
         List<Function> functionList = dbHandler.getAllFunctions();
         Function f = null;
         List<String> valueList = null;
@@ -240,5 +241,6 @@ public class FunctionActivity extends AppCompatActivity
         prepareListData();
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
         expandableListView.setAdapter(adapter);
+
     }
 }

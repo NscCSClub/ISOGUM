@@ -218,4 +218,22 @@ public class Function implements Comparable<Function>{
         }
         return count;
     }
+    public Iterator<String> getVariableNames(){
+        FunctionParser functionParser = new FunctionParser(this.getFunction());
+        ArrayList<FunctionParser.Token> list = functionParser.getTokens();
+        Set<String> set = new HashSet<String>();
+        Iterator<FunctionParser.Token> iterator = list.iterator();
+        FunctionParser.Token token;
+        //find all functions and remove duplicates
+        while (iterator.hasNext()){
+            token = iterator.next();
+            if (token.getType()== FunctionParser.Type.VARIABLE){
+                //remove parentheses and add
+                set.add(token.getValue().toString().
+                        substring(1,token.getValue().toString().length()-1));
+            }
+        }
+        Iterator<String> stringIterator =set.iterator();
+        return stringIterator;
+    }
 }

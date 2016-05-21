@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="   INSERT_VALUE"
-            android:id="@+id/function_value" />
+            android:id="@+id/function_value_title" />
     </LinearLayout>
 
     <ImageView
