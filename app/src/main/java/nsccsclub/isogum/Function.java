@@ -218,7 +218,7 @@ public class Function implements Comparable<Function>{
         }
         return count;
     }
-    public Iterator<String> getVariableNames(){
+    public ArrayList<String> getVariableNames(){
         FunctionParser functionParser = new FunctionParser(this.getFunction());
         ArrayList<FunctionParser.Token> list = functionParser.getTokens();
         Set<String> set = new HashSet<String>();
@@ -234,6 +234,10 @@ public class Function implements Comparable<Function>{
             }
         }
         Iterator<String> stringIterator =set.iterator();
-        return stringIterator;
+        ArrayList<String> uniqueList = new ArrayList<String>();
+        while (stringIterator.hasNext()){
+            uniqueList.add(stringIterator.next());
+        }
+        return uniqueList;
     }
 }

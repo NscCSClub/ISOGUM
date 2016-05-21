@@ -10,7 +10,7 @@ import java.util.List;
 public class RunActivity extends AppCompatActivity {
     DBHandler dbHandler;
     Function function;
-    List<Variable> variableList;
+    List<String> variableList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,6 @@ public class RunActivity extends AppCompatActivity {
         }
         dbHandler = new DBHandler(this.getApplicationContext());
         function = dbHandler.getFunction(dbHandler.findFunctionByName(name));
-        //todo hook up method in function.
-        variableList = null;
+        variableList = function.getVariableNames();
     }
 }
