@@ -222,6 +222,23 @@ public class FunctionActivity extends AppCompatActivity
                     dbHandler.getFunction(dbHandler.findFunctionByName(name)).getFunction());
             startActivity(intent);
         }
+        if (action == FunctionExpandableListAdapter.Action.RUN){
+            //hook up run activity
+            //todo set up name dialog
+            Intent intent = new Intent(this,RunActivity.class);
+            intent.putExtra(EXTRA_NAME, name);
+        }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        functionNameList=new ArrayList<String>();
+        functionValueMap=new HashMap<String, List<String>>();
+        //set up data here
+        prepareListData();
+        adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
+        expandableListView.setAdapter(adapter);
     }
 }

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -280,6 +282,9 @@ public class CreateFunctionFragment extends Fragment{
         view.findViewById(R.id.var).setOnClickListener(onClickListener);
         view.findViewById(R.id.save).setOnClickListener(onClickListener);
         view.findViewById(R.id.cancel).setOnClickListener(onClickListener);
+
+        editText = (EditText) view.findViewById(R.id.editText);
+
         return view;
     }
 
@@ -580,6 +585,9 @@ public class CreateFunctionFragment extends Fragment{
     }
 
 
+    public void setText(String text){
+        editText.setText(text);
+    }
 
 
 
@@ -639,6 +647,8 @@ public class CreateFunctionFragment extends Fragment{
          * cancel function, returns to the last activity.
          */
         void cancelFunction();
+
+
 
     }
 }

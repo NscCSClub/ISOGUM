@@ -45,7 +45,11 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
         try{
             value = intent.getStringExtra(FunctionActivity.EXTRA_VALUE);
-            CreateFunctionFragment fragment = CreateFunctionFragment.newInstance(name,value);
+            CreateFunctionFragment fragment = (CreateFunctionFragment) getSupportFragmentManager().
+                    findFragmentById(R.id.function_fragment);
+
+            fragment.setText(value);
+
         }catch (Exception e){
 
         }
@@ -54,6 +58,8 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
+
+
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
@@ -141,4 +147,5 @@ public class CreateFunctionActivity extends AppCompatActivity implements
             createFunctionFragment.addVar(content);
         }
     }
+
 }

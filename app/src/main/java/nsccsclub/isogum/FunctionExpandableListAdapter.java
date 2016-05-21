@@ -232,6 +232,8 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
         this._listDataChild.remove(id);
     }
 
+
+
     /**
      * Whether the child at the specified position is selectable.
      *
@@ -244,9 +246,13 @@ public class FunctionExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    public void refresh(){
+        notifyDataSetChanged();
+    }
     public interface FunctionListListener{
         public void clickListener(String name, Action action);
     }
+
 
     public enum Action{
         DELETE, EDIT, RUN;
