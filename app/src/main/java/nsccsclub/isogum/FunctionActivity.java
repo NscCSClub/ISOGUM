@@ -216,8 +216,9 @@ public class FunctionActivity extends AppCompatActivity
         if (action == FunctionExpandableListAdapter.Action.DELETE){
             dbHandler.deleteFunction(dbHandler.getFunction(dbHandler.findFunctionByName(name)));
         }
+        Intent intent = null;
         if (action == FunctionExpandableListAdapter.Action.EDIT){
-            Intent intent = new Intent(this,CreateFunctionActivity.class);
+            intent = new Intent(this,CreateFunctionActivity.class);
             intent.putExtra(EXTRA_NAME,"INSERT_NAME_HERE");
             intent.putExtra(EXTRA_VALUE,
                     dbHandler.getFunction(dbHandler.findFunctionByName(name)).getFunction());
@@ -226,8 +227,9 @@ public class FunctionActivity extends AppCompatActivity
         if (action == FunctionExpandableListAdapter.Action.RUN){
             //hook up run activity
             //todo set up name dialog
-            Intent intent = new Intent(this,RunActivity.class);
+            intent = new Intent(this,RunActivity.class);
             intent.putExtra(EXTRA_NAME, name);
+            startActivity(intent);
         }
 
     }
