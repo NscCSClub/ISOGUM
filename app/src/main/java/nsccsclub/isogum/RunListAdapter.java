@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class RunListAdapter extends ArrayAdapter<String> {
     ArrayList<String> variableNames;
+    List<String> uniqueNames;
     // View lookup cache
     private static class ViewHolder {
         String name;
@@ -31,6 +32,7 @@ public class RunListAdapter extends ArrayAdapter<String> {
 
     public RunListAdapter(Context context, List<String> names, List<Variable> variables) {
         super(context, R.layout.list_variable_picker, names);
+        uniqueNames =names;
         variableNames = new ArrayList<String>();
         for(Variable v:variables){
             variableNames.add(v.getName());
@@ -53,11 +55,17 @@ public class RunListAdapter extends ArrayAdapter<String> {
                     R.layout.spinner_variable_name, variableNames);
             spinnerAdapter.setDropDownViewResource(R.layout.spinner_variable_name);
             spinner.setAdapter(spinnerAdapter);
-            viewHolder.name = ((TextView)convertView.findViewById(R.id.variable_name)).toString();
+            TextView textView= (TextView)convertView.findViewById(R.id.variable_name);
+            textView.setText(name);
+            viewHolder.name = (textView).getText().toString();
             viewHolder.spinner = spinner;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
+            TextView textView= (TextView)convertView.findViewById(R.id.variable_name);
+            textView.setText(name);
+            viewHolder.name = (textView).getText().toString();
+            convertView.setTag(viewHolder);
         }
 //
         // Return the completed view to render on screen

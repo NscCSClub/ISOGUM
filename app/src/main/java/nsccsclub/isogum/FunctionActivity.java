@@ -57,6 +57,8 @@ public class FunctionActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_function);
+       
+        
         //sets up a toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +83,13 @@ public class FunctionActivity extends AppCompatActivity
         functionNameList=new ArrayList<String>();
         functionValueMap=new HashMap<String, List<String>>();
         dbHandler  = new DBHandler(this.getApplicationContext());
+
+        //todo delete this for debuggin
+
+        debugAddFunctions();
+
+
+
         //set up data here
         prepareListData();
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
@@ -96,6 +105,26 @@ public class FunctionActivity extends AppCompatActivity
             }
         });
         expandableListView.setEmptyView(this.findViewById(R.id.emptyElement));
+    }
+
+    private void debugAddFunctions() {
+        ArrayList<Function> tempFuncArray = new ArrayList<Function>();
+        ArrayList<Variable> tempVarArray = new ArrayList<Variable>();
+        Variable v = null;
+        Function f = null;
+
+        for (int i = 0; i < 20; i++){
+            f = new Function("function" + i, "[x]^2+[y]*6+3*[z]+[a]+[b]+[c]");
+            if (!dbHandler.isDuplicateFunction(f)){
+                dbHandler.createFunction(f);
+            }
+        }
+        for (int i = 0; i < 20; i++){
+            v = new Variable("variable" + i , (double)i, (double)i);
+            if (!dbHandler.isDuplicateVariable(v)){
+                dbHandler.createVariable(v);
+            }
+        }
     }
 
     private void prepareListData() {

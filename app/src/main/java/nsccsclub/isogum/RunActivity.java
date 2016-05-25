@@ -3,9 +3,12 @@ package nsccsclub.isogum;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 
 public class RunActivity extends AppCompatActivity {
@@ -28,12 +31,31 @@ public class RunActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this.getApplicationContext());
         function = dbHandler.getFunction(dbHandler.findFunctionByName(name));
         variableList = function.getVariableNames();
+        Collections.sort(variableList);
         RunListAdapter adapter = new RunListAdapter(this,variableList, dbHandler.getAllVariables());
         ListView listView = (ListView) this.findViewById(R.id.variable_selector);
         listView.setAdapter(adapter);
-        listView.setEmptyView(findViewById(R.id.emptyElement));
+//        listView.setEmptyView(findViewById(R.id.emptyElement));
 
 
+        getSupportActionBar().setTitle(R.string.function_run);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //hookup save and cancel buttons here
+
+        Button run = (Button) this.findViewById(R.id.run_button);
+        Button cancel = (Button) this.findViewById(R.id.cancel_button);
+        run.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo hook up run and save algortihm
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

@@ -30,6 +30,7 @@
     <string name="name_new_variable">Name:</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="run_name">Run</string>
 
     <!-- Strings related to Settings -->
 
