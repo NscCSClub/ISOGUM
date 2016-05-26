@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,8 @@ import java.util.List;
 
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener {
+        PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
+        OutputVariableDialaog.OutputVariableListener{
 
 
     /**
@@ -255,10 +257,9 @@ public class FunctionActivity extends AppCompatActivity
         }
         if (action == FunctionExpandableListAdapter.Action.RUN){
             //hook up run activity
-            //todo set up name dialog
-            intent = new Intent(this,RunActivity.class);
-            intent.putExtra(EXTRA_NAME, name);
-            startActivity(intent);
+            OutputVariableDialaog dialaog = new OutputVariableDialaog();
+            dialaog.show(getSupportFragmentManager(),"get_name");
+
         }
 
     }
@@ -273,5 +274,32 @@ public class FunctionActivity extends AppCompatActivity
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
         expandableListView.setAdapter(adapter);
 
+    }
+
+    @Override
+    public boolean isNameValid(String name) {
+        if(name.length()>40){
+            Toast.makeText(this, "Names must be shorter than 40 characters.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(name.equals("e")||name.equals("pi")){
+            Toast.makeText(this, "Cannot name a variable e or pi.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isDuplicate(String name) {
+        return dbHandler.isDuplicateVariable(new Variable(name, 0,0));
+    }
+
+    @Override
+    public void launchRun(String name) {
+        Intent intent = new Intent(this,RunActivity.class);
+        intent.putExtra(EXTRA_NAME, name);
+        startActivity(intent);
     }
 }
