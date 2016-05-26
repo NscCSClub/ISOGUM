@@ -18,6 +18,8 @@ import android.widget.EditText;
 public class OutputVariableDialaog extends DialogFragment {
 
     OutputVariableListener listener;
+    String functionName;
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -89,6 +91,6 @@ public class OutputVariableDialaog extends DialogFragment {
     public interface OutputVariableListener{
         public boolean isNameValid(String name);
         public boolean isDuplicate(String name);
-        public void launchRun(String name);
+        public void launchRun(String namevariable);
     }
 }

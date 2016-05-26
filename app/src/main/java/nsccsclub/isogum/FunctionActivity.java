@@ -33,6 +33,7 @@ public class FunctionActivity extends AppCompatActivity
      * the name of a created fucntion or variable.
      */
     public static final String EXTRA_NAME = "name";
+    public static final String EXTRA_OUTPUT_NAME = "outputName";
     public static final String EXTRA_VALUE = "value";
 
 
@@ -53,6 +54,8 @@ public class FunctionActivity extends AppCompatActivity
     HashMap<String,List<String>> functionValueMap;
 
     DBHandler dbHandler;
+
+    private String functionName;
 
 
     @Override
@@ -101,12 +104,14 @@ public class FunctionActivity extends AppCompatActivity
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != previousGroup)
+                if (groupPosition != previousGroup)
                     expandableListView.collapseGroup(previousGroup);
                 previousGroup = groupPosition;
             }
         });
         expandableListView.setEmptyView(this.findViewById(R.id.emptyElement));
+
+        functionName = "not set";
     }
 
     private void debugAddFunctions() {
@@ -244,6 +249,7 @@ public class FunctionActivity extends AppCompatActivity
 
     @Override
     public void clickListener(String name, FunctionExpandableListAdapter.Action action) {
+        functionName = name;
         if (action == FunctionExpandableListAdapter.Action.DELETE){
             dbHandler.deleteFunction(dbHandler.getFunction(dbHandler.findFunctionByName(name)));
         }
@@ -257,6 +263,7 @@ public class FunctionActivity extends AppCompatActivity
         }
         if (action == FunctionExpandableListAdapter.Action.RUN){
             //hook up run activity
+
             OutputVariableDialaog dialaog = new OutputVariableDialaog();
             dialaog.show(getSupportFragmentManager(),"get_name");
 
@@ -278,6 +285,11 @@ public class FunctionActivity extends AppCompatActivity
 
     @Override
     public boolean isNameValid(String name) {
+        if (name==""){
+            Toast.makeText(this, "Please enter a name.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if(name.length()>40){
             Toast.makeText(this, "Names must be shorter than 40 characters.",
                     Toast.LENGTH_SHORT).show();
@@ -297,9 +309,10 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
-    public void launchRun(String name) {
+    public void launchRun(String outputName) {
         Intent intent = new Intent(this,RunActivity.class);
-        intent.putExtra(EXTRA_NAME, name);
+        intent.putExtra(EXTRA_NAME, functionName);
+        intent.putExtra(EXTRA_OUTPUT_NAME, outputName);
         startActivity(intent);
     }
 }
