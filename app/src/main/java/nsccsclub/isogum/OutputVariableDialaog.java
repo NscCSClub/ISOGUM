@@ -39,18 +39,17 @@ public class OutputVariableDialaog extends DialogFragment {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String name = ((EditText)((AlertDialog) dialog).
+                                functionName = ((EditText)((AlertDialog) dialog).
                                         findViewById(R.id.varaible_name_field)).getText().toString();
-                                if(listener.isNameValid(name)){
-                                    if(listener.isDuplicate(name)){
-                                        //show dialog
-                                        if(true){
-                                            listener.launchRun(name);
-                                            dialog.dismiss();
-                                        }
+                                if(listener.isNameValid(functionName)){
+                                    if(listener.isDuplicate(functionName)){
+                                        DialogDuplicateVariable duplicateVariable =
+                                                new DialogDuplicateVariable();
+                                        duplicateVariable.show(getFragmentManager(),"isduplicate");
+                                        dialog.dismiss();
                                     }
                                     else {
-                                        listener.launchRun(name);
+                                        listener.launchRun(functionName);
                                         dialog.dismiss();
                                     }
                                 }
