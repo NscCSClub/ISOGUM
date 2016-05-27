@@ -13,18 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener {
+        PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
+        AdapterView.OnItemSelectedListener,SortListener{
 
 
     /**
@@ -84,6 +89,12 @@ public class FunctionActivity extends AppCompatActivity
         functionValueMap=new HashMap<String, List<String>>();
         dbHandler  = new DBHandler(this.getApplicationContext());
 
+        Spinner spinner = (Spinner)findViewById(R.id.sort_bar_picker);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner_sort_choices,R.layout.support_simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(this);
         //todo delete this for debuggin
 
         debugAddFunctions();
@@ -91,7 +102,7 @@ public class FunctionActivity extends AppCompatActivity
 
 
         //set up data here
-        prepareListData();
+        prepareListDataName();
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
         expandableListView.setAdapter(adapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -127,11 +138,29 @@ public class FunctionActivity extends AppCompatActivity
         }
     }
 
-    private void prepareListData() {
+    private void prepareListDataName() {
         List<Function> functionList = dbHandler.getAllFunctions();
+        Collections.sort(functionList);
         Function f = null;
         List<String> valueList = null;
         Iterator<Function> iterator = functionList.iterator();
+
+        while (iterator.hasNext()){
+            f = iterator.next();
+            functionNameList.add(f.getName());
+            valueList = new ArrayList<>();
+            valueList.add(f.getFunction());
+            functionValueMap.put(f.getName(), valueList);
+        }
+    }
+
+    private void prepareListDataDate() {
+        List<Function> functionList = dbHandler.getAllFunctions();
+        Collections.sort(functionList, new FunctionIDSorter());
+        Function f = null;
+        List<String> valueList = null;
+        Iterator<Function> iterator = functionList.iterator();
+
         while (iterator.hasNext()){
             f = iterator.next();
             functionNameList.add(f.getName());
@@ -255,7 +284,6 @@ public class FunctionActivity extends AppCompatActivity
         }
         if (action == FunctionExpandableListAdapter.Action.RUN){
             //hook up run activity
-            //todo set up name dialog
             intent = new Intent(this,RunActivity.class);
             intent.putExtra(EXTRA_NAME, name);
             startActivity(intent);
@@ -269,9 +297,45 @@ public class FunctionActivity extends AppCompatActivity
         functionNameList=new ArrayList<String>();
         functionValueMap=new HashMap<String, List<String>>();
         //set up data here
-        prepareListData();
+        Spinner spinner = (Spinner)findViewById(R.id.sort_bar_picker);
+        if(spinner.getSelectedItem().toString() == "Name"){
+            this.refreshListByName();
+        }
+        if(spinner.getSelectedItem().toString() == "Date Added"){
+            this.refreshListByDate();
+        }
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
         expandableListView.setAdapter(adapter);
 
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //position 0 corresponds to sort by name
+        //position 1 corresponds to sort by date
+        if(position == 0){
+            ((SortListener)parent).refreshListByDate();
+        }
+        if(position == 1){
+            ((SortListener)parent).refreshListByName();
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void refreshListByName() {
+        prepareListDataName();
+    }
+
+    @Override
+    public void refreshListByDate() {
+        prepareListDataDate();
+    }
+
+
 }
