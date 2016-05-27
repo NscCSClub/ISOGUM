@@ -22,14 +22,17 @@ public class RunActivity extends AppCompatActivity {
         setContentView(R.layout.activity_run);
         Intent intent = getIntent();
         String name = null;
+        function = null;
+        dbHandler = new DBHandler(this.getApplicationContext());
         try {
             name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
+            function = dbHandler.getFunction(dbHandler.findFunctionByName(name));
         } catch (Exception e){
             Toast.makeText(this,"Error retrieving function.", Toast.LENGTH_SHORT).show();
             this.finish();
         }
-        dbHandler = new DBHandler(this.getApplicationContext());
-        function = dbHandler.getFunction(dbHandler.findFunctionByName(name));
+
+
         variableList = function.getVariableNames();
         Collections.sort(variableList);
         RunListAdapter adapter = new RunListAdapter(this,variableList, dbHandler.getAllVariables());
@@ -58,4 +61,6 @@ public class RunActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

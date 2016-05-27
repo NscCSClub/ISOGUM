@@ -13,15 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,13 +26,14 @@ import java.util.List;
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
-        AdapterView.OnItemSelectedListener{
+        OutputVariableDialaog.OutputVariableListener{
 
 
     /**
      * the name of a created fucntion or variable.
      */
     public static final String EXTRA_NAME = "name";
+    public static final String EXTRA_OUTPUT_NAME = "outputName";
     public static final String EXTRA_VALUE = "value";
 
 
@@ -56,6 +54,8 @@ public class FunctionActivity extends AppCompatActivity
     HashMap<String,List<String>> functionValueMap;
 
     DBHandler dbHandler;
+
+    private String functionName;
 
 
     @Override
@@ -89,30 +89,29 @@ public class FunctionActivity extends AppCompatActivity
         functionValueMap=new HashMap<String, List<String>>();
         dbHandler  = new DBHandler(this.getApplicationContext());
 
-        Spinner spinner = (Spinner)findViewById(R.id.sort_bar_picker);
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.spinner_sort_choices,R.layout.support_simple_spinner_dropdown_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(this);
         //todo delete this for debuggin
 
         debugAddFunctions();
 
 
 
-        //data is set up in onresume
+        //set up data here
+        prepareListData();
+        adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
+        expandableListView.setAdapter(adapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != previousGroup)
+                if (groupPosition != previousGroup)
                     expandableListView.collapseGroup(previousGroup);
                 previousGroup = groupPosition;
             }
         });
         expandableListView.setEmptyView(this.findViewById(R.id.emptyElement));
+
+        functionName = "not set";
     }
 
     private void debugAddFunctions() {
@@ -135,29 +134,11 @@ public class FunctionActivity extends AppCompatActivity
         }
     }
 
-    private void prepareListDataName() {
+    private void prepareListData() {
         List<Function> functionList = dbHandler.getAllFunctions();
-        Collections.sort(functionList);
         Function f = null;
         List<String> valueList = null;
         Iterator<Function> iterator = functionList.iterator();
-
-        while (iterator.hasNext()){
-            f = iterator.next();
-            functionNameList.add(f.getName());
-            valueList = new ArrayList<>();
-            valueList.add(f.getFunction());
-            functionValueMap.put(f.getName(), valueList);
-        }
-    }
-
-    private void prepareListDataDate() {
-        List<Function> functionList = dbHandler.getAllFunctions();
-        Collections.sort(functionList, new FunctionIDSorter());
-        Function f = null;
-        List<String> valueList = null;
-        Iterator<Function> iterator = functionList.iterator();
-
         while (iterator.hasNext()){
             f = iterator.next();
             functionNameList.add(f.getName());
@@ -268,6 +249,7 @@ public class FunctionActivity extends AppCompatActivity
 
     @Override
     public void clickListener(String name, FunctionExpandableListAdapter.Action action) {
+        functionName = name;
         if (action == FunctionExpandableListAdapter.Action.DELETE){
             dbHandler.deleteFunction(dbHandler.getFunction(dbHandler.findFunctionByName(name)));
         }
@@ -281,9 +263,10 @@ public class FunctionActivity extends AppCompatActivity
         }
         if (action == FunctionExpandableListAdapter.Action.RUN){
             //hook up run activity
-            intent = new Intent(this,RunActivity.class);
-            intent.putExtra(EXTRA_NAME, name);
-            startActivity(intent);
+
+            OutputVariableDialaog dialaog = new OutputVariableDialaog();
+            dialaog.show(getSupportFragmentManager(),"get_name");
+
         }
 
     }
@@ -294,41 +277,42 @@ public class FunctionActivity extends AppCompatActivity
         functionNameList=new ArrayList<String>();
         functionValueMap=new HashMap<String, List<String>>();
         //set up data here
-        Spinner spinner = (Spinner)findViewById(R.id.sort_bar_picker);
-        if(spinner.getSelectedItem().toString().equals( "Name")){
-            this.prepareListDataDate();
-        }
-        if(spinner.getSelectedItem().toString().equals( "Date Added")){
-            this.prepareListDataName();
-        }
+        prepareListData();
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
-
         expandableListView.setAdapter(adapter);
 
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //position 0 corresponds to sort by name
-        //position 1 corresponds to sort by date
-        onResume();
-//        if(position == 0){
-//            onResume();
-//// ((SortListener)parent).refreshListByDate();
-//        }
-//        if(position == 1){
-//            onResume();
-////            ((SortListener)parent).refreshListByName();
-//        }
-
+    public boolean isNameValid(String name) {
+        if (name==""){
+            Toast.makeText(this, "Please enter a name.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(name.length()>40){
+            Toast.makeText(this, "Names must be shorter than 40 characters.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(name.equals("e")||name.equals("pi")){
+            Toast.makeText(this, "Cannot name a variable e or pi.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
+    public boolean isDuplicate(String name) {
+        return dbHandler.isDuplicateVariable(new Variable(name, 0,0));
     }
 
-
-
-
+    @Override
+    public void launchRun(String outputName) {
+        Intent intent = new Intent(this,RunActivity.class);
+        intent.putExtra(EXTRA_NAME, functionName);
+        intent.putExtra(EXTRA_OUTPUT_NAME, outputName);
+        startActivity(intent);
+    }
 }

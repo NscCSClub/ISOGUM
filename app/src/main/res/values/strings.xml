@@ -134,4 +134,6 @@
     <string name="function_delete">Delete</string>
     <string name="function_edit">Edit</string>
     <string name="function_run">Run</string>
+    <string name="output_variable_header">Name Output Variable...</string>
+    <string name="output_variable_hint">Enter the name here.</string>
 </resources>
