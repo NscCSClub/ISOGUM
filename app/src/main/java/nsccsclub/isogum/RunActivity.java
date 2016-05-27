@@ -11,6 +11,10 @@ import android.widget.Toast;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Interface and ui for allowing the user to run functions with a selected group of variables,
+ * and calculate the  total uncertainty
+ */
 public class RunActivity extends AppCompatActivity {
     DBHandler dbHandler;
     Function function;

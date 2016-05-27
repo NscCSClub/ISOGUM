@@ -29,10 +29,6 @@ public class Function implements Comparable<Function>{
      */
     private long id;
 
-    /**
-     * the symbolic derivative of the function needs to be implemented
-     */
-    private String derivative;
 
 
     /**
@@ -46,22 +42,9 @@ public class Function implements Comparable<Function>{
         this.setFunction(function);
         // id has not been set by database yet
         this.setId(-1);
-        this.setDerivative("");
     }
 
-    /**
-     * Creates a function object with no database id, useful for simple unstored calculations,
-     * or initially storing the object.
-     * @param name The name of the function.
-     * @param function The functino to evaluate.
-     */
-    public Function(String name, String function, String derivative){
-        this.setName(name);
-        this.setFunction(function);
-        // id has not been set by database yet
-        this.setId(-1);
-        this.setDerivative(derivative);
-    }
+
 
     /**
      * The full constructor for the function, use this whenever working with an existing object in
@@ -70,11 +53,10 @@ public class Function implements Comparable<Function>{
      * @param function The function to evaluate
      * @param id The database id of the function.
      */
-    public Function(String name, String function, String derivative, long id){
+    public Function(String name, String function, long id){
         this.setName(name);
         this.setFunction(function);
         this.setId(id);
-        this.setDerivative(derivative);
     }
 
     /**
@@ -165,16 +147,8 @@ public class Function implements Comparable<Function>{
         return this.name.compareTo(another.getName());
     }
 
-    /**
-     * The generic derivative of the function.
-     */
-    public String getDerivative() {
-        return derivative;
-    }
 
-    public void setDerivative(String derivative) {
-        this.derivative = derivative;
-    }
+
 
     public String translator(){
         FunctionParser functionParser = new FunctionParser(this.getFunction());

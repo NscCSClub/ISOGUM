@@ -18,7 +18,7 @@ import java.util.List;
 public class DBHandler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     // Database Name
     private static final String DATABASE_NAME = "saved_data";
     // Contacts table name
@@ -29,7 +29,6 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_FUNCTION = "function";
-    private static final String KEY_DERIVATIVE = "derivative";
     private static final String KEY_VALUE = "value";
     private static final String KEY_UNCERTAINTY = "uncertainty";
 
@@ -70,7 +69,7 @@ public class DBHandler extends SQLiteOpenHelper {
         //both string sql commands are used for creating the database
         String CREATE_FUNCTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_FUNCTIONS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_FUNCTION + " TEXT," + KEY_DERIVATIVE + " TEXT"+")";
+                + KEY_FUNCTION  + " TEXT"+")";
         String CREATE_VARIABLES_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_VARIABLES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_VALUE + " REAL," +  KEY_UNCERTAINTY + " REAL" + ")";
@@ -108,6 +107,12 @@ public class DBHandler extends SQLiteOpenHelper {
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_FUNCTIONS);
                 onCreate(db);
                 break;
+            case (2):
+                //drop older tables if they exist
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_VARIABLES);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_FUNCTIONS);
+                onCreate(db);
+                break;
         }
         //create tables again
 
@@ -133,7 +138,6 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, function.getName());
         contentValues.put(KEY_FUNCTION, function.getFunction());
-        contentValues.put(KEY_DERIVATIVE, function.getDerivative());
 
         db.insert(TABLE_FUNCTIONS, null, contentValues);
         db.close();
@@ -149,7 +153,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public Function getFunction(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_FUNCTIONS, new String[]{KEY_ID,
-                        KEY_NAME, KEY_FUNCTION,KEY_DERIVATIVE}, KEY_ID + " = ?",
+                        KEY_NAME, KEY_FUNCTION}, KEY_ID + " = ?",
                 new String[]{String.valueOf(id)},
                 null, null, null, null);
         Function function=null;
@@ -159,7 +163,7 @@ public class DBHandler extends SQLiteOpenHelper {
             return function;
         }
         function = new Function(cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),Long.parseLong(cursor.getString(0)));
+                    cursor.getString(2),Long.parseLong(cursor.getString(0)));
 
 
         db.close();
@@ -183,7 +187,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             do{
                 function = new Function(cursor.getString(1),
-                        cursor.getString(2), cursor.getString(3), Long.parseLong(cursor.getString(0)));
+                        cursor.getString(2), Long.parseLong(cursor.getString(0)));
                 list.add(function);
             } while(cursor.moveToNext());
         }
@@ -210,7 +214,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         contentValues.put(KEY_NAME, function.getName());
         contentValues.put(KEY_FUNCTION, function.getFunction());
-        contentValues.put(KEY_DERIVATIVE, function.getDerivative());
 
         long id = db.update(TABLE_FUNCTIONS, contentValues, KEY_ID + " = ?",
                 new String[]{String.valueOf(function.getId())});
