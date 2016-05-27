@@ -17,13 +17,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:baselineAligned="false"
         android:id="@+id/sorting_bar">
 
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -32,7 +32,7 @@
             android:layout_weight="1" />
 
         <Spinner
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sort_bar_picker"
             android:layout_weight="1"
@@ -40,8 +40,8 @@
     </LinearLayout>
 
     <ExpandableListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/function_list"
         android:layout_below="@+id/sorting_bar"
         android:layout_alignParentLeft="true"

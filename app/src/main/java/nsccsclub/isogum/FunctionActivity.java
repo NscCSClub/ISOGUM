@@ -29,7 +29,7 @@ import java.util.List;
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
-        AdapterView.OnItemSelectedListener,SortListener{
+        AdapterView.OnItemSelectedListener{
 
 
     /**
@@ -101,10 +101,7 @@ public class FunctionActivity extends AppCompatActivity
 
 
 
-        //set up data here
-        prepareListDataName();
-        adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
-        expandableListView.setAdapter(adapter);
+        //data is set up in onresume
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
 
@@ -298,13 +295,14 @@ public class FunctionActivity extends AppCompatActivity
         functionValueMap=new HashMap<String, List<String>>();
         //set up data here
         Spinner spinner = (Spinner)findViewById(R.id.sort_bar_picker);
-        if(spinner.getSelectedItem().toString() == "Name"){
-            this.refreshListByName();
+        if(spinner.getSelectedItem().toString().equals( "Name")){
+            this.prepareListDataDate();
         }
-        if(spinner.getSelectedItem().toString() == "Date Added"){
-            this.refreshListByDate();
+        if(spinner.getSelectedItem().toString().equals( "Date Added")){
+            this.prepareListDataName();
         }
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
+
         expandableListView.setAdapter(adapter);
 
     }
@@ -313,12 +311,15 @@ public class FunctionActivity extends AppCompatActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //position 0 corresponds to sort by name
         //position 1 corresponds to sort by date
-        if(position == 0){
-            ((SortListener)parent).refreshListByDate();
-        }
-        if(position == 1){
-            ((SortListener)parent).refreshListByName();
-        }
+        onResume();
+//        if(position == 0){
+//            onResume();
+//// ((SortListener)parent).refreshListByDate();
+//        }
+//        if(position == 1){
+//            onResume();
+////            ((SortListener)parent).refreshListByName();
+//        }
 
     }
 
@@ -327,15 +328,7 @@ public class FunctionActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void refreshListByName() {
-        prepareListDataName();
-    }
 
-    @Override
-    public void refreshListByDate() {
-        prepareListDataDate();
-    }
 
 
 }
