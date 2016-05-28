@@ -131,16 +131,11 @@ public class FunctionActivity extends AppCompatActivity
 
         //sets up the expandable list of function objects
         expandableListView = (ExpandableListView) this.findViewById(R.id.function_list);
-        functionNameList=new ArrayList<String>();
-        functionValueMap=new HashMap<String, List<String>>();
         dbHandler  = new DBHandler(this.getApplicationContext());
         //todo delete this for debugging
         //sets up a reasonably sized list of objects for gui debugging
         debugAddFunctions();
         //data is sorted and set up here
-        prepareListDataName();
-        adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
-        expandableListView.setAdapter(adapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
             /*makes it so only one item is expanded at a time, and keeps track of the last expanded
@@ -155,6 +150,7 @@ public class FunctionActivity extends AppCompatActivity
         });
         //this is the text view that shows up when the list is empty
         expandableListView.setEmptyView(this.findViewById(R.id.emptyElement));
+        //NOTE: all data for the expandable list view is sorted and prepared in the onResume method
 
         //these are used for interface callbacks for the dialogs only,
         // do not use in any other context
@@ -233,11 +229,12 @@ public class FunctionActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        // close the activity drawer if its open, if not finish this activity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            this.finish();
         }
     }
 
@@ -270,7 +267,7 @@ public class FunctionActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_function) {
-
+            //we are in the function activity no need to go anywhere
         } else if (id == R.id.nav_variable) {
             Intent intent = new Intent(this, VariableActivity.class);
             startActivity(intent);
@@ -279,22 +276,28 @@ public class FunctionActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
-
+            //todo decide if we need a settings activity
+            // not sure if we want to hook this up
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
+    /**
+     * Listener for the row of three buttons on an expanded function object in the GUI.
+     * Allows a user to run, edit, or delete a function
+     */
     public void clickListener(String name, FunctionExpandableListAdapter.Action action) {
         functionName = name;
         if (action == FunctionExpandableListAdapter.Action.DELETE){
             dbHandler.deleteFunction(dbHandler.getFunction(dbHandler.findFunctionByName(name)));
+            //data will be refreshed in the on resume method
         }
         Intent intent = null;
-        if (action == FunctionExpandableListAdapter.Action.EDIT){
+        if (action == FunctionExpandableListAdapter.Action.EDIT) {
+            //start create function activity and pass in extra arguments for editing
             intent = new Intent(this,CreateFunctionActivity.class);
             intent.putExtra(EXTRA_NAME,name);
             intent.putExtra(EXTRA_VALUE,
@@ -302,19 +305,26 @@ public class FunctionActivity extends AppCompatActivity
             startActivity(intent);
         }
         if (action == FunctionExpandableListAdapter.Action.RUN){
-            //hook up run activity
+            /*
+            Creates a dialog to prompt the user for an appropriate output variable name, checks for
+            duplicates and starts the run activity
+             */
             DialogOutputVariable dialaog = new DialogOutputVariable();
             dialaog.show(getSupportFragmentManager(),"get_name");
         }
-
     }
 
     @Override
     public void onResume() {
+        /*
+        Main purpose here is to set up all of the data for the expandable list view, and refresh
+        if neccesary.
+         */
+        //todo set up animation here
         super.onResume();
         functionNameList=new ArrayList<String>();
         functionValueMap=new HashMap<String, List<String>>();
-        //set up data here
+        //checks spinner for soritng option and prepares the data
         Spinner spinner = (Spinner)findViewById(R.id.sort_bar_picker);
         if(spinner.getSelectedItem().toString().equals("Name")){
             this.prepareListDataName();
@@ -322,11 +332,24 @@ public class FunctionActivity extends AppCompatActivity
         if(spinner.getSelectedItem().toString().equals("Date Added")){
             this.prepareListDataDate();
         }
+        //feeds sorted data to the expandable list view
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
         expandableListView.setAdapter(adapter);
     }
 
     @Override
+    /**
+     * Checks the name of function or variable for validity. Displays a toast if the name is not
+     * valid.
+     * <div>
+     *     <h3>Rules:</h3>
+     *     <ul>
+     *         <li>Names must be shorter than 40 characters</li>
+     *         <li>Names must be unique</li>
+     *         <li>Cannot name an object e or pi</li>
+     *     </ul>
+     * </div>
+     */
     public boolean isNameValid(String name) {
         if (name.equals("")){
             Toast.makeText(this, "Please enter a name.",
@@ -347,11 +370,26 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * Wrapper method for an interface callback for name dialog. Checks the name of the gui object
+     * for validity and displays a toast to the user if it is not valid.
+     * <div>
+     *     <h3>Rules:</h3>
+     *     <ul>
+     *         <li>Names must be shorter than 40 characters</li>
+     *         <li>Names must be unique</li>
+     *         <li>Cannot name an object e or pi</li>
+     *     </ul>
+     * </div>
+     */
     public boolean isValid(String name) {
         return this.isNameValid(name);
     }
 
     @Override
+    /**
+     * Interface callback to check if a given function name has a duplicate entry in the database
+     */
     public boolean isDuplicateFunction(String name) {
         if(dbHandler.isDuplicateFunction(new Function(name, ""))){
             duplicationVariable = name;
@@ -361,6 +399,9 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * interface callback to determine if a variable name has a duplicate entry in the database
+     */
     public boolean isDuplicateVariable(String name) {
         if(dbHandler.isDuplicateVariable(new Variable(name, 0,0))){
             duplicationVariable = name;
@@ -370,6 +411,9 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * Interface callback to determine if a variable name has a duplicate entry in the database
+     */
     public boolean isDuplicate(String name) {
         if(dbHandler.isDuplicateVariable(new Variable(name, 0,0))){
             duplicationVariable = name;
@@ -379,6 +423,9 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * Calls the appropriate create activity for a function or variable, and passes in the name.
+     */
     public void createNewFV(String name, DialogNameFunctionVariable.FV type) {
         Intent intent = null;
         if (type.equals(DialogNameFunctionVariable.FV.FUNCTION)){
@@ -396,6 +443,9 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * Launches the run activity for a given function with the appropriate arguments.
+     */
     public void launchRun(String outputName) {
         Intent intent = new Intent(this,RunActivity.class);
         intent.putExtra(EXTRA_NAME, functionName);
@@ -404,6 +454,9 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * Listener option for the expandable list item, refreshes the data for all list objects
+     */
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         this.onResume();
     }
@@ -413,22 +466,32 @@ public class FunctionActivity extends AppCompatActivity
 
     }
 
-
+    /**
+     * Utility method for a dialog interface callback for overwriting funcitons and variables.
+     * @param s
+     */
     public void setDuplicationVariable(String s){
         duplicationVariable = s;
     }
 
     @Override
+    /**
+     * Calls the create function activity to overwrite and edit an existing function with the
+     * appropriate arguments.
+     */
     public void overwriteFunction() {
         Intent intent = new Intent(this,CreateFunctionActivity.class);
         intent.putExtra(EXTRA_NAME,duplicationVariable);
         intent.putExtra(EXTRA_VALUE,
                 dbHandler.getFunction(dbHandler.findFunctionByName(duplicationVariable)).getFunction());
         startActivity(intent);
-
     }
 
     @Override
+    /**
+     * Calls the create variable activity to overwrite and edit an existing variable with the
+     * appropriate arguments.
+     */
     public void overwriteVarible() {
         Intent intent = new Intent(this,CreateVariableActivity.class);
         intent.putExtra(EXTRA_NAME,duplicationVariable);
@@ -441,6 +504,9 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    /**
+     * Launches the run activity, and has it set up to overwrite output data into an existing variable
+     */
     public void overwriteVaribleRun() {
         this.launchRun(duplicationVariable);
     }
