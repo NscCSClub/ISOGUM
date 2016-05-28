@@ -130,7 +130,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     }
 
 
-    @Override
+    //todo check this
     public void onPositiveClick(DialogFragment dialog) {
         EditText editText = (EditText)dialog.getDialog().findViewById(R.id.varaible_name_field);
         String content = editText.getText().toString();
@@ -148,4 +148,24 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         }
     }
 
+
+    @Override
+    public boolean isValid(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean isDuplicateFunction(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean isDuplicateVariable(String name) {
+        return false;
+    }
+
+    @Override
+    public void createNewFV(String name) {
+
+    }
 }

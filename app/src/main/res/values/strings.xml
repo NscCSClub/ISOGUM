@@ -137,4 +137,6 @@
     <string name="output_variable_header">Name Output Variable...</string>
     <string name="output_variable_hint">Enter the name here.</string>
     <string name="duplicate_variable_message">Variable name already exists, overwrite?</string>
+    <string name="duplicate_function_message">Function name already exists, overwrite?</string>
+
 </resources>

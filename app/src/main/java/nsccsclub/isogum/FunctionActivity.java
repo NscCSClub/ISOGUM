@@ -20,6 +20,9 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +34,7 @@ public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
         OutputVariableDialaog.OutputVariableListener, AdapterView.OnItemSelectedListener ,
-        DialogDuplicateVariable.DuplicateVariableListener{
+        DialogDuplicateVariable.DuplicateVariableListener, NameVariableDialog.NameDialogListener{
 
 
     /**
@@ -78,7 +81,8 @@ public class FunctionActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopup(findViewById(R.id.fab));
+                NameVariableDialog dialog = new NameVariableDialog();
+                dialog.show(getSupportFragmentManager(),"Duplicate");
             }
         });
         //sets up an activity drawer
@@ -337,8 +341,28 @@ public class FunctionActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean isValid(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean isDuplicateFunction(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean isDuplicateVariable(String name) {
+        return false;
+    }
+
+    @Override
     public boolean isDuplicate(String name) {
         return dbHandler.isDuplicateVariable(new Variable(name, 0,0));
+    }
+
+    @Override
+    public void createNewFV(String name) {
+
     }
 
     @Override

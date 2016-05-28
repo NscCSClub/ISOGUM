@@ -52,7 +52,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Generic constructor for the DBHandler should be used for most every general case
-     * @param context The activity holding the handler.
+     * @param context The app holding the handler.
      */
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
