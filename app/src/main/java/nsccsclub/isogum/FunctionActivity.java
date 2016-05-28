@@ -29,7 +29,7 @@ import java.util.List;
 
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
+        FunctionExpandableListAdapter.FunctionListListener ,
         DialogOutputVariable.OutputVariableListener, AdapterView.OnItemSelectedListener ,
         DialogDuplicateVariable.DuplicateVariableListener, DialogNameFunctionVariable.NameFVDialogListener ,
         DialogDuplicateFunction.DialogDuplicateFunctionListener,
@@ -40,8 +40,17 @@ public class FunctionActivity extends AppCompatActivity
      * the name of a created fucntion or variable.
      */
     public static final String EXTRA_NAME = "name";
+    /**
+     * Name of the output variable for running an activity
+     */
     public static final String EXTRA_OUTPUT_NAME = "outputName";
+    /**
+     * The value of a variable or function for editing
+     */
     public static final String EXTRA_VALUE = "value";
+    /**
+     * The uncertainty of a variable for editing
+     */
     public static final String EXTRA_UNCERTAINTY = "uncertainty";
 
     /**
@@ -55,14 +64,26 @@ public class FunctionActivity extends AppCompatActivity
     FunctionExpandableListAdapter adapter;
 
     /**
-     * List of function objects that are stored in the database to be displayed on the screen
+     * List of function objects that are stored in the database to be displayed in an expandable list
      */
     List<String> functionNameList;
+    /**
+     * The value and database id of a function for functions in an expandable list
+     */
     HashMap<String,List<String>> functionValueMap;
 
+    /**
+     * The database handler for the application, must be called using getApplicationContext()
+     */
     DBHandler dbHandler;
 
+    /**
+     * Name of a function for editing, used to make interface callbacks work with dialogs
+     */
     private String functionName;
+    /**
+     * Name of funcition or variable to overwrite, used to make interface callbacks for dialogs work
+     */
     private String duplicationVariable;
 
 
@@ -70,8 +91,7 @@ public class FunctionActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_function);
-       
-        
+
         //sets up a toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,10 +100,16 @@ public class FunctionActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
+                Shows a dialog that prompts the user for the type of object they want to create,
+                the name of the object, checks for duplicates, then calls the appropriate
+                edit/create activity
+                 */
                 DialogNameFunctionVariable dialog = new DialogNameFunctionVariable();
                 dialog.show(getSupportFragmentManager(),"Duplicate");
             }
         });
+
         //sets up an activity drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -92,31 +118,34 @@ public class FunctionActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //spinner for choosing how to sort the expandable list
+        //at this point, by name and date added are the only two sorting options
         Spinner spinner = (Spinner)findViewById( R.id.sort_bar_picker);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner_sort_choices,R.layout.support_simple_spinner_dropdown_item);
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
+        //this activity acts as the listener for this spinner
         spinner.setOnItemSelectedListener(this);
-        //sets up the expandable list
+
+        //sets up the expandable list of function objects
         expandableListView = (ExpandableListView) this.findViewById(R.id.function_list);
         functionNameList=new ArrayList<String>();
         functionValueMap=new HashMap<String, List<String>>();
         dbHandler  = new DBHandler(this.getApplicationContext());
-
-        //todo delete this for debuggin
-
+        //todo delete this for debugging
+        //sets up a reasonably sized list of objects for gui debugging
         debugAddFunctions();
-
-
-
-        //set up data here
+        //data is sorted and set up here
         prepareListDataName();
         adapter = new FunctionExpandableListAdapter(this, functionNameList,functionValueMap);
         expandableListView.setAdapter(adapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
-
+            /*makes it so only one item is expanded at a time, and keeps track of the last expanded
+            * option for efficiency
+            * */
             @Override
             public void onGroupExpand(int groupPosition) {
                 if (groupPosition != previousGroup)
@@ -124,18 +153,23 @@ public class FunctionActivity extends AppCompatActivity
                 previousGroup = groupPosition;
             }
         });
+        //this is the text view that shows up when the list is empty
         expandableListView.setEmptyView(this.findViewById(R.id.emptyElement));
 
+        //these are used for interface callbacks for the dialogs only,
+        // do not use in any other context
         functionName = "not set";
         duplicationVariable = "not set";
     }
 
+    /**
+     * Creates 20 variable objects and 20 function objects for gui debugging
+     */
     private void debugAddFunctions() {
         ArrayList<Function> tempFuncArray = new ArrayList<Function>();
         ArrayList<Variable> tempVarArray = new ArrayList<Variable>();
         Variable v = null;
         Function f = null;
-
         for (int i = 0; i < 20; i++){
             f = new Function("function" + i, "[x]^2+[y]*6+3*[z]+[a]+[b]+[c]");
             if (!dbHandler.isDuplicateFunction(f)){
@@ -150,14 +184,21 @@ public class FunctionActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Sets up data for the functionNameList and functionValueMap for use in an expandable list
+     * adapter. This method sorts data alphabetically by unique name.
+     */
     private void prepareListDataName() {
-
+        //get all functions
         List<Function> functionList = dbHandler.getAllFunctions();
+        //sort by name
         Collections.sort(functionList);
         Function f = null;
         List<String> valueList = null;
         Iterator<Function> iterator = functionList.iterator();
         while (iterator.hasNext()){
+            //iterate through, and
+            //add data to appropriate structure
             f = iterator.next();
             functionNameList.add(f.getName());
             valueList = new ArrayList<>();
@@ -166,14 +207,20 @@ public class FunctionActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Sets up data for the functionNameList and functionValueMap for use in an expandable list
+     * adapter. This method sorts data alphabetically by unique name.
+     */
     private void prepareListDataDate() {
-
+        //get all functions
         List<Function> functionList = dbHandler.getAllFunctions();
+        //sort by date added
         Collections.sort(functionList,new FunctionIDSorter());
         Function f = null;
         List<String> valueList = null;
         Iterator<Function> iterator = functionList.iterator();
         while (iterator.hasNext()){
+            //iterate through data and add to appropriate structure
             f = iterator.next();
             functionNameList.add(f.getName());
             valueList = new ArrayList<>();
@@ -183,35 +230,6 @@ public class FunctionActivity extends AppCompatActivity
     }
 
 
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        /*
-        gets the menu option selected and passes in to the create activity
-         */
-
-        //creates an intent to start create activity
-        Intent intent;
-
-        //starts create activity with proper message
-        switch(item.getItemId()) {
-            case R.id.new_function:
-                intent = new Intent(this,CreateFunctionActivity.class);
-                intent.putExtra(EXTRA_NAME,"INSERT_NAME_HERE");
-                startActivity(intent);
-                return true;
-            case R.id.new_variable:
-                intent = new Intent(this,CreateVariableActivity.class);
-                intent.putExtra(EXTRA_NAME,"INSERT_V_NAME_HERE");
-                startActivity(intent);
-                return true;
-            default:
-                //unrecognizable input try again
-                return false;
-        }
-
-
-    }
 
     @Override
     public void onBackPressed() {
