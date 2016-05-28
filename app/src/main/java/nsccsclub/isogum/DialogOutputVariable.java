@@ -17,8 +17,14 @@ import android.widget.EditText;
  */
 public class DialogOutputVariable extends DialogFragment {
 
+    /**
+     * host activity must, it must implement the interface.
+     */
     OutputVariableListener listener;
-    String functionName;
+    /**
+     * The name of the output variable.
+     */
+    String outputVariableName;
 
 
     @Override
@@ -26,7 +32,8 @@ public class DialogOutputVariable extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         //these are the buttons for the dialog
-        //the listners are hooked up later to fix a dismissal bug
+        //listeners are set to null here then set up later, so the dialog does not automatically
+        //dismiss on button click
         builder.setView(inflater.inflate(R.layout.dialog_output_variable, null)).
                 setPositiveButton(R.string.save, null).
                 setNegativeButton(R.string.cancel,null);
@@ -39,17 +46,22 @@ public class DialogOutputVariable extends DialogFragment {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                functionName = ((EditText)((AlertDialog) dialog).
+                                outputVariableName = ((EditText)((AlertDialog) dialog).
                                         findViewById(R.id.varaible_name_field)).getText().toString();
-                                if(listener.isNameValid(functionName)){
-                                    if(listener.isDuplicate(functionName)){
+                                //checks to see if the output varaible name is valid
+                                if(listener.isNameValid(outputVariableName)){
+                                    // checks if its a duplicate
+                                    if(listener.isDuplicate(outputVariableName)){
+                                        //if its a duplicate prompt user if they still want to use
+                                        //that name and save over the variable
                                         DialogDuplicateVariableRun duplicateVariable =
                                                 new DialogDuplicateVariableRun();
                                         duplicateVariable.show(getFragmentManager(),"isduplicate");
                                         dialog.dismiss();
                                     }
                                     else {
-                                        listener.launchRun(functionName);
+                                        //its not a duplicate launch run screen
+                                        listener.launchRun(outputVariableName);
                                         dialog.dismiss();
                                     }
                                 }
@@ -79,6 +91,7 @@ public class DialogOutputVariable extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //makes sure that host activity implements the interface
         try {
             listener = (OutputVariableListener)context;
         }catch (ClassCastException e){
@@ -88,8 +101,32 @@ public class DialogOutputVariable extends DialogFragment {
     }
 
     public interface OutputVariableListener{
+        /**
+         * Checks output varible name for validity.
+         * <div>
+         *     <h3>Rules:</h3>
+         *     <ul>
+         *         <li>Names must be shorter than 40 characters</li>
+         *         <li>Names must be unique</li>
+         *         <li>Cannot name an object e or pi</li>
+         *     </ul>
+         * </div>
+         * @param name The name of the output variable
+         * @return true for valid, false for invalid.
+         */
         public boolean isNameValid(String name);
+
+        /**
+         * Checks to see if the desired output variable name has any database conflicts
+         * @param name The name of the output variable.
+         * @return True for duplicate, false for unique.
+         */
         public boolean isDuplicate(String name);
+
+        /**
+         * Launches the run activity with a given output variable name.
+         * @param namevariable The name of the variable to save data into.
+         */
         public void launchRun(String namevariable);
     }
 }
