@@ -1,7 +1,6 @@
 package nsccsclub.isogum;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -15,16 +14,16 @@ import android.widget.EditText;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CreateVariableFragment.OnVariableFragmentInteractionListener} interface
+ * {@link FragmentCreateVariable.OnVariableFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CreateVariableFragment#newInstance} factory method to
+ * Use the {@link FragmentCreateVariable#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateVariableFragment extends Fragment {
+public class FragmentCreateVariable extends Fragment {
     /**
      * log code for using logcat
      */
-    public static final String LOG_CODE = "CreateVariableFragment";
+    public static final String LOG_CODE = "FragmentCreateVariable";
 
     /**
      * Argument for updating an existing variable needs to be implemented
@@ -51,7 +50,7 @@ public class CreateVariableFragment extends Fragment {
 
     private OnVariableFragmentInteractionListener listener;
 
-    public CreateVariableFragment() {
+    public FragmentCreateVariable() {
         // Required empty public constructor
     }
 
@@ -61,10 +60,10 @@ public class CreateVariableFragment extends Fragment {
      *
      * @param param1 The existing value to edit
      * @param param2 The name of the function for saving data.
-     * @return A new instance of fragment CreateVariableFragment.
+     * @return A new instance of fragment FragmentCreateVariable.
      */
-    public static CreateVariableFragment newInstance(String param1, String param2, String param3) {
-        CreateVariableFragment fragment = new CreateVariableFragment();
+    public static FragmentCreateVariable newInstance(String param1, String param2, String param3) {
+        FragmentCreateVariable fragment = new FragmentCreateVariable();
         Bundle args = new Bundle();
         args.putString(ARG_VALUE, param1);
         args.putString(ARG_NAME, param2);

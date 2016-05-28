@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/function_content"
     tools:context=".CreateFunctionActivity">
-    <fragment android:name="nsccsclub.isogum.CreateFunctionFragment"
+    <fragment android:name="nsccsclub.isogum.FragmentCreateFunction"
         android:id="@+id/function_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -4,29 +4,26 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link nsccsclub.isogum.CreateFunctionFragment.OnFunctionFragmentInteractionListener} interface
+ * {@link FragmentCreateFunction.OnFunctionFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CreateFunctionFragment#newInstance} factory method to
+ * Use the {@link FragmentCreateFunction#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateFunctionFragment extends Fragment{
+public class FragmentCreateFunction extends Fragment{
     /**
      * log code for using logcat
      */
-    public static final String LOG_CODE = "CreateFunctionFragment";
+    public static final String LOG_CODE = "FragmentCreateFunction";
 
     /**
      * Argument for updating an existing function needs to be implemented
@@ -47,7 +44,7 @@ public class CreateFunctionFragment extends Fragment{
 
     private OnFunctionFragmentInteractionListener listener;
 
-    public CreateFunctionFragment() {
+    public FragmentCreateFunction() {
         // Required empty public constructor
     }
 
@@ -56,12 +53,12 @@ public class CreateFunctionFragment extends Fragment{
      *
      * @param param1 The existing function to edit.
      * @param param2 name of the function for saving data.
-     * @return A new instance of fragment CreateFunctionFragment.
+     * @return A new instance of fragment FragmentCreateFunction.
      */
-    public static CreateFunctionFragment newInstance(String param1, String param2) {
+    public static FragmentCreateFunction newInstance(String param1, String param2) {
         //create a new instance of the fragment with arguments will be used w the edit function
         // fragment
-        CreateFunctionFragment fragment = new CreateFunctionFragment();
+        FragmentCreateFunction fragment = new FragmentCreateFunction();
         Bundle args = new Bundle();
         args.putString(ARG_FUNCTION, param1);
         args.putString(ARG_NAME, param2);

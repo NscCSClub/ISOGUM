@@ -18,10 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 
 
 import java.util.ArrayList;
@@ -33,8 +30,10 @@ import java.util.List;
 public class FunctionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PopupMenu.OnMenuItemClickListener, FunctionExpandableListAdapter.FunctionListListener ,
-        OutputVariableDialaog.OutputVariableListener, AdapterView.OnItemSelectedListener ,
-        DialogDuplicateVariable.DuplicateVariableListener, NameVariableDialog.NameDialogListener{
+        DialogOutputVariable.OutputVariableListener, AdapterView.OnItemSelectedListener ,
+        DialogDuplicateVariable.DuplicateVariableListener, DialogNameFunctionVariable.NameFVDialogListener ,
+        DialogDuplicateFunction.DialogDuplicateFunctionListener,
+        DialogDuplicateVariableRun.DuplicateVariableListener{
 
 
     /**
@@ -43,7 +42,7 @@ public class FunctionActivity extends AppCompatActivity
     public static final String EXTRA_NAME = "name";
     public static final String EXTRA_OUTPUT_NAME = "outputName";
     public static final String EXTRA_VALUE = "value";
-
+    public static final String EXTRA_UNCERTAINTY = "uncertainty";
 
     /**
      * Expandable list view
@@ -81,7 +80,7 @@ public class FunctionActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NameVariableDialog dialog = new NameVariableDialog();
+                DialogNameFunctionVariable dialog = new DialogNameFunctionVariable();
                 dialog.show(getSupportFragmentManager(),"Duplicate");
             }
         });
@@ -182,18 +181,7 @@ public class FunctionActivity extends AppCompatActivity
             functionValueMap.put(f.getName(), valueList);
         }
     }
-    private void showPopup(View v) {
-        //creates the popup object
-        PopupMenu popup = new PopupMenu(this,v);
-        //create an inflater to reference defined xml menu resource
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_create_popup, popup.getMenu());
 
-        //registers an action listener
-        popup.setOnMenuItemClickListener(this);
-        //makes visible in activity
-        popup.show();
-    }
 
 
     @Override
@@ -290,14 +278,14 @@ public class FunctionActivity extends AppCompatActivity
         Intent intent = null;
         if (action == FunctionExpandableListAdapter.Action.EDIT){
             intent = new Intent(this,CreateFunctionActivity.class);
-            intent.putExtra(EXTRA_NAME,"INSERT_NAME_HERE");
+            intent.putExtra(EXTRA_NAME,name);
             intent.putExtra(EXTRA_VALUE,
                     dbHandler.getFunction(dbHandler.findFunctionByName(name)).getFunction());
             startActivity(intent);
         }
         if (action == FunctionExpandableListAdapter.Action.RUN){
             //hook up run activity
-            OutputVariableDialaog dialaog = new OutputVariableDialaog();
+            DialogOutputVariable dialaog = new DialogOutputVariable();
             dialaog.show(getSupportFragmentManager(),"get_name");
         }
 
@@ -342,26 +330,50 @@ public class FunctionActivity extends AppCompatActivity
 
     @Override
     public boolean isValid(String name) {
-        return false;
+        return this.isNameValid(name);
     }
 
     @Override
     public boolean isDuplicateFunction(String name) {
-        return false;
+        if(dbHandler.isDuplicateFunction(new Function(name, ""))){
+            duplicationVariable = name;
+            return true;
+        }
+        return  false;
     }
 
     @Override
     public boolean isDuplicateVariable(String name) {
-        return false;
+        if(dbHandler.isDuplicateVariable(new Variable(name, 0,0))){
+            duplicationVariable = name;
+            return true;
+        }
+        return  false;
     }
 
     @Override
     public boolean isDuplicate(String name) {
-        return dbHandler.isDuplicateVariable(new Variable(name, 0,0));
+        if(dbHandler.isDuplicateVariable(new Variable(name, 0,0))){
+            duplicationVariable = name;
+            return true;
+        }
+        return  false;
     }
 
     @Override
-    public void createNewFV(String name) {
+    public void createNewFV(String name, DialogNameFunctionVariable.FV type) {
+        Intent intent = null;
+        if (type.equals(DialogNameFunctionVariable.FV.FUNCTION)){
+            intent = new Intent(this, CreateFunctionActivity.class);
+            intent.putExtra(EXTRA_NAME,name);
+            startActivity(intent);
+        }else if (type.equals(DialogNameFunctionVariable.FV.VARIABLE)){
+            intent = new Intent(this, CreateVariableActivity.class);
+            intent.putExtra(EXTRA_NAME, name);
+            startActivity(intent);
+        }
+
+
 
     }
 
@@ -383,11 +395,35 @@ public class FunctionActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void overwrite() {
-        this.launchRun(duplicationVariable);
-    }
+
     public void setDuplicationVariable(String s){
         duplicationVariable = s;
+    }
+
+    @Override
+    public void overwriteFunction() {
+        Intent intent = new Intent(this,CreateFunctionActivity.class);
+        intent.putExtra(EXTRA_NAME,duplicationVariable);
+        intent.putExtra(EXTRA_VALUE,
+                dbHandler.getFunction(dbHandler.findFunctionByName(duplicationVariable)).getFunction());
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void overwriteVarible() {
+        Intent intent = new Intent(this,CreateVariableActivity.class);
+        intent.putExtra(EXTRA_NAME,duplicationVariable);
+        intent.putExtra(EXTRA_VALUE,
+                dbHandler.getVariable(dbHandler.findVariableByName(duplicationVariable)).getValue());
+        intent.putExtra(EXTRA_UNCERTAINTY,
+                dbHandler.getVariable(dbHandler.findVariableByName(duplicationVariable)).getUncertainty());
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void overwriteVaribleRun() {
+        this.launchRun(duplicationVariable);
     }
 }

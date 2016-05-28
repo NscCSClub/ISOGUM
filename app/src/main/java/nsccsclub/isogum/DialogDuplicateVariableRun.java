@@ -9,10 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 /**
- * Used to alert the user of a duplicate variable name in the database
- * Created by Collin on 5/26/2016.
+ * Created by Collin on 5/27/2016.
  */
-public class DialogDuplicateVariable extends DialogFragment {
+public class DialogDuplicateVariableRun extends DialogFragment{
 
     private DuplicateVariableListener listener;
 
@@ -24,13 +23,13 @@ public class DialogDuplicateVariable extends DialogFragment {
         builder.setPositiveButton(R.string.save,new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.overwriteVarible();
+                listener.overwriteVaribleRun();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DialogDuplicateVariable.this.dismiss();
+                DialogDuplicateVariableRun.this.dismiss();
             }
         });
 
@@ -48,6 +47,6 @@ public class DialogDuplicateVariable extends DialogFragment {
     }
 
     public interface DuplicateVariableListener{
-        public void overwriteVarible();
+        public void overwriteVaribleRun();
     }
 }

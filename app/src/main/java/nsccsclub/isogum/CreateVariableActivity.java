@@ -1,14 +1,12 @@
 package nsccsclub.isogum;
 
 import android.content.Intent;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class CreateVariableActivity extends AppCompatActivity implements
-        CreateVariableFragment.OnVariableFragmentInteractionListener{
+        FragmentCreateVariable.OnVariableFragmentInteractionListener{
 
     /**
      * The log code for useing the log class and logcat

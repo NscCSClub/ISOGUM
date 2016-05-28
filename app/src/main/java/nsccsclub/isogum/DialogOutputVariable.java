@@ -15,7 +15,7 @@ import android.widget.EditText;
  * will override and existing database resource.
  * Created by csconway on 5/26/2016.
  */
-public class OutputVariableDialaog extends DialogFragment {
+public class DialogOutputVariable extends DialogFragment {
 
     OutputVariableListener listener;
     String functionName;
@@ -43,8 +43,8 @@ public class OutputVariableDialaog extends DialogFragment {
                                         findViewById(R.id.varaible_name_field)).getText().toString();
                                 if(listener.isNameValid(functionName)){
                                     if(listener.isDuplicate(functionName)){
-                                        DialogDuplicateVariable duplicateVariable =
-                                                new DialogDuplicateVariable();
+                                        DialogDuplicateVariableRun duplicateVariable =
+                                                new DialogDuplicateVariableRun();
                                         duplicateVariable.show(getFragmentManager(),"isduplicate");
                                         dialog.dismiss();
                                     }

@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 /**
  * Created by csconway on 4/27/2016.
  */
-public class CreateFunctionFragmentTest extends TestCase {
+public class FragmentCreateFunctionTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();

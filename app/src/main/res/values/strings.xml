@@ -138,5 +138,8 @@
     <string name="output_variable_hint">Enter the name here.</string>
     <string name="duplicate_variable_message">Variable name already exists, overwrite?</string>
     <string name="duplicate_function_message">Function name already exists, overwrite?</string>
+    <string name="function_radio_name">Function</string>
+    <string name="variable_radio_name">Variable</string>
+    <string name="enter_name_here">Enter name here...</string>
 
 </resources>

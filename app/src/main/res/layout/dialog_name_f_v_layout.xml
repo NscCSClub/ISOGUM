@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Create New..."
+        android:text="@string/create_new"
         android:id="@+id/createNewText" />
 
     <RadioGroup
@@ -20,14 +20,15 @@
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Function"
+        android:text="@string/function_radio_name"
         android:id="@+id/function_dialog"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:checked="true"/>
 
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Variable"
+        android:text="@string/variable_radio_name"
         android:id="@+id/variable"
         android:layout_gravity="center_vertical" />
     </RadioGroup>
@@ -35,6 +36,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/enterText" />
+        android:id="@+id/enterText"
+
+        android:hint="@string/enter_name_here"
+        android:singleLine="true" />
 
 </LinearLayout>

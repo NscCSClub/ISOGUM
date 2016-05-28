@@ -1,20 +1,11 @@
 package nsccsclub.isogum;
 
-import android.content.Context;
-import android.os.Build;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.util.Objects;
 
 /**
  * The creation screen for an uncertainty object, currently being implemented. Contains a function
@@ -22,7 +13,7 @@ import java.util.Objects;
  * need to be implemented
  */
 public class CreateFunctionActivity extends AppCompatActivity implements
-        CreateFunctionFragment.OnFunctionFragmentInteractionListener, NameVariableDialog.NameDialogListener {
+        FragmentCreateFunction.OnFunctionFragmentInteractionListener, DialogNameTextVariable.NameDialogListener {
 
     /**
      * The log code for useing the log class and logcat
@@ -45,7 +36,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
         try{
             value = intent.getStringExtra(FunctionActivity.EXTRA_VALUE);
-            CreateFunctionFragment fragment = (CreateFunctionFragment) getSupportFragmentManager().
+            FragmentCreateFunction fragment = (FragmentCreateFunction) getSupportFragmentManager().
                     findFragmentById(R.id.function_fragment);
 
             fragment.setText(value);
@@ -83,7 +74,7 @@ public class CreateFunctionActivity extends AppCompatActivity implements
      * Creates a name varible dialog
      */
     public void nameVariable() {
-        NameVariableDialog dialog = new NameVariableDialog();
+        DialogNameTextVariable dialog = new DialogNameTextVariable();
         dialog.show(getSupportFragmentManager(), "name");
     }
 
@@ -140,32 +131,11 @@ public class CreateFunctionActivity extends AppCompatActivity implements
         }
         else{
             //get back to the function fragment
-            CreateFunctionFragment createFunctionFragment =
-                    (CreateFunctionFragment)getSupportFragmentManager().
+            FragmentCreateFunction fragmentCreateFunction =
+                    (FragmentCreateFunction)getSupportFragmentManager().
                             findFragmentById(R.id.function_fragment);
             //add variable to the edit text window.
-            createFunctionFragment.addVar(content);
+            fragmentCreateFunction.addVar(content);
         }
-    }
-
-
-    @Override
-    public boolean isValid(String name) {
-        return false;
-    }
-
-    @Override
-    public boolean isDuplicateFunction(String name) {
-        return false;
-    }
-
-    @Override
-    public boolean isDuplicateVariable(String name) {
-        return false;
-    }
-
-    @Override
-    public void createNewFV(String name) {
-
     }
 }

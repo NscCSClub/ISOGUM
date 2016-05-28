@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/variable_content"
     tools:context="nsccsclub.isogum.CreateVariableActivity">
-    <fragment android:name="nsccsclub.isogum.CreateVariableFragment"
+    <fragment android:name="nsccsclub.isogum.FragmentCreateVariable"
         android:id="@+id/variable_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
