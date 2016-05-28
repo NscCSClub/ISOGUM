@@ -121,21 +121,36 @@ public class CreateFunctionActivity extends AppCompatActivity implements
     }
 
 
+    @Override
+    public boolean isTextValid(String name) {
+        if (name.equals("")){
+            Toast.makeText(this, "Please enter a name.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(name.length()>40){
+            Toast.makeText(this, "Names must be shorter than 40 characters.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(name.equals("e")||name.equals("pi")){
+            Toast.makeText(this, "Cannot name a variable e or pi.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     //todo check this
-    public void onPositiveClick(DialogFragment dialog) {
-        EditText editText = (EditText)dialog.getDialog().findViewById(R.id.varaible_name_field);
-        String content = editText.getText().toString();
-        if (content.compareTo("e")==0 || content.compareTo("pi")==0){
-            //e and pi are not valid variable names
-            Toast.makeText(getApplicationContext(),"Cannot name e or pi",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            //get back to the function fragment
-            FragmentCreateFunction fragmentCreateFunction =
-                    (FragmentCreateFunction)getSupportFragmentManager().
-                            findFragmentById(R.id.function_fragment);
-            //add variable to the edit text window.
-            fragmentCreateFunction.addVar(content);
-        }
+    public void onPositiveClick(String name) {
+
+        //get back to the function fragment
+        FragmentCreateFunction fragmentCreateFunction =
+            (FragmentCreateFunction)getSupportFragmentManager().
+                findFragmentById(R.id.function_fragment);
+            //add variable to the edit text windo
+        fragmentCreateFunction.addVar(name);
+
     }
 }
