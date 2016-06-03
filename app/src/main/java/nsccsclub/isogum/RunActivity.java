@@ -1,5 +1,6 @@
 package nsccsclub.isogum;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,13 +77,19 @@ public class RunActivity extends AppCompatActivity {
                     id = dbHandler.findVariableByName(spinnerMap.get(var));
                     if (id != -1) {
                         variable = dbHandler.getVariable(id);
-                        variableMap.put(var, variable);
+                        variableMap.put(var.toUpperCase(), variable);
                     }else{
                         Toast.makeText(v.getContext(),
                                 getResources().getString(R.string.not_chosen_error),Toast.LENGTH_SHORT).show();
                         return;
                     }
                     Variable output = function.runFunction(outputName, variableMap);
+                    if (dbHandler.isDuplicateVariable(output)){
+                        dbHandler.updateVariable(output);
+                    }else {
+                        dbHandler.createVariable(variable);
+                    }
+                    displayOutput(output);
 
                 }
             }
@@ -94,6 +101,10 @@ public class RunActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void displayOutput(Variable output) {
+
     }
 
 
