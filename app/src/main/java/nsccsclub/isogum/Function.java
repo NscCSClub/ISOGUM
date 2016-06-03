@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -213,5 +214,15 @@ public class Function implements Comparable<Function>{
             uniqueList.add(stringIterator.next());
         }
         return uniqueList;
+    }
+
+    /**
+     * Runs the function and returns a new variable with the run results
+     * @param outputName the name of the output variable.
+     * @param valueMap A map containing the name of the variable in this funciton to run, linked with it's current value.
+     * @return the output of running the function.
+     */
+    public Variable runFunction(String outputName, Map<String,Variable> valueMap){
+        return new Variable("hook this up", 0 ,0 );
     }
 }
