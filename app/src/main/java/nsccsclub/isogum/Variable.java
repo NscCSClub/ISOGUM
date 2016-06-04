@@ -98,7 +98,7 @@ public class Variable implements Comparable<Variable>{
      * Sets the uncertianty of the variable, automatically converted to a positive number.
      * @param uncertainty The new uncertainty of the variable.
      */
-    private void setUncertainty(double uncertainty) {
+    public void setUncertainty(double uncertainty) {
         this.uncertainty = Math.abs(uncertainty);
     }
 

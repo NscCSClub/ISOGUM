@@ -1,14 +1,12 @@
 package nsccsclub.isogum;
 
-import android.util.Log;
-import android.widget.ExpandableListView;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javacalculus.test.derivateCalc;
 
 /**
  * A basic function object for the ISO GUM calculator. Contains methods
@@ -29,6 +27,7 @@ public class Function implements Comparable<Function>{
      * fetching methods in the database to summon the function to avoid error.
      */
     private long id;
+    private derivateCalc derivate;
 
 
 
@@ -223,6 +222,20 @@ public class Function implements Comparable<Function>{
      * @return the output of running the function.
      */
     public Variable runFunction(String outputName, Map<String,Variable> valueMap){
-        return new Variable("hook this up", 0 ,0 );
+        if(derivate == null){
+            derivateCalc derivate = new derivateCalc(translator(),valueMap);
+        }
+        Variable result = new Variable(outputName,0,0);
+
+        double uncertain = 0;
+        ArrayList<Double>  numerical = derivate.derivateCalculator();
+        for(Double d : numerical){
+            uncertain += d*d;
+        }
+        uncertain = Math.pow(uncertain,1/2);
+
+        result.setValue(derivate.recursiveEvaluate());
+        result.setUncertainty(uncertain);
+        return result;
     }
 }
