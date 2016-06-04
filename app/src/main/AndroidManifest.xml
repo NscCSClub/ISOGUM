@@ -40,7 +40,8 @@
         <activity
             android:name=".VariableActivity"
             android:label="@string/title_activity_variable"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
@@ -49,16 +50,16 @@
             android:name=".HelpActivity"
             android:label="@string/create_name"
             android:parentActivityName=".FunctionActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
         </activity>
-        <activity android:name=".RunActivity">
-            android:name=".RunActivity"
+        <activity android:name=".RunActivity"
             android:label="@string/run_name"
             android:parentActivityName=".FunctionActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FunctionActivity" />
