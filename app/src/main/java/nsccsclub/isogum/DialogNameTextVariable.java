@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 /**
@@ -16,6 +17,7 @@ import android.widget.EditText;
  * Created by csconway on 4/28/2016.
  */
 public class DialogNameTextVariable extends android.support.v4.app.DialogFragment {
+
     /**
      * listner to handle key events from host activity. The host activity must implement the
      * listener interface and effectively acts as the listener for this fragment.
@@ -30,11 +32,14 @@ public class DialogNameTextVariable extends android.support.v4.app.DialogFragmen
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //inflate the layout
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        builder.setView(layoutInflater.inflate(R.layout.dialog_name_variable_layout,null))
+        View view = layoutInflater.inflate(R.layout.dialog_name_variable_layout, null);
+
+        builder.setView(view)
             //se the listeners
                 .setPositiveButton(R.string.save, null)
                 .setNegativeButton(R.string.cancel, null);
         Dialog dialog = builder.create();
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
@@ -63,6 +68,7 @@ public class DialogNameTextVariable extends android.support.v4.app.DialogFragmen
                 );
             }
         });
+
         return dialog;
     }
 

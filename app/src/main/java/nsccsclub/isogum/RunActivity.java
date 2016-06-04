@@ -1,17 +1,15 @@
 package nsccsclub.isogum;
 
-import android.app.AlertDialog;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,13 +19,15 @@ import java.util.Map;
  * Interface and ui for allowing the user to run functions with a selected group of variables,
  * and calculate the  total uncertainty
  */
-public class RunActivity extends AppCompatActivity {
+public class RunActivity extends AppCompatActivity implements
+        DialogDisplayOutput.DialogDisplayOutputListener{
     public static final String LOG_CODE = "RunActivity";
 
     DBHandler dbHandler;
     Function function;
     List<String> variableList;
     String outputName;
+    Variable outputVariable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class RunActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String name = null;
         function = null;
+        outputVariable =null;
         dbHandler = new DBHandler(this.getApplicationContext());
         try {
             name = intent.getStringExtra(FunctionActivity.EXTRA_NAME);
@@ -83,13 +84,13 @@ public class RunActivity extends AppCompatActivity {
                                 getResources().getString(R.string.not_chosen_error),Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Variable output = function.runFunction(outputName, variableMap);
-                    if (dbHandler.isDuplicateVariable(output)){
-                        dbHandler.updateVariable(output);
+                    outputVariable = function.runFunction(outputName, variableMap);
+                    if (dbHandler.isDuplicateVariable(outputVariable)){
+                        dbHandler.updateVariable(outputVariable);
                     }else {
-                        dbHandler.createVariable(variable);
+                        dbHandler.createVariable(outputVariable);
                     }
-                    displayOutput(output);
+                    displayOutput(outputVariable);
 
                 }
             }
@@ -104,8 +105,19 @@ public class RunActivity extends AppCompatActivity {
     }
 
     private void displayOutput(Variable output) {
-
+        DialogFragment dialog = new DialogDisplayOutput();
+        dialog.show(getSupportFragmentManager(),"show variable");
     }
 
 
+    @Override
+    public void done() {
+        this.finish();
+    }
+
+    @Override
+    public Variable getOutVar() {
+
+        return outputVariable;
+    }
 }

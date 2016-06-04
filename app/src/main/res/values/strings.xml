@@ -33,6 +33,7 @@
     <string name="run_name">Run</string>
     <string name="select">Select...</string>
     <string name="not_chosen_error">Please select all variables.</string>
+    <string name="Okay">Okay</string>
 
     <!-- Strings related to Settings -->
 
